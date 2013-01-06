@@ -90,6 +90,15 @@ au! Syntax json source /Users/brad/.vim/ftplugin/json.vim
 "ruby compiler check
 autocmd FileType ruby compiler ruby
 
+function! DoPrettyJSON()
+  " save the filetype so we can restore it later
+  let l:origft = &ft
+  " this requires a python install
+  silent %!python -m json.tool
+  exe "set ft=" . l:origft
+endfunction
+command! PrettyJSON call DoPrettyJSON()
+
 function! DoPrettyXML()
   " save the filetype so we can restore it later
   let l:origft = &ft
