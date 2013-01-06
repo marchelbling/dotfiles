@@ -1,0 +1,20 @@
+[user]
+    name = Marc Helbling
+    email = marc.d.helbling@gmail.com
+
+[color]
+    status = true
+    diff = true
+
+[alias]
+    br = branch
+    ci = commit
+    co = checkout
+    dump = cat-file -p
+    head = !git log --oneline --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' | head
+    hist = log --graph --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    history = whatchanged --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+    st = status
+    stat = show --stat
+    sync = !git fetch origin -v && git rebase origin/dev && git fetch upstream -v && git rebase upstream/dev #see http://robots.thoughtbot.com/post/5133345960/keeping-a-git-fork-updated
+    type = cat-file -t
