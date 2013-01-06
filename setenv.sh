@@ -17,9 +17,15 @@ while [ $# -ge 1 ] ; do
       shift 1 ;;
     --vim)
       # setup vim environment
+      mkdir -p $HOME/Library/Fonts
       mkdir -p $HOME/.vim/{autoload,bundle}
       mkdir $HOME/.vim-{back,swap,undo}
-
+      # install AnonymousPro free font
+      curl http://www.ms-studio.com/FontSales/AnonymousPro-1.002.zip > AnonymousPro.zip
+      unzip AnonymousPro.zip
+      mv AnonymousPro-1-002.*/*.ttf $HOME/Library/Fonts/
+      rm -fr AnonymousPro*
+      # install addons using pathogen
       curl -Sso ~/.vim/autoload/pathogen.vim \
           https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
       cd $HOME/bundle
