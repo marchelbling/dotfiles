@@ -4,7 +4,7 @@
 
 while [ $# -ge 1 ] ; do
   case $1 in
-    --homebrew) 
+    --homebrew)
       # install homebrew and some utils
       ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
       brew update
@@ -23,12 +23,12 @@ while [ $# -ge 1 ] ; do
       # install AnonymousPro free font
       curl http://www.ms-studio.com/FontSales/AnonymousPro-1.002.zip > AnonymousPro.zip
       unzip AnonymousPro.zip
-      mv AnonymousPro-1-002.*/*.ttf $HOME/Library/Fonts/
+      for file in `ls AnonymousPro-1-002*/*.ttf`; do mv $file $HOME/Library/Fonts/; done
       rm -fr AnonymousPro*
       # install addons using pathogen
       curl -Sso ~/.vim/autoload/pathogen.vim \
           https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
-      cd $HOME/bundle
+      cd $HOME/.vim/bundle
       git clone https://github.com/scrooloose/nerdtree.git
       git clone https://github.com/jistr/vim-nerdtree-tabs.git
       git clone https://github.com/vim-ruby/vim-ruby.git
