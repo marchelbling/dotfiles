@@ -76,7 +76,7 @@ set nosmartindent
 
 "manage backup, swap & undo directories
 "/!\ this requires that the .vim-* directories exist
-"coudl use  :silent !mkdir -p ~/.vim/backup >/dev/null 2>&1  to create them if needed 
+"could use  :silent !mkdir -p ~/.vim/backup >/dev/null 2>&1  to create them if needed
 set backupdir=~/.vim-back
 set directory=~/.vim-swap
 set undodir=~/.vim-undo
@@ -85,7 +85,6 @@ set undofile
 
 "json highlight
 au BufRead,BufNewFile *.json set filetype=json
-au! Syntax json source /Users/brad/.vim/ftplugin/json.vim
 
 "ruby compiler check
 autocmd FileType ruby compiler ruby
