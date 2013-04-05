@@ -30,3 +30,9 @@ eval "$(rbenv init -)"
 alias pgstart='pg_ctl -D /usr/local/pgsql/data -l logfile start'
 alias pgquit='pg_ctl -D /usr/local/pgsql/data stop -s -m fast'
 
+#source specific profile if provided
+if [ -e "$HOME/.specific_profile" ]
+then
+  source "$HOME/.specific_profile"
+fi
+
