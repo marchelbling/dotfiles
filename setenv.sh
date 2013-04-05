@@ -9,7 +9,7 @@ while [ $# -ge 1 ] ; do
       ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
       brew update
       brew doctor
-      brew install wget macvim imagemagick postgresql readline
+      brew install wget git macvim imagemagick postgresql readline
       brew install rbenv
       brew install ruby-build
       brew doctor
