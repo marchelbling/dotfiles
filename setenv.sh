@@ -52,6 +52,7 @@ ln -fs $current_directory/ruby/irbrc            $HOME/.irbrc
 ln -fs $current_directory/ruby/rdebugrc         $HOME/.rdebugrc
 ## terminal
 ln -fs $current_directory/terminal/bash_profile $HOME/.bash_profile
+ln -fs $current_directory/terminal/screenrc     $HOME/.screenrc
 ## vim
 ln -fs $current_directory/vim/vimrc             $HOME/.vimrc
 #ln -fs $current_directory/vim/gvimrc            $HOME/.gvimrc
