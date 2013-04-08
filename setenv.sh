@@ -40,9 +40,19 @@ while [ $# -ge 1 ] ; do
   esac
 done
 
-# copy all config files in HOME directory
-for file in `ls -a .`; do cp $file $HOME/$file; done
 # fetch git-completion.bash
 curl https://raw.github.com/git/git/master/contrib/completion/git-completion.bash > $HOME/.git-completion.bash
 
+# create soft links for all config files
+current_directory=`pwd`
+## git
+ln -fs $current_directory/git/gitconfig         $HOME/.gitconfig
+## ruby
+ln -fs $current_directory/ruby/irbrc            $HOME/.irbrc
+ln -fs $current_directory/ruby/rdebugrc         $HOME/.rdebugrc
+## terminal
+ln -fs $current_directory/terminal/bash_profile $HOME/.bash_profile
+## vim
+ln -fs $current_directory/vim/vimrc             $HOME/.vimrc
+#ln -fs $current_directory/vim/gvimrc            $HOME/.gvimrc
 
