@@ -28,21 +28,13 @@ alias ls='ls -F'
 source ~/.git-completion.bash
 
 # python env
-export VIRTUALENV_DIR=$HOME/.virtualenv
-export DEFAULT_VIRTUALENV='venv'
 export CONDA_DIR=$HOME/.conda
-python_init=$VIRTUALENV_DIR/$DEFAULT_VIRTUALENV/bin/activate
-if [ -e $python_init ]
-then
-  source $python_init
-fi
-
-# ruby
-eval "$(rbenv init -)"
-
-# extend path
 export PATH=/usr/local/Cellar:/usr/local/bin:/usr/local/sbin:$PATH
 if [ -d $CONDA_DIR ]
 then
   export PATH=$CONDA_DIR/bin:$PATH
 fi
+
+# ruby
+eval "$(rbenv init -)"
+
