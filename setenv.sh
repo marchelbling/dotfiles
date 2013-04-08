@@ -13,6 +13,28 @@ homebrew_install()
   brew doctor
 }
 
+make_venv()
+{
+  virtualenv --distribute --no-site-packages $1
+  source $1/bin/activate
+  echo `basename $1` 'created'
+}
+python_install()
+{
+  # distribute should already be installed by homebrew
+  easy_install pip
+  pip install virtualenv
+  mkdir $VIRTUALENV_DIR
+  make_venv $VIRTUALENV_DIR/$DEFAULT_VIRTUALENV
+
+  # ipython & 'standard' scientific packages
+  curl http://09c8d0b2229f813c1b93-c95ac804525aac4b6dba79b00b39d1d3.r79.cf1.rackcdn.com/Anaconda-1.4.0-MacOSX-x86_64.sh > anaconda.sh
+  bash anaconda.sh -b -p $CONDA_DIR
+  conda update conda
+
+  # install extra packages
+}
+
 vim_install()
 {
   # setup vim environment: font & plugins using pathogen
@@ -51,6 +73,7 @@ while [ $# -ge 1 ] ; do
       homebrew_install
       git_install
       vim_install
+      python_install
       # terminal theme needs to be 'default'ed manually
       open terminal/colors.terminal
       # drop current command line arg
@@ -60,6 +83,9 @@ while [ $# -ge 1 ] ; do
       shift 1 ;;
     --homebrew)
       homebrew_install
+      shift 1 ;;
+    --python)
+      python_install
       shift 1 ;;
     --vim)
       vim_install
