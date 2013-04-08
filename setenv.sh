@@ -50,6 +50,8 @@ while [ $# -ge 1 ] ; do
       homebrew_install
       git_install
       vim_install
+      # terminal theme needs to be 'default'ed manually
+      open terminal/colors.terminal
       # drop current command line arg
       shift 1 ;;
     --git)
@@ -67,6 +69,9 @@ while [ $# -ge 1 ] ; do
   esac
 done
 
+# sets medium font anti-aliasing
+## see: http://osxdaily.com/2012/06/09/mac-screen-blurry-optimize-troubleshoot-font-smoothing-os-x/
+defaults -currentHost write -globalDomain AppleFontSmoothing -int 2
 
 # create soft links for all config files
 current_directory=`pwd`
