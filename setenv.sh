@@ -45,7 +45,7 @@ vim_install()
   git clone https://github.com/jistr/vim-nerdtree-tabs.git
   git clone https://github.com/vim-ruby/vim-ruby.git
   git clone https://github.com/imsizon/wombat.vim.git
-  git clone https://github.com/ervandew/supertab
+  git clone https://github.com/ervandew/supertab.git
   git clone https://github.com/kevinw/pyflakes-vim.git
 }
 
@@ -54,6 +54,7 @@ git_install()
   # fetch git-completion.bash
   curl https://raw.github.com/git/git/master/contrib/completion/git-completion.bash > $HOME/.git-completion.bash
 }
+
 # parse command line arguments
 while [ $# -ge 1 ] ; do
   case $1 in
