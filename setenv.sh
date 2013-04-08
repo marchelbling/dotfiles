@@ -6,7 +6,8 @@ homebrew_install()
   ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
   brew update
   brew doctor
-  brew install wget git macvim imagemagick postgresql readline
+  brew install wget ack git macvim imagemagick postgresql readline
+  brew install python --framework
   brew install rbenv
   brew install ruby-build
   brew doctor
