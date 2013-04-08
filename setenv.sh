@@ -29,11 +29,13 @@ while [ $# -ge 1 ] ; do
       curl -Sso ~/.vim/autoload/pathogen.vim \
           https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
       cd $HOME/.vim/bundle
+      git clone https://github.com/scrooloose/nerdcommenter.git
       git clone https://github.com/scrooloose/nerdtree.git
       git clone https://github.com/jistr/vim-nerdtree-tabs.git
       git clone https://github.com/vim-ruby/vim-ruby.git
-      git clone https://github.com/tpope/vim-surround.git
       git clone https://github.com/imsizon/wombat.vim.git
+      git clone https://github.com/ervandew/supertab
+      git clone https://github.com/kevinw/pyflakes-vim.git
       shift 1 ;;
     --help) echo "Usage: ./setenv.sh [--homebrew|--vim|--help]" ; shift 1 ;;
     # -d) dest_dir=$2 ; shift 2 ;;
