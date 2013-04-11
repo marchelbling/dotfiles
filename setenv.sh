@@ -21,6 +21,9 @@ python_install()
   conda update conda
 
   # install extra packages
+  pip install beautifulsoup
+  pip install django
+  pip install psycopg2
 }
 
 vim_install()
