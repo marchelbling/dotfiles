@@ -1,3 +1,6 @@
+# shortcuts
+alias ls='ls -F'
+
 # show git branch in shell prompt (from: http://betterexplained.com/articles/aha-moments-when-learning-git/ and
 # http://asemanfar.com/Current-Git-Branch-in-Bash-Prompt)
 parse_git_branch()
@@ -19,10 +22,15 @@ then
   source "$HOME/.specific_profile"
 fi
 
-# bash shortcuts
-alias pgstart='pg_ctl -D /usr/local/pgsql/data -l logfile start'
-alias pgquit='pg_ctl -D /usr/local/pgsql/data stop -s -m fast'
-alias ls='ls -F'
+# postgres
+export PGDATA="/usr/local/var/postgres"
+alias pgstart="pg_ctl start -D $PGDATA --log=$HOME/.pgserver_log"
+alias pgquit="pg_ctl stop  -D $PGDATA -s -m fast"
+pg_ctl status &> /dev/null
+if [ $? -ne 0 ]
+then
+  pgstart
+fi
 
 # source git completion script https://github.com/git/git/tree/master/contrib/completion
 source ~/.git-completion.bash

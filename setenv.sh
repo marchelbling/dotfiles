@@ -1,15 +1,25 @@
 #!/bin/bash
 
+pg_setup()
+{
+  # this is a duplicate from bash_profile...
+  PGDATA=/usr/local/var/postgres
+  mkdir -p $PGDATA
+  initdb --pgdata=$PGDATA -E utf8
+}
+
 homebrew_install()
 {
   # install homebrew and some utils
   ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
   brew update
   brew doctor
-  brew install wget ack git macvim imagemagick postgresql readline
+  brew install wget ack git macvim imagemagick readline htop
   brew install python --framework
   brew install rbenv
   brew install ruby-build
+  brew install postgresql
+  pg_setup
   brew doctor
 }
 
