@@ -126,3 +126,8 @@ function! DoPrettyXML()
   exe "set ft=" . l:origft
 endfunction
 command! PrettyXML call DoPrettyXML()
+
+" macvim is not built with the proper python version so we temporarily disable
+" the lint on save
+let g:pymode_lint_write = 0
+

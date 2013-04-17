@@ -14,11 +14,14 @@ homebrew_install()
   ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
   brew update
   brew doctor
-  brew install wget ack git macvim imagemagick readline htop
-  brew install python --framework
+  brew install wget ack git imagemagick readline htop
+  # see http://stackoverflow.com/questions/11148403/homebrew-macvim-with-python2-7-3-support-not-working:
+  brew install macvim
+  #brew install python --framework # this is useless as python is installed using anaconda
   brew install rbenv
   brew install ruby-build
   brew install postgresql
+
   pg_setup
   brew doctor
 }
@@ -34,6 +37,7 @@ python_install()
   pip install beautifulsoup
   pip install django
   pip install psycopg2
+  pip install argparse
 }
 
 vim_install()
@@ -59,7 +63,7 @@ vim_install()
   git clone https://github.com/vim-ruby/vim-ruby.git
   git clone https://github.com/imsizon/wombat.vim.git
   git clone https://github.com/ervandew/supertab.git
-  git clone https://github.com/kevinw/pyflakes-vim.git
+  git clone https://github.com/klen/python-mode.git
 }
 
 git_install()
@@ -74,8 +78,8 @@ while [ $# -ge 1 ] ; do
     --all)
       homebrew_install
       git_install
-      vim_install
       python_install
+      vim_install
       # terminal theme needs to be 'default'ed manually
       open terminal/colors.terminal
       # drop current command line arg
