@@ -1,0 +1,7 @@
+# from https://coderwall.com/p/oqtj8w
+# this allows to search through bash history using up/down arrows (rather than
+# `ctrl + r`). Note also that search is case-insensitive
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+set show-all-if-ambiguous on
+set completion-ignore-case on
