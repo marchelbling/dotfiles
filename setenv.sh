@@ -8,6 +8,17 @@ pg_setup()
   initdb --pgdata=$PGDATA -E utf8
 }
 
+clean_macvim_install()
+{
+  cd /System/Library/Frameworks/Python.framework/Versions
+  sudo mv Current Current-sys
+  sudo ln -s /usr/local/Cellar/python/2.7.*/Frameworks/Python.framework/Versions/Current Current
+  brew install macvim
+  sudo rm Current
+  sudo mv Current-sys Current
+  cd -
+}
+
 homebrew_install()
 {
   # install homebrew and some utils
@@ -16,9 +27,11 @@ homebrew_install()
   brew doctor
   brew install wget ack git imagemagick readline htop openssl qt zeromq
   brew install gfortran
-  brew install macvim
-  # see http://stackoverflow.com/questions/11148403/homebrew-macvim-with-python2-7-3-support-not-working:
   brew install python --framework
+
+  # see http://stackoverflow.com/questions/11148403/homebrew-macvim-with-python2-7-3-support-not-working:
+  clean_macvim_install
+
   brew install rbenv
   brew install ruby-build
   brew install postgresql
