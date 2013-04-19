@@ -134,7 +134,7 @@ while [ $# -ge 1 ] ; do
       python_install
       vim_install
       # terminal theme needs to be 'default'ed manually
-      open terminal/colors.terminal
+      open $current_directory/terminal/colors.terminal
       # drop current command line arg
       shift 1 ;;
     --git)
