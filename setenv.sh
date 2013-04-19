@@ -52,7 +52,7 @@ python_packages_install()
 python_install()
 {
   # set up a default virtualenv (installed by homebrew)
-  virtualenv --distribute --no-site-package $VENV_DIR/$DEFAULT_VENV
+  virtualenv --distribute --no-site-packages $VENV_DIR/$DEFAULT_VENV
   source $VENV_DIR/$DEFAULT_VENV/bin/activate
 
   # install extra packages
