@@ -14,9 +14,10 @@ homebrew_install()
   ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
   brew update
   brew doctor
-  brew install wget ack git imagemagick readline htop
-  # see http://stackoverflow.com/questions/11148403/homebrew-macvim-with-python2-7-3-support-not-working:
+  brew install wget ack git imagemagick readline htop openssl qt zeromq
+  brew install gfortran
   brew install macvim
+  # see http://stackoverflow.com/questions/11148403/homebrew-macvim-with-python2-7-3-support-not-working:
   brew install python --framework
   brew install rbenv
   brew install ruby-build
