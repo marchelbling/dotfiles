@@ -17,7 +17,7 @@ homebrew_install()
   brew install wget ack git imagemagick readline htop
   # see http://stackoverflow.com/questions/11148403/homebrew-macvim-with-python2-7-3-support-not-working:
   brew install macvim
-  #brew install python --framework # this is useless as python is installed using anaconda
+  brew install python --framework
   brew install rbenv
   brew install ruby-build
   brew install postgresql
@@ -26,18 +26,31 @@ homebrew_install()
   brew doctor
 }
 
+python_packages_install()
+{
+  declare -a packages=("${!1}")
+  for package in ${packages[@]}
+  do
+    pip install $package
+  done
+}
+
 python_install()
 {
-  # ipython & 'standard' scientific packages
-  curl http://09c8d0b2229f813c1b93-c95ac804525aac4b6dba79b00b39d1d3.r79.cf1.rackcdn.com/Anaconda-1.4.0-MacOSX-x86_64.sh > anaconda.sh
-  bash anaconda.sh -b -p $CONDA_DIR
-  conda update conda
+  # set up a default virtualenv (installed by homebrew)
+  virtualenv --distribute --no-site-package $VENV_DIR/$DEFAULT_VENV
+  source $VENV_DIR/$DEFAULT_VENV/bin/activate
 
   # install extra packages
-  pip install beautifulsoup
-  pip install django
-  pip install psycopg2
-  pip install argparse
+  scientific_packages=( numpy scipy scikit-learn matplotlib networkx pandas nltk )
+  ipython_packages=( readline ipython )
+  web_packages=( beautifulsoup psycopg2 django requests )
+  other_packages=( boto argparse nose pyflakes python-dateutil pycrypto )
+
+  python_packages_install scientific_packages[@]
+  python_packages_install ipython_packages[@]
+  python_packages_install web_packages[@]
+  python_packages_install other_packages[@]
 }
 
 vim_install()
@@ -72,6 +85,32 @@ git_install()
   curl https://raw.github.com/git/git/master/contrib/completion/git-completion.bash > $HOME/.git-completion.bash
 }
 
+###############
+# 1. distribute configuration files
+###############
+# sets medium font anti-aliasing
+## see: http://osxdaily.com/2012/06/09/mac-screen-blurry-optimize-troubleshoot-font-smoothing-os-x/
+defaults -currentHost write -globalDomain AppleFontSmoothing -int 2
+
+# create soft links for all config files
+current_directory=`pwd`
+## git
+ln -fs $current_directory/git/gitconfig         $HOME/.gitconfig
+## ruby
+ln -fs $current_directory/ruby/irbrc            $HOME/.irbrc
+ln -fs $current_directory/ruby/rdebugrc         $HOME/.rdebugrc
+## terminal
+ln -fs $current_directory/terminal/bash_profile $HOME/.bash_profile
+ln -fs $current_directory/terminal/inputrc      $HOME/.inputrc
+ln -fs $current_directory/terminal/screenrc     $HOME/.screenrc
+## vim
+ln -fs $current_directory/vim/vimrc             $HOME/.vimrc
+
+source $HOME/.bash_profile
+
+###############
+# 2. install required compenents if needed
+###############
 # parse command line arguments
 while [ $# -ge 1 ] ; do
   case $1 in
@@ -101,23 +140,3 @@ while [ $# -ge 1 ] ; do
     # -d) dest_dir=$2 ; shift 2 ;;
   esac
 done
-
-# sets medium font anti-aliasing
-## see: http://osxdaily.com/2012/06/09/mac-screen-blurry-optimize-troubleshoot-font-smoothing-os-x/
-defaults -currentHost write -globalDomain AppleFontSmoothing -int 2
-
-# create soft links for all config files
-current_directory=`pwd`
-## git
-ln -fs $current_directory/git/gitconfig         $HOME/.gitconfig
-## ruby
-ln -fs $current_directory/ruby/irbrc            $HOME/.irbrc
-ln -fs $current_directory/ruby/rdebugrc         $HOME/.rdebugrc
-## terminal
-ln -fs $current_directory/terminal/bash_profile $HOME/.bash_profile
-ln -fs $current_directory/terminal/inputrc      $HOME/.inputrc
-ln -fs $current_directory/terminal/screenrc     $HOME/.screenrc
-## vim
-ln -fs $current_directory/vim/vimrc             $HOME/.vimrc
-#ln -fs $current_directory/vim/gvimrc            $HOME/.gvimrc
-
