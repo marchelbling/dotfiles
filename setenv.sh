@@ -58,8 +58,9 @@ python_install()
   # install extra packages
   scientific_packages=( numpy scipy scikit-learn matplotlib networkx pandas nltk )
   ipython_packages=( readline ipython )
-  web_packages=( beautifulsoup psycopg2 django requests )
-  other_packages=( boto argparse nose pyflakes python-dateutil pycrypto )
+  web_packages=( beautifulsoup requests )
+  django_packages=( psycopg2 django south )
+  other_packages=( boto argparse nose python-dateutil pycrypto )
 
   python_packages_install scientific_packages[@]
   python_packages_install ipython_packages[@]
