@@ -88,10 +88,8 @@ vim_install()
   git clone https://github.com/scrooloose/nerdcommenter.git
   git clone https://github.com/scrooloose/nerdtree.git
   git clone https://github.com/jistr/vim-nerdtree-tabs.git
-  git clone https://github.com/vim-ruby/vim-ruby.git
   git clone https://github.com/imsizon/wombat.vim.git
   git clone https://github.com/ervandew/supertab.git
-  git clone https://github.com/klen/python-mode.git
   git clone https://github.com/Rip-Rip/clang_complete.git
 }
 

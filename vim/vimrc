@@ -70,7 +70,6 @@ set hlsearch
 "clear highlight on 'return':
 nnoremap <silent> <CR> :noh<CR>
 
-
 set paste
 set nosmartindent
 
@@ -84,10 +83,11 @@ set backup
 set undofile
 
 "json highlight
-au BufRead,BufNewFile *.json set filetype=json
+au BufRead,BufNewFile *.json set filetype=javascript
 
-"ruby compiler check
-autocmd FileType ruby compiler ruby
+"python indentation
+autocmd Filetype python setlocal tabstop=4 shiftwidth=4 softtabstop=4
+
 
 function! DoPrettyJSON()
   " save the filetype so we can restore it later
