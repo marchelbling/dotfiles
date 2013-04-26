@@ -22,12 +22,18 @@ colorscheme wombat
 "font:
 set gfn=Anonymous\ Pro:h14
 
+"leader character:
+let mapleader = ","
+
 "navigate through tabs
 nmap <C-S-tab> :tabprevious<CR>
 nmap <C-tab> :tabnext<CR>
 
-"leader character:
-let mapleader = ","
+"navigate through splits using arrows
+nmap <silent> <S-Up> :wincmd k<CR>
+nmap <silent> <S-Down> :wincmd j<CR>
+nmap <silent> <S-Left> :wincmd h<CR>
+nmap <silent> <S-Right> :wincmd l<CR>
 
 "indentation
 set tabstop=2
