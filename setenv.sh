@@ -92,6 +92,7 @@ vim_install()
   git clone https://github.com/imsizon/wombat.vim.git
   git clone https://github.com/ervandew/supertab.git
   git clone https://github.com/klen/python-mode.git
+  git clone https://github.com/Rip-Rip/clang_complete.git
 }
 
 git_install()
