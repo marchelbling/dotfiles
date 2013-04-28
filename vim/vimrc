@@ -136,3 +136,9 @@ function! DoPrettyXML()
 endfunction
 command! PrettyXML call DoPrettyXML()
 
+" use clang++ with C++11 support as default C++ compiler
+call SingleCompile#SetCompilerTemplate('cpp', 'c++11', 'Clang++ with C++11 support',
+                                      \'clang++', '-std=c++11 -stdlib=libc++ -Wall -o $(FILE_TITLE)$',
+                                      \'echo -e "\n---\nOutput:\n" && ./$(FILE_TITLE)$')
+call SingleCompile#SetOutfile('cpp', 'c++11', '$(FILE_TITLE)$')
+call SingleCompile#ChooseCompiler('cpp', 'c++11')
