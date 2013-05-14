@@ -35,6 +35,7 @@ homebrew_install()
   brew install rbenv
   brew install ruby-build
   brew install postgresql
+  brew install tmux
 
   pg_setup
   brew doctor
