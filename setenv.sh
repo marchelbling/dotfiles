@@ -93,6 +93,7 @@ vim_install()
   git clone https://github.com/ervandew/supertab.git
   git clone https://github.com/Rip-Rip/clang_complete.git
   git clone https://github.com/xuhdev/SingleCompile.git
+  git clone https://github.com/Lokaltog/powerline.git
 }
 
 git_install()

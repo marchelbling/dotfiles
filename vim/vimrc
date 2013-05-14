@@ -98,6 +98,9 @@ autocmd Filetype python setlocal tabstop=4 shiftwidth=4 softtabstop=4
 nmap <F5> :SCCompile<cr>
 nmap <F6> :SCCompileRun<cr>
 
+"powerline
+set rtp+=$HOME/.vim/bundle/powerline/powerline/bindings/vim
+
 function! DoPrettyJSON()
   " save the filetype so we can restore it later
   let l:origft = &ft
