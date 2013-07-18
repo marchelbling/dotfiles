@@ -20,7 +20,7 @@ syntax on
 "colorscheme mustang
 colorscheme wombat
 "font:
-set gfn=Anonymous\ Pro:h14
+set gfn=Anonymous\ Pro\ for\ Powerline:h14
 
 "leader character:
 let mapleader = ","

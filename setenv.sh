@@ -82,6 +82,10 @@ vim_install()
   for file in `ls AnonymousPro-1-002*/*.ttf`; do mv $file $HOME/Library/Fonts/; done
   rm -fr AnonymousPro*
 
+  git clone https://github.com/Lokaltog/powerline-fonts.git
+  cp powerline-fonts/AnonymousPro/* $HOME/Library/Fonts/
+  rm -fr powerline-fonts
+
   # install addons using pathogen
   curl -Sso ~/.vim/autoload/pathogen.vim \
       https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
