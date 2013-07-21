@@ -121,6 +121,7 @@ ln -fs $current_directory/git/gitconfig         $HOME/.gitconfig
 ln -fs $current_directory/ruby/irbrc            $HOME/.irbrc
 ln -fs $current_directory/ruby/rdebugrc         $HOME/.rdebugrc
 ## terminal
+ln -fs $current_directory/terminal/ackrc        $HOME/.ackrc
 ln -fs $current_directory/terminal/bash_profile $HOME/.bash_profile
 ln -fs $current_directory/terminal/inputrc      $HOME/.inputrc
 ln -fs $current_directory/terminal/screenrc     $HOME/.screenrc
