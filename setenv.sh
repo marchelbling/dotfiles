@@ -94,10 +94,14 @@ vim_install()
   git clone https://github.com/scrooloose/nerdtree.git
   git clone https://github.com/jistr/vim-nerdtree-tabs.git
   git clone https://github.com/imsizon/wombat.vim.git
-  git clone https://github.com/ervandew/supertab.git
-  git clone https://github.com/Rip-Rip/clang_complete.git
   git clone https://github.com/xuhdev/SingleCompile.git
   git clone https://github.com/Lokaltog/powerline.git
+  git clone https://github.com/Valloric/YouCompleteMe.git
+
+  # build YouCompleteMe
+  cd YouCompleteMe
+  ./install.sh --clang-completer
+  cd -
 }
 
 git_install()

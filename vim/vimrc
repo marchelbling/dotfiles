@@ -145,3 +145,6 @@ call SingleCompile#SetCompilerTemplate('cpp', 'c++11', 'Clang++ with C++11 suppo
                                       \'echo -e "\n---\nOutput:\n" && ./$(FILE_TITLE)$')
 call SingleCompile#SetOutfile('cpp', 'c++11', '$(FILE_TITLE)$')
 call SingleCompile#ChooseCompiler('cpp', 'c++11')
+
+" use provided conf file in YouCompleteMe repo for C family languages
+let g:ycm_global_ycm_extra_conf='$HOME/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
