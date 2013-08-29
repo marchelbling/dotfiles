@@ -25,7 +25,7 @@ homebrew_install()
   ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
   brew update
   brew doctor
-  brew install wget ack git imagemagick readline htop openssl qt zeromq
+  brew install wget ack git imagemagick readline htop openssl qt zeromq sqlite
   brew install gfortran
   brew install python --framework
 

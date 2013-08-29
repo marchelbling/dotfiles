@@ -27,16 +27,6 @@ then
   source "$HOME/.specific_profile"
 fi
 
-#### POSTGRES
-export PGDATA="/usr/local/var/postgres"
-alias pgstart="pg_ctl start -D $PGDATA --log=$HOME/.pgserver_log"
-alias pgquit="pg_ctl stop  -D $PGDATA -s -m fast"
-pg_ctl status &> /dev/null
-if [ $? -ne 0 ]
-then
-  pgstart
-fi
-
 #### PYTHON
 export VENV_DIR=$HOME/.venv
 export DEFAULT_VENV=env
