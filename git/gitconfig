@@ -18,3 +18,4 @@
     stat = show --stat
     sync = !git fetch origin -v && git rebase origin/dev && git fetch upstream -v && git rebase upstream/dev #see http://robots.thoughtbot.com/post/5133345960/keeping-a-git-fork-updated
     type = cat-file -t
+    ls = ls-tree -r --name-only --full-tree
