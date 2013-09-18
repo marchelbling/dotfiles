@@ -3,6 +3,7 @@ export PATH=/usr/local/Cellar:/usr/local/bin:/usr/local/sbin:$PATH
 
 #### SHORTCUTS
 alias ls='ls -F'
+alias depends='otool -L'
 
 #### GIT
 source ~/.git-completion.bash
