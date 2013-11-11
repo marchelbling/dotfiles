@@ -8,14 +8,19 @@
 
 [alias]
     br = branch
+    st = status
     ci = commit
     co = checkout
-    dump = cat-file -p
-    head = !git log --oneline --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' | head
-    hist = log --graph --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-    history = whatchanged --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
-    st = status
     stat = show --stat
-    sync = !git fetch origin -v && git rebase origin/dev && git fetch upstream -v && git rebase upstream/dev #see http://robots.thoughtbot.com/post/5133345960/keeping-a-git-fork-updated
-    type = cat-file -t
+    dump = cat-file -p
+    type = cat-file -t # for git internals
+    # concisely display batch of recent commits:
+    head = !git log --oneline --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' | head
+    # show full history with branches:
+    hist = log --graph --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    # list commits that modified a given file:
+    history = whatchanged --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+    # list filetree at given revision:
     ls = ls-tree -r --name-only --full-tree
+    # search in full commit messages
+    ack = !git log --notes --format=full | ack
