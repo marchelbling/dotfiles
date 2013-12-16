@@ -97,6 +97,7 @@ vim_install()
   git clone https://github.com/xuhdev/SingleCompile.git
   git clone https://github.com/Lokaltog/powerline.git
   git clone https://github.com/Valloric/YouCompleteMe.git
+  git clone https://github.com/vitorgalvao/autoswap_mac.git
 
   # build YouCompleteMe
   cd YouCompleteMe
