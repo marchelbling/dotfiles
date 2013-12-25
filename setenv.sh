@@ -100,6 +100,9 @@ vim_install()
   git clone https://github.com/kien/ctrlp.vim
   git clone https://github.com/airblade/vim-gitgutter
   git clone https://github.com/vitorgalvao/autoswap_mac.git
+  git clone https://github.com/mileszs/ack.vim
+  #git clone https://github.com/Raimondi/delimitMate
+  #git clone https://github.com/majutsushi/tagbar
 
   # build YouCompleteMe
   cd YouCompleteMe

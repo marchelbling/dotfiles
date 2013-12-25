@@ -152,6 +152,9 @@ nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 " ctrlp config (from https://github.com/square/maximum-awesome)
 nmap <leader>t :CtrlP<CR>
 
+" ack config
+nmap <leader>f :Ack
+
 " git diff
 nmap <leader>g :GitGutterToggle
 highlight SignColumn guibg=gray17
