@@ -96,13 +96,17 @@ vim_install()
   git clone https://github.com/xuhdev/SingleCompile.git
   git clone https://github.com/Lokaltog/powerline.git
   git clone https://github.com/Valloric/YouCompleteMe.git
+  git clone https://github.com/marijnh/tern_for_vim
   git clone https://github.com/vitorgalvao/autoswap_mac.git
 
   # build YouCompleteMe
   cd YouCompleteMe
   git submodule update --init --recursive
   ./install.sh --clang-completer
-  cd -
+
+  # install tern
+  cd ../tern_for_vim
+  npm install
 }
 
 git_install()
