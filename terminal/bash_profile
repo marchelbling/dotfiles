@@ -30,7 +30,7 @@ fi
 
 #### PYTHON
 export VENV_DIR=$HOME/.venv
-export DEFAULT_VENV=env
+export DEFAULT_VENV=${DEFAULT_VENV:-env}
 
 if [ -d $VENV_DIR/$DEFAULT_VENV ]
 then

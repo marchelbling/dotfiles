@@ -1,13 +1,5 @@
 #!/bin/bash
 
-pg_setup()
-{
-  # this is a duplicate from bash_profile...
-  PGDATA=/usr/local/var/postgres
-  mkdir -p $PGDATA
-  initdb --pgdata=$PGDATA -E utf8
-}
-
 clean_macvim_install()
 {
   cd /System/Library/Frameworks/Python.framework/Versions
@@ -25,8 +17,16 @@ homebrew_install()
   ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
   brew update
   brew doctor
-  brew install wget ack git imagemagick readline htop openssl qt zeromq sqlite
-  brew install gfortran
+  brew install wget ack htop-osx openssl qt
+  brew install sqlite mysql
+  brew install git git-flow readline cmake ctags valgrind
+  brew install imagemagick ffmpeg
+  brew install p7zip zlib xz
+  brew install zeromq rabbitmq
+  # to be cleaned?
+  brew install fontconfig freetype jpeg libpng libtiff libyaml
+
+  brew install gfortran node boost
   brew install python --framework
 
   # see http://stackoverflow.com/questions/11148403/homebrew-macvim-with-python2-7-3-support-not-working:
@@ -34,10 +34,7 @@ homebrew_install()
 
   brew install rbenv
   brew install ruby-build
-  brew install postgresql
-  brew install tmux
 
-  pg_setup
   brew doctor
 }
 
@@ -60,7 +57,7 @@ python_install()
   scientific_packages=( numpy scipy scikit-learn matplotlib networkx pandas nltk )
   ipython_packages=( readline ipython )
   web_packages=( beautifulsoup requests )
-  django_packages=( psycopg2 django south )
+  django_packages=( django south )
   linter_packages=( flake8 pyflakes pylint )
   other_packages=( boto argparse nose python-dateutil pycrypto )
 
@@ -139,7 +136,7 @@ ln -fs $current_directory/vim/vimrc             $HOME/.vimrc
 source $HOME/.bash_profile
 
 ###############
-# 2. install required compenents if needed
+# 2. install required components if needed
 ###############
 # parse command line arguments
 while [ $# -ge 1 ] ; do
