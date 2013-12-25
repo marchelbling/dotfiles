@@ -148,6 +148,10 @@ call SingleCompile#ChooseCompiler('cpp', 'c++11')
 " use provided conf file in YouCompleteMe repo for C family languages
 let g:ycm_global_ycm_extra_conf='$HOME/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
 nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+" ctrlp config (from https://github.com/square/maximum-awesome)
+nmap <leader>t :CtrlP<CR>
+
 " git diff
 nmap <leader>g :GitGutterToggle
 highlight SignColumn guibg=gray17
