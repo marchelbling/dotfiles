@@ -97,6 +97,7 @@ vim_install()
   git clone https://github.com/Lokaltog/powerline.git
   git clone https://github.com/Valloric/YouCompleteMe.git
   git clone https://github.com/marijnh/tern_for_vim
+  git clone https://github.com/airblade/vim-gitgutter
   git clone https://github.com/vitorgalvao/autoswap_mac.git
 
   # build YouCompleteMe
