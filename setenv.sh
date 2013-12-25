@@ -61,11 +61,13 @@ python_install()
   ipython_packages=( readline ipython )
   web_packages=( beautifulsoup requests )
   django_packages=( psycopg2 django south )
+  linter_packages=( flake8 pyflakes pylint )
   other_packages=( boto argparse nose python-dateutil pycrypto )
 
   python_packages_install scientific_packages[@]
   python_packages_install ipython_packages[@]
   python_packages_install web_packages[@]
+  python_packages_install linter_packages[@]
   python_packages_install other_packages[@]
 }
 
@@ -101,6 +103,7 @@ vim_install()
 
   # build YouCompleteMe
   cd YouCompleteMe
+  git submodule update --init --recursive
   ./install.sh --clang-completer
   cd -
 }
