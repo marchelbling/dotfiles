@@ -8,12 +8,51 @@ alias depends='otool -L'
 #### GIT
 source ~/.git-completion.bash
 # show git branch in shell prompt
-# eehttp://betterexplained.com/articles/aha-moments-when-learning-git/ and http://asemanfar.com/Current-Git-Branch-in-Bash-Prompt
-parse_git_branch()
+# http://betterexplained.com/articles/aha-moments-when-learning-git/ and http://asemanfar.com/Current-Git-Branch-in-Bash-Prompt
+
+parse_branch()
 {
-        git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
-export PS1="\[\033[00m\]\u@\h\[\033[01;34m\] \W \[\033[31m\]\$(parse_git_branch) \[\033[00m\]$\[\033[00m\] "
+
+get_relative_path()
+{
+    local root_path=$1
+    echo $( pwd ) | sed "s#$root_path##g"
+}
+
+parse_repo()
+{
+    local repo_path="$(git rev-parse --show-toplevel 2> /dev/null)"
+    if [ "$repo_path" != "" ]
+    then
+      local repo=$( basename "${repo_path}" )
+      if [ "$repo_path" != "$( pwd )" ]
+      then
+        repo="${repo}:"
+      fi
+    fi
+    echo "$repo"
+}
+
+parse_path()
+{
+    local my_path="$( pwd )"
+    local repo_path="$(git rev-parse --show-toplevel 2> /dev/null)"
+    if [ "$repo_path" != "" ]
+    then
+      my_path=$( get_relative_path "$repo_path" )
+    else
+      if [ "${PWD##${HOME}}" != "${PWD}" ]
+      then
+        my_path="~$( get_relative_path "$HOME" )"
+      fi
+    fi
+
+    echo "$my_path"
+}
+
+export PS1="\[\033[00m\]\u@\h \[\033[0;32m\]\$(parse_repo)\[\033[01;34m\]\$(parse_path) \[\033[31m\]\$(parse_branch) \[\033[00m\]$\[\033[00m\] "
 
 #### COLORS
 # to get colors in terminal (see: http://it.toolbox.com/blogs/lim/how-to-fix-colors-on-mac-osx-terminal-37214):
