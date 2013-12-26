@@ -1,6 +1,9 @@
 #!/bin/bash
 
-clean_macvim_install()
+RUBY_VERSION="2.0.0-p247"
+VIM_BUNDLE_DIR="$HOME/.vim/bundle"
+
+function clean_macvim_install()
 {
   cd /System/Library/Frameworks/Python.framework/Versions
   sudo mv Current Current-sys
@@ -11,34 +14,70 @@ clean_macvim_install()
   cd -
 }
 
-homebrew_install()
+function homebrew_packages_install()
+{
+  declare -a packages=("${!1}")
+  for package in ${packages[@]}
+  do
+    brew list $package 1>/dev/null
+    if [ $? == 1 ];
+    then
+      brew install $package
+    else
+      brew upgrade $package
+    fi
+  done
+}
+
+function clean_python_install()
+{
+  brew install python --framework
+}
+
+function clean_ruby_install()
+{
+  brew install rbenv
+  brew install ruby-build
+  rbenv install $RUBY_VERSION
+  rbenv global $RUBY_VERSION
+}
+
+function homebrew_install()
 {
   # install homebrew and some utils
-  ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
+  if [ ! $( brew --version 2>/dev/null ) ]
+  then
+    ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
+  fi
   brew update
   brew doctor
-  brew install wget ack htop-osx openssl qt
-  brew install sqlite mysql
-  brew install git git-flow readline cmake ctags valgrind
-  brew install imagemagick ffmpeg
-  brew install p7zip zlib xz
-  brew install zeromq rabbitmq
-  # to be cleaned?
-  brew install fontconfig freetype jpeg libpng libtiff libyaml
 
-  brew install gfortran node boost
-  brew install python --framework
+  code_packages=( git git-flow readline cmake ctags valgrind libyaml boost node gfortran htop-osx )
+  compression_packages=( p7zip zlib xz )
+  db_packages=( sqlite mysql )
+  font_packages=( fontconfig freetype )
+  image_packages=( imagemagick ffmpeg jpeg libpng libtiff )
+  network_packages=( wget ack  openssl )
+  queue_packages=( zeromq rabbitmq )
+
+  homebrew_packages_install network_packages[@]
+  homebrew_packages_install compression_packages[@]
+  homebrew_packages_install image_packages[@]
+  homebrew_packages_install db_packages[@]
+  homebrew_packages_install font_packages[@]
+  homebrew_packages_install code_packages[@]
+  homebrew_packages_install queue_packages[@]
+
+  clean_python_install
+  clean_ruby_install
 
   # see http://stackoverflow.com/questions/11148403/homebrew-macvim-with-python2-7-3-support-not-working:
   clean_macvim_install
 
-  brew install rbenv
-  brew install ruby-build
-
   brew doctor
 }
 
-python_packages_install()
+function python_packages_install()
 {
   declare -a packages=("${!1}")
   for package in ${packages[@]}
@@ -47,7 +86,7 @@ python_packages_install()
   done
 }
 
-python_install()
+function python_install()
 {
   # set up a default virtualenv (installed by homebrew)
   virtualenv --distribute --no-site-packages $VENV_DIR/$DEFAULT_VENV
@@ -68,7 +107,48 @@ python_install()
   python_packages_install other_packages[@]
 }
 
-vim_install()
+function ruby_packages_install()
+{
+  declare -a packages=("${!1}")
+  for package in ${packages[@]}
+  do
+    if [ $( echo $package | grep '_' ) ]
+    then
+      local gem_name=$(    echo $package | rev | cut -d'_' f2 | rev )
+      local gem_version=$( echo $package | rev | cut -d'_' f1 | rev )
+      gem install $gem_name -v $gem_version --no-ri --no-rdoc
+    else
+      gem install $package --no-ri --no-rdoc
+    fi
+
+  done
+}
+
+function ruby_install()
+{
+  deploy_packages=( chef_11.8.0 chef-zero_1.7.2 knife-solo_0.4.0 librarian_0.1.1 librarian-chef_0.0.2 berkshelf_2.0.10 )
+
+  ruby_packages_install deploy_packages[@]
+}
+
+function vim_bundle_install()
+{
+  local bundle=$1
+  local bundle_name=$( basename $bundle )
+  local bundle_name=${bundle_name%.*}
+
+  if [ ! -d $BUNDLE_DIR/$bundle_name ]
+  then
+    git clone $bundle $BUNDLE_DIR/$bundle_name
+  fi
+
+  cd $BUNDLE_DIR/$bundle_name
+  git pull --rebase
+  git submodule update --init --recursive
+  cd -
+}
+
+function vim_install()
 {
   # setup vim environment: font & plugins using pathogen
   mkdir -p $HOME/Library/Fonts
@@ -88,33 +168,32 @@ vim_install()
   # install addons using pathogen
   curl -Sso ~/.vim/autoload/pathogen.vim \
       https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
-  cd $HOME/.vim/bundle
-  git clone https://github.com/scrooloose/nerdcommenter.git
-  git clone https://github.com/scrooloose/nerdtree.git
-  git clone https://github.com/jistr/vim-nerdtree-tabs.git
-  git clone https://github.com/imsizon/wombat.vim.git
-  git clone https://github.com/xuhdev/SingleCompile.git
-  git clone https://github.com/Lokaltog/powerline.git
-  git clone https://github.com/Valloric/YouCompleteMe.git
-  git clone https://github.com/marijnh/tern_for_vim
-  git clone https://github.com/kien/ctrlp.vim
-  git clone https://github.com/airblade/vim-gitgutter
-  git clone https://github.com/vitorgalvao/autoswap_mac.git
-  git clone https://github.com/mileszs/ack.vim
-  #git clone https://github.com/Raimondi/delimitMate
-  #git clone https://github.com/majutsushi/tagbar
+
+  vim_bundle_install https://github.com/scrooloose/nerdcommenter.git
+  vim_bundle_install https://github.com/scrooloose/nerdtree.git
+  vim_bundle_install https://github.com/jistr/vim-nerdtree-tabs.git
+  vim_bundle_install https://github.com/imsizon/wombat.vim.git
+  vim_bundle_install https://github.com/xuhdev/SingleCompile.git
+  vim_bundle_install https://github.com/Lokaltog/powerline.git
+  vim_bundle_install https://github.com/Valloric/YouCompleteMe.git
+  vim_bundle_install https://github.com/marijnh/tern_for_vim
+  vim_bundle_install https://github.com/kien/ctrlp.vim
+  vim_bundle_install https://github.com/airblade/vim-gitgutter
+  vim_bundle_install https://github.com/vitorgalvao/autoswap_mac.git
+  vim_bundle_install https://github.com/mileszs/ack.vim
+  #vim_bundle_install https://github.com/Raimondi/delimitMate
+  #vim_bundle_install https://github.com/majutsushi/tagbar
 
   # build YouCompleteMe
-  cd YouCompleteMe
-  git submodule update --init --recursive
+  cd $BUNDLE_DIR/YouCompleteMe
   ./install.sh --clang-completer
 
   # install tern
-  cd ../tern_for_vim
+  cd $BUNDLE_DIR/tern_for_vim
   npm install
 }
 
-git_install()
+function git_install()
 {
   # fetch git-completion.bash
   curl https://raw.github.com/git/git/master/contrib/completion/git-completion.bash > $HOME/.git-completion.bash
@@ -154,6 +233,7 @@ while [ $# -ge 1 ] ; do
       homebrew_install
       git_install
       python_install
+      ruby_install
       vim_install
       # terminal theme needs to be 'default'ed manually
       open $current_directory/terminal/colors.terminal
@@ -168,11 +248,14 @@ while [ $# -ge 1 ] ; do
     --python)
       python_install
       shift 1 ;;
+    --ruby)
+      ruby_install
+      shift 1 ;;
     --vim)
       vim_install
       shift 1 ;;
     --help)
-      echo "Usage: ./setenv.sh [--all|--homebrew|--vim|--git|--help]" ; shift 1 ;;
+      echo "Usage: ./setenv.sh [--all|--homebrew|--vim|--python|--ruby|--git|--help]" ; shift 1 ;;
     # -d) dest_dir=$2 ; shift 2 ;;
   esac
 done
