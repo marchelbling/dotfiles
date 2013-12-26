@@ -138,6 +138,12 @@ function! DoPrettyXML()
 endfunction
 command! PrettyXML call DoPrettyXML()
 
+" sets clang for C++ with syntastic
+let g:syntastic_cpp_compiler = 'clang++'
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++ -Wall'
+let g:syntastic_cpp_check_header = 1
+let g:syntastic_cpp_auto_refresh_includes = 1
+
 " use clang++ with C++11 support as default C++ compiler
 call SingleCompile#SetCompilerTemplate('cpp', 'c++11', 'Clang++ with C++11 support',
                                       \'clang++', '-std=c++11 -stdlib=libc++ -Wall -o $(FILE_TITLE)$',
@@ -146,7 +152,7 @@ call SingleCompile#SetOutfile('cpp', 'c++11', '$(FILE_TITLE)$')
 call SingleCompile#ChooseCompiler('cpp', 'c++11')
 
 " use provided conf file in YouCompleteMe repo for C family languages
-let g:ycm_global_ycm_extra_conf='$HOME/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_cpp_conf.py'
 nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 " ctrlp config (from https://github.com/square/maximum-awesome)
@@ -156,7 +162,7 @@ nmap <leader>t :CtrlP<CR>
 nmap <leader>f :Ack
 
 " git diff
-nmap <leader>g :GitGutterToggle
+nmap <leader>d :GitGutterToggle
 highlight SignColumn guibg=gray17
 let g:gitgutter_realtime = 0
 let g:gitgutter_eager = 0

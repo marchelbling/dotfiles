@@ -220,6 +220,7 @@ ln -fs $current_directory/terminal/inputrc      $HOME/.inputrc
 ln -fs $current_directory/terminal/screenrc     $HOME/.screenrc
 ## vim
 ln -fs $current_directory/vim/vimrc             $HOME/.vimrc
+ln -fs $current_directory/vim/ycm_cpp_conf.py   $HOME/.vim/ycm_cpp_conf.py
 
 source $HOME/.bash_profile
 
