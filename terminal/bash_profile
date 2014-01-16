@@ -1,5 +1,5 @@
 #### PATH
-export PATH=/usr/local/Cellar:/usr/local/bin:/usr/local/sbin:$PATH
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
 #### SHORTCUTS
 alias ls='ls -F'
@@ -77,7 +77,7 @@ then
 fi
 
 #### RUBY
-eval "$(rbenv init -)"
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
 # bash completion for ssh (based on .ssh/config)
 complete -o default -o nospace -W "$(/usr/bin/env ruby -ne 'puts $_.split(/[,\s]+/)[1..-1].reject{|host| host.match(/\*|\?/)} if $_.match(/^\s*Host\s+/);' < $HOME/.ssh/config)" scp sftp ssh

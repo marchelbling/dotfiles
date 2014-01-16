@@ -89,6 +89,7 @@ function python_packages_install()
 function python_install()
 {
   # set up a default virtualenv (installed by homebrew)
+  which virtualenv > /dev/null 2>&1 || { easy_install --upgrade pip && pip install virtualenv; >&2; }
   virtualenv --distribute --no-site-packages $VENV_DIR/$DEFAULT_VENV
   source $VENV_DIR/$DEFAULT_VENV/bin/activate
 
@@ -114,11 +115,11 @@ function ruby_packages_install()
   do
     if [ $( echo $package | grep '_' ) ]
     then
-      local gem_name=$(    echo $package | rev | cut -d'_' f2 | rev )
-      local gem_version=$( echo $package | rev | cut -d'_' f1 | rev )
-      gem install $gem_name -v $gem_version --no-ri --no-rdoc
+      local gem_name=$(    echo $package | cut -d'_' -f1 )
+      local gem_version=$( echo $package | cut -d'_' -f2 )
+      gem install $gem_name -v $gem_version --no-rdoc
     else
-      gem install $package --no-ri --no-rdoc
+      gem install $package --no-rdoc
     fi
 
   done
@@ -135,14 +136,15 @@ function vim_bundle_install()
 {
   local bundle=$1
   local bundle_name=$( basename $bundle )
-  local bundle_name=${bundle_name%.*}
+  bundle_name=${bundle_name%.*}
 
-  if [ ! -d $BUNDLE_DIR/$bundle_name ]
+  if [ ! -d $VIM_BUNDLE_DIR/$bundle_name ]
   then
-    git clone $bundle $BUNDLE_DIR/$bundle_name
+    echo "trying to install bundle '${bundle_name}'..."
+    git clone $bundle $VIM_BUNDLE_DIR/$bundle_name
   fi
 
-  cd $BUNDLE_DIR/$bundle_name
+  cd $VIM_BUNDLE_DIR/$bundle_name
   git pull --rebase
   git submodule update --init --recursive
   cd -
@@ -185,11 +187,11 @@ function vim_install()
   #vim_bundle_install https://github.com/majutsushi/tagbar
 
   # build YouCompleteMe
-  cd $BUNDLE_DIR/YouCompleteMe
+  cd $VIM_BUNDLE_DIR/YouCompleteMe
   ./install.sh --clang-completer
 
   # install tern
-  cd $BUNDLE_DIR/tern_for_vim
+  cd $VIM_BUNDLE_DIR/tern_for_vim
   npm install
 }
 
