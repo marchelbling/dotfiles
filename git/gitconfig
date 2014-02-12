@@ -24,3 +24,5 @@
     ls = ls-tree -r --name-only --full-tree
     # search in full commit messages
     ack = !git log --notes --format=full | ack
+    # show commit messages for a particular loc: $1 => file, $2 => line
+    line = !sh -c 'git log --topo-order --graph -u -L$2,$2:$1' -
