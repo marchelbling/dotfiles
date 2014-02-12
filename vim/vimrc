@@ -19,7 +19,7 @@ syntax on
 "colorscheme:
 colorscheme wombat
 "font:
-set gfn=Anonymous\ Pro\ for\ Powerline:h14
+set gfn=Anonymice\ Powerline\ for\ Powerline:h14
 
 "leader character:
 let mapleader = ","
@@ -90,8 +90,13 @@ set undofile
 "json highlight
 au BufRead,BufNewFile *.json set filetype=javascript
 
-"python indentation
+" no extension filetype
+" (from http://stackoverflow.com/questions/2666551/vim-default-syntax-for-files-with-no-extension)
+au BufNewFile,BufRead * if &syntax == '' | set filetype=cpp | endif
+
+"python & cpp indentation
 autocmd Filetype python setlocal tabstop=4 shiftwidth=4 softtabstop=4
+autocmd Filetype cpp    setlocal tabstop=4 shiftwidth=4 softtabstop=4
 
 "singlecompile shortcuts
 nmap <F5> :SCCompile<cr>

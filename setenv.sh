@@ -157,15 +157,7 @@ function vim_install()
   mkdir -p $HOME/.vim/{autoload,bundle}
   mkdir $HOME/.vim-{back,swap,undo}
 
-  # install AnonymousPro free font
-  curl http://www.ms-studio.com/FontSales/AnonymousPro-1.002.zip > AnonymousPro.zip
-  unzip AnonymousPro.zip
-  for file in `ls AnonymousPro-1-002*/*.ttf`; do mv $file $HOME/Library/Fonts/; done
-  rm -fr AnonymousPro*
-
-  git clone https://github.com/Lokaltog/powerline-fonts.git
-  cp powerline-fonts/AnonymousPro/* $HOME/Library/Fonts/
-  rm -fr powerline-fonts
+  git clone https://github.com/Lokaltog/powerline-fonts.git $HOME/Library/Fonts/
 
   # install addons using pathogen
   curl -Sso ~/.vim/autoload/pathogen.vim \
