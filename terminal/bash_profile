@@ -52,7 +52,20 @@ parse_path()
     echo "$my_path"
 }
 
-export PS1="\[\033[00m\]\u@\h \[\033[0;32m\]\$(parse_repo)\[\033[01;34m\]\$(parse_path) \[\033[31m\]\$(parse_branch) \[\033[00m\]$\[\033[00m\] "
+parse_remote()
+{
+  local folder="$(git rev-parse --show-toplevel 2> /dev/null ||  pwd )"
+  local mount_point="$( mount | grep "$folder" 2>&1 )"
+  if [ "$mount_point" == "" ]
+  then
+    echo ""
+  else
+    echo "$( echo $mount_point | cut -d':' -f1 )@"
+  fi
+}
+
+# for color listing see http://misc.flogisoft.com/bash/tip_colors_and_formatting
+export PS1="\[\033[00m\]\u@\h \[\033[0;95m\]\$(parse_remote)\[\033[0;32m\]\$(parse_repo)\[\e[0;34m\]\$(parse_path) \[\033[31m\]\$(parse_branch) \[\033[00m\]$\[\033[00m\] "
 
 #### COLORS
 # to get colors in terminal (see: http://it.toolbox.com/blogs/lim/how-to-fix-colors-on-mac-osx-terminal-37214):
