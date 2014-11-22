@@ -203,7 +203,7 @@ defaults -currentHost write -globalDomain AppleFontSmoothing -int 2
 # create soft links for all config files
 current_directory=`pwd`
 ## git
-ln -fs $current_directory/git/gitconfig         $HOME/.gitconfig
+ln -fs $current_directory/git/gitconfig         /etc/gitconfig
 ## ruby
 ln -fs $current_directory/ruby/irbrc            $HOME/.irbrc
 ln -fs $current_directory/ruby/rdebugrc         $HOME/.rdebugrc

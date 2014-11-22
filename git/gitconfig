@@ -1,22 +1,25 @@
 [user]
     name = Marc Helbling
     email = marc.d.helbling@gmail.com
-
 [color]
-    status = true
-    diff = true
-
+    ui = auto
+[help]
+    autocorrect = 5
+[merge]
+    conflictstyle = diff3
+[diff]
+    wordRegex = .
 [alias]
-    br = branch
+    br = branch -avv
     st = status
-    ci = commit
     co = checkout
     stat = show --stat
-    dump = cat-file -p
-    type = cat-file -t # for git internals
-    # concisely display batch of recent commits:
-    head = !git log --oneline --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' | head
-    # show full history with branches:
+    # see git objects:
+    object = cat-file -p
+    type = cat-file -t
+    # concisely display batch of recent commits (default: 10 last commits):
+    head = !git log --oneline --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' -${1:-10}
+    # show full history with graph & branches:
     hist = log --graph --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
     # list commits that modified a given file:
     history = whatchanged --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
@@ -26,3 +29,5 @@
     ack = !git log --notes --format=full | ack
     # show commit messages for a particular loc: $1 => file, $2 => line
     line = !sh -c 'git log --topo-order --graph -u -L$2,$2:$1' -
+    fixup = "!sh -c '(git diff-files --quiet || (echo Unstaged changes, please commit or stash with --keep-index; exit 1)) && revision="$( git rev-parse $1 )" && git commit --fixup="${revision}" && git rebase -i --autosquash "${revision}"^' -"
+    squash = "!sh -c '(git diff-files --quiet || (echo Unstaged changes, please commit or stash with --keep-index; exit 1)) && revision="$( git rev-parse $1 )" && git commit --squash="${revision}" && git rebase -i --autosquash "${revision}"^' -"
