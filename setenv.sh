@@ -1,7 +1,9 @@
 #!/bin/bash
 
 RUBY_VERSION="2.0.0-p247"
-VIM_BUNDLE_DIR="$HOME/.vim/bundle"
+VIM_DIR="etc/vim"
+VIMRC="vimrc"
+VIM_BUNDLE_DIR="${VIM_DIR}/bundle"
 
 function clean_macvim_install()
 {
@@ -138,15 +140,15 @@ function vim_bundle_install()
   local bundle_name=$( basename $bundle )
   bundle_name=${bundle_name%.*}
 
-  if [ ! -d $VIM_BUNDLE_DIR/$bundle_name ]
+  if [ ! -d "${VIM_BUNDLE_DIR}/${bundle_name}" ]
   then
     echo "trying to install bundle '${bundle_name}'..."
-    git clone $bundle $VIM_BUNDLE_DIR/$bundle_name
+    git clone "${bundle}" "${VIM_BUNDLE_DIR}/${bundle_name}"
   fi
 
-  cd $VIM_BUNDLE_DIR/$bundle_name
+  cd "${VIM_BUNDLE_DIR}/${bundle_name}"
   git pull --rebase
-  git submodule update --init --recursive
+  git submodule update --init --recursive --force
   cd -
 }
 
@@ -154,13 +156,13 @@ function vim_install()
 {
   # setup vim environment: font & plugins using pathogen
   mkdir -p $HOME/Library/Fonts
-  mkdir -p $HOME/.vim/{autoload,bundle}
-  mkdir $HOME/.vim-{back,swap,undo}
+  mkdir -p "${VIM_DIR}"/{autoload,bundle}
+  mkdir "${VIM_DIR}"/.vim-{back,swap,undo}
 
   git clone https://github.com/Lokaltog/powerline-fonts.git $HOME/Library/Fonts/
 
   # install addons using pathogen
-  curl -Sso ~/.vim/autoload/pathogen.vim \
+  curl -Sso "${VIM_DIR}"/autoload/pathogen.vim \
       https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 
   vim_bundle_install https://github.com/scrooloose/nerdcommenter.git
@@ -168,23 +170,9 @@ function vim_install()
   vim_bundle_install https://github.com/jistr/vim-nerdtree-tabs.git
   vim_bundle_install https://github.com/imsizon/wombat.vim.git
   vim_bundle_install https://github.com/xuhdev/SingleCompile.git
-  vim_bundle_install https://github.com/Lokaltog/powerline.git
-  vim_bundle_install https://github.com/Valloric/YouCompleteMe.git
-  vim_bundle_install https://github.com/marijnh/tern_for_vim
+  vim_bundle_install https://github.com/bling/vim-airline
   vim_bundle_install https://github.com/kien/ctrlp.vim
   vim_bundle_install https://github.com/airblade/vim-gitgutter
-  vim_bundle_install https://github.com/vitorgalvao/autoswap_mac.git
-  vim_bundle_install https://github.com/mileszs/ack.vim
-  #vim_bundle_install https://github.com/Raimondi/delimitMate
-  #vim_bundle_install https://github.com/majutsushi/tagbar
-
-  # build YouCompleteMe
-  cd $VIM_BUNDLE_DIR/YouCompleteMe
-  ./install.sh --clang-completer
-
-  # install tern
-  cd $VIM_BUNDLE_DIR/tern_for_vim
-  npm install
 }
 
 function git_install()
@@ -214,8 +202,7 @@ ln -fs $current_directory/terminal/gdbinit      $HOME/.gdbinit
 ln -fs $current_directory/terminal/inputrc      $HOME/.inputrc
 ln -fs $current_directory/terminal/screenrc     $HOME/.screenrc
 ## vim
-ln -fs $current_directory/vim/vimrc             $HOME/.vimrc
-ln -fs $current_directory/vim/ycm_cpp_conf.py   $HOME/.vim/ycm_cpp_conf.py
+ln -fs $current_directory/vim/vimrc             ${VIM_DIR}/${VIMRC}
 
 source $HOME/.bash_profile
 
