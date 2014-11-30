@@ -26,6 +26,13 @@ function parse_branch()
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
 
+pink="\x01$( tput setaf 218 )\x02"
+red="\x01$( tput setaf 1 )\x02"
+grey="\x01$( tput setaf 240 )\x02"
+orange="\x01$( tput setaf 172 )\x02"
+green="\x01$( tput setaf 2 )\x02"
+blue="\x01$( tput setaf 4 )\x02"
+
 function parse_shared_folder()
 {
   local folder="${1}"
@@ -36,7 +43,7 @@ function parse_shared_folder()
   local mount_point="$( mount | grep "${folder} " 2>&1 )"
   if [ -n "${mount_point}" ]
   then
-    echo -e "\033[0;95m$( echo ${mount_point} | cut -d':' -f1 )@"
+    echo "${pink}$( echo ${mount_point} | cut -d':' -f1 )@"
   fi
 }
 
@@ -49,9 +56,9 @@ function parse_upstream()
     local remote="$( echo "${remote_branch}" | sed "s#${branch}##g" )"
     if [ -n "${remote_branch}" ] && git diff --quiet "${remote_branch}".."${branch}";
     then
-      echo -e "\033[31m(\033[38;5;248m${remote}\033[31m${branch})"
+      echo "${red}(${grey}${remote}${red}${branch})"
     else
-      echo -e "\033[31m(\033[38;5;208m${remote}\033[31m${branch})"
+      echo "${red}(${orange}${remote}${red}${branch})"
     fi
   fi
 }
@@ -67,7 +74,7 @@ function parse_repo()
         repo="${repo}:"
       fi
     fi
-    echo -e "\033[0;32m${repo}"
+    echo "${green}${repo}"
 }
 
 function parse_path()
@@ -84,7 +91,7 @@ function parse_path()
       fi
     fi
 
-    echo -e "\033[0;34m${my_path}"
+    echo "${blue}${my_path}"
 }
 
 function parse_diff()
@@ -93,7 +100,7 @@ function parse_diff()
   then
     if ! git diff-index --quiet HEAD --;
     then
-      echo -e "\033[38;5;208m[±]"
+      echo "${orange}[±]"
     fi
   fi
 }
@@ -102,11 +109,12 @@ function git_prompt()
 {
   local branch="$( parse_branch )"
   local root="$( parse_repo_path )"
-  echo -e "$(parse_shared_folder "${root}" )$(parse_repo "${root}")$(parse_path "${root}") $(parse_upstream "${branch}")$(parse_diff)\033[00m"
+  echo -e "$(parse_shared_folder "${root}" )$(parse_repo "${root}")$(parse_path "${root}") $(parse_upstream "${branch}")$(parse_diff)"
 }
 
 # for color listing see http://misc.flogisoft.com/bash/tip_colors_and_formatting
-export PS1="\[\033[00m\]\u@\h \[\$(git_prompt)\] \[\033[00m\]$\[\033[00m\] "
+shopt -s checkwinsize
+export PS1="\[\033[00m\]\u@\h \$(git_prompt) \[\033[00m\]$\[\033[00m\] "
 
 #### COLORS
 # to get colors in terminal (see: http://it.toolbox.com/blogs/lim/how-to-fix-colors-on-mac-osx-terminal-37214):
