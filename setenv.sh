@@ -1,9 +1,65 @@
 #!/bin/bash
 
 RUBY_VERSION="2.0.0-p247"
-VIM_DIR="etc/vim"
+VIM_DIR="/etc/vim"
 VIMRC="vimrc"
 VIM_BUNDLE_DIR="${VIM_DIR}/bundle"
+
+if [ "$( uname )" == "Darwin" ];
+then
+  IS_MACOS=true
+else
+  IS_MACOS=false
+fi
+
+function get_extension(){
+  local fullname="${1}"
+  local filename="${fullname##*/}"
+  local extension="${filename##*.}"
+  echo "${extension}" | tr '[A-Z]' '[a-z]'
+}
+
+function strip_extension(){
+  local name="${1}"
+  echo "${name%.*}"
+}
+
+function make_dir() {
+  local folder="$1"
+  if [ ! -d "${folder}" ]
+  then
+    mkdir -p "${folder}"
+  fi
+}
+
+function git_clone() {
+  local remote="${1}"
+  local clone_dir="${2:-${CLONE_DIR}}"
+  local branch_or_tag="${3}"
+  local current="$( pwd )"
+
+  make_dir "${clone_dir}"
+
+  # human repo name
+  local repo="$( strip_extension $( basename "${remote}" ) )"
+
+  # clone absolute path
+  clone="${clone_dir}/${repo}"
+  if [ -d "${clone}" ]
+  then
+    echo "Repository '${repo}' already cloned. Updating from upstream..."
+    cd "${clone}" && git pull --rebase && git submodule update --init --recursive --force && cd -
+  else
+    if [ "${branch_or_tag}" ]
+    then
+      git clone --recursive --branch "${branch_or_tag}" "${remote}" "${clone}"
+    else
+      git clone --recursive "${remote}" "${clone}"
+    fi
+  fi
+
+  cd "${current}"
+}
 
 function clean_macvim_install()
 {
@@ -21,12 +77,11 @@ function homebrew_packages_install()
   declare -a packages=("${!1}")
   for package in ${packages[@]}
   do
-    brew list $package 1>/dev/null
-    if [ $? == 1 ];
+    if !brew list ${package} 1>/dev/null
     then
-      brew install $package
+      brew install ${package}
     else
-      brew upgrade $package
+      brew upgrade ${package}
     fi
   done
 }
@@ -40,16 +95,16 @@ function clean_ruby_install()
 {
   brew install rbenv
   brew install ruby-build
-  rbenv install $RUBY_VERSION
-  rbenv global $RUBY_VERSION
+  rbenv install ${RUBY_VERSION}
+  rbenv global ${RUBY_VERSION}
 }
 
 function homebrew_install()
 {
   # install homebrew and some utils
-  if [ ! $( brew --version 2>/dev/null ) ]
+  if ! brew --version 2>/dev/null
   then
-    ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
+    ruby -e "$( curl -fsSkL raw.github.com/mxcl/homebrew/go )"
   fi
   brew update
   brew doctor
@@ -84,7 +139,7 @@ function python_packages_install()
   declare -a packages=("${!1}")
   for package in ${packages[@]}
   do
-    pip install $package
+    pip install ${package}
   done
 }
 
@@ -92,8 +147,9 @@ function python_install()
 {
   # set up a default virtualenv (installed by homebrew)
   which virtualenv > /dev/null 2>&1 || { easy_install --upgrade pip && pip install virtualenv; >&2; }
-  virtualenv --distribute --no-site-packages $VENV_DIR/$DEFAULT_VENV
-  source $VENV_DIR/$DEFAULT_VENV/bin/activate
+  local path="${VENV_DIR}/${DEFAULT_VENV}"
+  virtualenv --distribute --no-site-packages "${path}"
+  source "${path}/bin/activate"
 
   # install extra packages
   scientific_packages=( numpy scipy scikit-learn matplotlib networkx pandas nltk )
@@ -115,13 +171,13 @@ function ruby_packages_install()
   declare -a packages=("${!1}")
   for package in ${packages[@]}
   do
-    if [ $( echo $package | grep '_' ) ]
+    if grep '_' <<<"${package}"
     then
-      local gem_name=$(    echo $package | cut -d'_' -f1 )
-      local gem_version=$( echo $package | cut -d'_' -f2 )
-      gem install $gem_name -v $gem_version --no-rdoc
+      local gem_name=$(    cut -d'_' -f1 <<<"${package}" )
+      local gem_version=$( cut -d'_' -f2 <<<"${package}" )
+      gem install ${gem_name} -v ${gem_version} --no-rdoc --no-ri
     else
-      gem install $package --no-rdoc
+      gem install ${package} --no-rdoc --no-ri
     fi
 
   done
@@ -137,48 +193,39 @@ function ruby_install()
 function vim_bundle_install()
 {
   local bundle=$1
-  local bundle_name=$( basename $bundle )
-  bundle_name=${bundle_name%.*}
-
-  if [ ! -d "${VIM_BUNDLE_DIR}/${bundle_name}" ]
-  then
-    echo "trying to install bundle '${bundle_name}'..."
-    git clone "${bundle}" "${VIM_BUNDLE_DIR}/${bundle_name}"
-  fi
-
-  cd "${VIM_BUNDLE_DIR}/${bundle_name}"
-  git pull --rebase
-  git submodule update --init --recursive --force
-  cd -
+  git_clone "${bundle}" "${VIM_BUNDLE_DIR}"
 }
 
 function vim_install()
 {
   # setup vim environment: font & plugins using pathogen
-  mkdir -p $HOME/Library/Fonts
-  mkdir -p "${VIM_DIR}"/{autoload,bundle}
-  mkdir "${VIM_DIR}"/.vim-{back,swap,undo}
+  make_dir ${HOME}/Library/Fonts
 
-  git clone https://github.com/Lokaltog/powerline-fonts.git $HOME/Library/Fonts/
+  for folder in "autoload" "bundle" "vim" ".vim-back" ".vim-swap" ".vim-undo"
+  do
+    make_dir "${VIM_DIR}/${folder}"
+  done
+
+  git_clone https://github.com/Lokaltog/powerline-fonts.git ${HOME}/Library/Fonts
 
   # install addons using pathogen
-  curl -Sso "${VIM_DIR}"/autoload/pathogen.vim \
-      https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+  curl -LSso ${VIM_DIR}/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 
   vim_bundle_install https://github.com/scrooloose/nerdcommenter.git
   vim_bundle_install https://github.com/scrooloose/nerdtree.git
   vim_bundle_install https://github.com/jistr/vim-nerdtree-tabs.git
-  vim_bundle_install https://github.com/imsizon/wombat.vim.git
+  vim_bundle_install https://github.com/vim-scripts/wombat256.vim
   vim_bundle_install https://github.com/xuhdev/SingleCompile.git
   vim_bundle_install https://github.com/bling/vim-airline
   vim_bundle_install https://github.com/kien/ctrlp.vim
   vim_bundle_install https://github.com/airblade/vim-gitgutter
+  vim_bundle_install https://github.com/scrooloose/syntastic.git
 }
 
 function git_install()
 {
   # fetch git-completion.bash
-  curl https://raw.github.com/git/git/master/contrib/completion/git-completion.bash > $HOME/.git-completion.bash
+  curl https://raw.github.com/git/git/master/contrib/completion/git-completion.bash > ${HOME}/.git-completion.bash
 }
 
 ###############
@@ -186,25 +233,28 @@ function git_install()
 ###############
 # sets medium font anti-aliasing
 ## see: http://osxdaily.com/2012/06/09/mac-screen-blurry-optimize-troubleshoot-font-smoothing-os-x/
-defaults -currentHost write -globalDomain AppleFontSmoothing -int 2
+if ${IS_MACOS};
+then
+  defaults -currentHost write -globalDomain AppleFontSmoothing -int 2
+fi
 
 # create soft links for all config files
-current_directory=`pwd`
+current_directory=$( pwd )
 ## git
-ln -fs $current_directory/git/gitconfig         /etc/gitconfig
+ln -fs ${current_directory}/git/gitconfig         /etc/gitconfig
 ## ruby
-ln -fs $current_directory/ruby/irbrc            $HOME/.irbrc
-ln -fs $current_directory/ruby/rdebugrc         $HOME/.rdebugrc
+ln -fs ${current_directory}/ruby/irbrc            ${HOME}/.irbrc
+ln -fs ${current_directory}/ruby/rdebugrc         ${HOME}/.rdebugrc
 ## terminal
-ln -fs $current_directory/terminal/ackrc        $HOME/.ackrc
-ln -fs $current_directory/terminal/bash_profile $HOME/.bash_profile
-ln -fs $current_directory/terminal/gdbinit      $HOME/.gdbinit
-ln -fs $current_directory/terminal/inputrc      $HOME/.inputrc
-ln -fs $current_directory/terminal/screenrc     $HOME/.screenrc
+ln -fs ${current_directory}/terminal/ackrc        ${HOME}/.ackrc
+ln -fs ${current_directory}/terminal/bash_profile ${HOME}/.bash_profile
+ln -fs ${current_directory}/terminal/gdbinit      ${HOME}/.gdbinit
+ln -fs ${current_directory}/terminal/inputrc      ${HOME}/.inputrc
+ln -fs ${current_directory}/terminal/screenrc     ${HOME}/.screenrc
 ## vim
-ln -fs $current_directory/vim/vimrc             ${VIM_DIR}/${VIMRC}
+ln -fs ${current_directory}/vim/vimrc             ${VIM_DIR}/${VIMRC}
 
-source $HOME/.bash_profile
+source ${HOME}/.bash_profile
 
 ###############
 # 2. install required components if needed
@@ -213,13 +263,22 @@ source $HOME/.bash_profile
 while [ $# -ge 1 ] ; do
   case $1 in
     --all)
-      homebrew_install
+      if ${IS_MACOS};
+      then
+        homebrew_install
+      fi
+
       git_install
       python_install
       ruby_install
       vim_install
-      # terminal theme needs to be 'default'ed manually
-      open $current_directory/terminal/colors.terminal
+
+      if ${IS_MACOS};
+      then
+        # terminal theme needs to be 'default'ed manually
+        open ${current_directory}/terminal/colors.terminal
+      fi
+
       # drop current command line arg
       shift 1 ;;
     --git)
