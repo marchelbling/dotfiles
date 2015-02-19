@@ -11,6 +11,8 @@ filetype on
 "use specific filetype plugins
 filetype plugin on
 filetype plugin indent on
+" activate matchit
+runtime macros/matchit.vim
 
 "code highlight:
 syntax on
@@ -60,7 +62,7 @@ set encoding=utf-8
 set scrolloff=3
 set autoindent
 set showmode
-set showcmd
+set showcmd "display current command (nice for <leader>)
 set hidden
 set visualbell
 set cursorline
@@ -88,13 +90,16 @@ set paste
 set nosmartindent
 
 "manage backup, swap & undo directories
-"/!\ this requires that the .vim-* directories exist
-"could use  :silent !mkdir -p ~/.vim/backup >/dev/null 2>&1  to create them if needed
-set backupdir=~/.vim-back
-set directory=~/.vim-swap
-set undodir=~/.vim-undo
-set backup
+set nobackup
+set noswapfile
+
+:silent !mkdir -p /tmp/.vim/undo >/dev/null 2>&1
+set undodir=/tmp/.vim/undo
 set undofile
+set history=1000     " remember more commands and search history
+set undolevels=1000  " use many muchos levels of undo
+
+
 
 "json highlight
 au BufRead,BufNewFile *.json set filetype=javascript
@@ -106,6 +111,18 @@ au BufNewFile,BufRead * if &syntax == '' | set filetype=cpp | endif
 "python & cpp indentation
 autocmd Filetype python setlocal tabstop=4 shiftwidth=4 softtabstop=4
 autocmd Filetype cpp    setlocal tabstop=4 shiftwidth=4 softtabstop=4
+
+" from https://github.com/tpope/vim-sensible
+if v:version > 703 || v:version == 703 && has("patch541")
+  set formatoptions+=j " Delete comment character when joining commented lines
+endif
+
+" taglist
+nnoremap <leader>t :TlistToggle<CR>
+let Tlist_Use_Right_Window = 1
+
+" toggle comment
+nnoremap <leader>c :TComment<CR>
 
 " Search for selected text, forwards or backwards.
 vnoremap <silent> * :<C-U>
@@ -174,7 +191,7 @@ call SingleCompile#SetOutfile('cpp', 'c++11', '$(FILE_TITLE)$')
 call SingleCompile#ChooseCompiler('cpp', 'c++11')
 
 " ctrlp config (from https://github.com/square/maximum-awesome)
-nmap <leader>t :CtrlPMixed<CR>
+nmap <leader>p :CtrlPMixed<CR>
 
 " git diff
 nmap <leader>d :GitGutterToggle

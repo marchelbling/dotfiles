@@ -1,16 +1,18 @@
 #!/bin/bash
 
 RUBY_VERSION="2.0.0-p247"
-VIM_DIR="/etc/vim"
-VIMRC="vimrc"
-VIM_BUNDLE_DIR="${VIM_DIR}/bundle"
 
 if [ "$( uname )" == "Darwin" ];
 then
   IS_MACOS=true
+  VIM_DIR="${HOME}/.vim"
+  VIMRC="${HOME}/.vimrc"
 else
   IS_MACOS=false
+  VIM_DIR="/etc/vim"
+  VIMRC="${VIMD_IR}/vimrc"
 fi
+VIM_BUNDLE_DIR="${VIM_DIR}/bundle"
 
 function get_extension(){
   local fullname="${1}"
@@ -211,7 +213,8 @@ function vim_install()
   # install addons using pathogen
   curl -LSso ${VIM_DIR}/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 
-  vim_bundle_install https://github.com/scrooloose/nerdcommenter.git
+  vim_bundle_install https://github.com/vim-scripts/taglist.vim
+  vim_bundle_install https://github.com/tomtom/tcomment_vim
   vim_bundle_install https://github.com/scrooloose/nerdtree.git
   vim_bundle_install https://github.com/jistr/vim-nerdtree-tabs.git
   vim_bundle_install https://github.com/vim-scripts/wombat256.vim
@@ -252,7 +255,7 @@ ln -fs ${current_directory}/terminal/gdbinit      ${HOME}/.gdbinit
 ln -fs ${current_directory}/terminal/inputrc      ${HOME}/.inputrc
 ln -fs ${current_directory}/terminal/screenrc     ${HOME}/.screenrc
 ## vim
-ln -fs ${current_directory}/vim/vimrc             ${VIM_DIR}/${VIMRC}
+ln -fs ${current_directory}/vim/vimrc             ${VIMRC}
 
 source ${HOME}/.bash_profile
 
