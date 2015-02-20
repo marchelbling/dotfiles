@@ -14,6 +14,8 @@ filetype plugin indent on
 " activate matchit
 runtime macros/matchit.vim
 
+set title " change terminal/window title to buffer name
+
 "code highlight:
 syntax on
 "colorscheme:
@@ -53,6 +55,7 @@ set wrap
 set textwidth=100
 set formatoptions=qrn1
 set colorcolumn=100
+set autoindent
 
 "show trailing spaces
 highlight TrailingSpaces ctermbg=red guibg=red
@@ -60,7 +63,6 @@ match TrailingSpaces /\s\+$\|\t/
 
 set encoding=utf-8
 set scrolloff=3
-set autoindent
 set showmode
 set showcmd "display current command (nice for <leader>)
 set hidden
@@ -86,8 +88,7 @@ set hlsearch
 "clear highlight on 'return':
 nnoremap <silent> <CR> :noh<CR>
 
-set paste
-set nosmartindent
+set autochdir " set dir to buffer dirname
 
 "manage backup, swap & undo directories
 set nobackup
@@ -202,6 +203,8 @@ call SingleCompile#ChooseCompiler('cpp', 'c++11')
 
 " ctrlp config (from https://github.com/square/maximum-awesome)
 nmap <leader>p :CtrlPMixed<CR>
+let g:ctrlp_cmd = 'CtrlPLastMode'
+let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
 
 " git diff
 nmap <leader>d :GitGutterToggle
