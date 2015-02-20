@@ -94,8 +94,8 @@ set autochdir " set dir to buffer dirname
 set nobackup
 set noswapfile
 
-:silent !mkdir -p /tmp/.vim/undo >/dev/null 2>&1
-set undodir=/tmp/.vim/undo
+:silent !mkdir -p /tmp/vim/undo >/dev/null 2>&1
+set undodir=/tmp/vim/undo
 set undofile
 set history=1000     " remember more commands and search history
 set undolevels=1000  " use many muchos levels of undo
@@ -124,6 +124,19 @@ let Tlist_Use_Right_Window = 1
 
 " toggle comment
 nnoremap <leader>c :TComment<CR>
+
+:silent !mkdir -p /tmp/vim/cache/unite >/dev/null 2>&1
+let g:unite_data_directory='/tmp/vim/cache/unite'
+let g:unite_enable_start_insert=1
+" search in content
+nnoremap <Leader>f :Unite grep:.<cr>
+" search files CtrlP search
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
+call unite#custom#source('file_rec/async','sorters','sorter_rank')
+" replacing unite with ctrl-p
+nnoremap <silent> <leader>p :Unite -auto-resize file file_mru file_rec/async<cr>
+
 
 " Search for selected text, forwards or backwards.
 vnoremap <silent> * :<C-U>
@@ -200,11 +213,6 @@ call SingleCompile#SetCompilerTemplate('cpp', 'c++11', 'g++ with C++11 support',
                                       \'echo -e "\n---\nOutput:\n" && ./$(FILE_TITLE)$')
 call SingleCompile#SetOutfile('cpp', 'c++11', '$(FILE_TITLE)$')
 call SingleCompile#ChooseCompiler('cpp', 'c++11')
-
-" ctrlp config (from https://github.com/square/maximum-awesome)
-nmap <leader>p :CtrlPMixed<CR>
-let g:ctrlp_cmd = 'CtrlPLastMode'
-let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
 
 " git diff
 nmap <leader>d :GitGutterToggle

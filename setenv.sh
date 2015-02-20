@@ -218,7 +218,9 @@ function vim_install()
     vim_bundle_install https://github.com/vim-scripts/wombat256.vim
     vim_bundle_install https://github.com/xuhdev/SingleCompile.git
     vim_bundle_install https://github.com/bling/vim-airline
-    vim_bundle_install https://github.com/kien/ctrlp.vim
+    vim_bundle_install https://github.com/Shougo/unite.vim
+    vim_bundle_install https://github.com/Shougo/vimproc.vim && cd ${VIM_BUNDLE_DIR}/vimproc.vim && make && cd -
+    vim_bundle_install https://github.com/Shougo/neomru.vim
     vim_bundle_install https://github.com/airblade/vim-gitgutter
     vim_bundle_install https://github.com/scrooloose/syntastic.git
 }
