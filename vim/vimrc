@@ -88,8 +88,6 @@ set hlsearch
 "clear highlight on 'return':
 nnoremap <silent> <CR> :noh<CR>
 
-set autochdir " set dir to buffer dirname
-
 "manage backup, swap & undo directories
 set nobackup
 set noswapfile

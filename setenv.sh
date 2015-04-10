@@ -14,19 +14,25 @@ else
 fi
 VIM_BUNDLE_DIR="${VIM_DIR}/bundle"
 
-function get_extension(){
+
+function get_extension
+{
     local fullname="${1}"
     local filename="${fullname##*/}"
     local extension="${filename##*.}"
-    echo "${extension}" | tr '[A-Z]' '[a-z]'
+    echo "${extension}" | tr '[:upper:]' '[:lower:]'
 }
 
-function strip_extension(){
+
+function strip_extension
+{
     local name="${1}"
     echo "${name%.*}"
 }
 
-function make_dir() {
+
+function make_dir
+{
     local folder="$1"
     if [ ! -d "${folder}" ]
     then
@@ -34,7 +40,9 @@ function make_dir() {
     fi
 }
 
-function git_clone() {
+
+function git_clone
+{
     local remote="${1}"
     local clone_dir="${2:-${CLONE_DIR}}"
     local branch_or_tag="${3}"
@@ -43,7 +51,7 @@ function git_clone() {
     make_dir "${clone_dir}"
 
     # human repo name
-    local repo="$( strip_extension $( basename "${remote}" ) )"
+    local repo="$( strip_extension "$( basename "${remote}" )" )"
 
     # clone absolute path
     clone="${clone_dir}/${repo}"
@@ -52,7 +60,7 @@ function git_clone() {
         echo "Repository '${repo}' already cloned. Updating from upstream..."
         cd "${clone}" && git pull --rebase && git submodule update --init --recursive --force && cd -
     else
-        if [ "${branch_or_tag}" ]
+        if [ -n "${branch_or_tag}" ]
         then
             git clone --recursive --branch "${branch_or_tag}" "${remote}" "${clone}"
         else
@@ -63,7 +71,8 @@ function git_clone() {
     cd "${current}"
 }
 
-function clean_macvim_install()
+
+function clean_macvim_install
 {
     cd /System/Library/Frameworks/Python.framework/Versions
     sudo mv Current Current-sys
@@ -74,26 +83,29 @@ function clean_macvim_install()
     cd -
 }
 
-function homebrew_packages_install()
+
+function homebrew_packages_install
 {
     declare -a packages=("${!1}")
-    for package in ${packages[@]}
+    for package in "${packages[@]}"
     do
-        if !brew list ${package} 1>/dev/null
+        if ! brew list "${package}" 1>/dev/null
         then
-            brew install ${package}
+            brew install "${package}"
         else
-            brew upgrade ${package}
+            brew upgrade "${package}"
         fi
     done
 }
 
-function clean_python_install()
+
+function clean_python_install
 {
     brew install python --framework
 }
 
-function clean_ruby_install()
+
+function clean_ruby_install
 {
     brew install rbenv
     brew install ruby-build
@@ -101,7 +113,8 @@ function clean_ruby_install()
     rbenv global ${RUBY_VERSION}
 }
 
-function homebrew_install()
+
+function homebrew_install
 {
     # install homebrew and some utils
     if ! brew --version 2>/dev/null
@@ -111,13 +124,13 @@ function homebrew_install()
     brew update
     brew doctor
 
-    code_packages=( git git-flow readline cmake ctags valgrind libyaml boost node gfortran htop-osx )
-    compression_packages=( p7zip zlib xz )
-    db_packages=( sqlite mysql )
-    font_packages=( fontconfig freetype )
-    image_packages=( imagemagick ffmpeg jpeg libpng libtiff )
-    network_packages=( wget ack  openssl )
-    queue_packages=( zeromq rabbitmq )
+    local code_packages=( git readline cmake ctags valgrind libyaml boost node gfortran htop-osx )
+    local compression_packages=( p7zip zlib xz )
+    local db_packages=( sqlite mysql )
+    local font_packages=( fontconfig freetype )
+    local image_packages=( imagemagick ffmpeg jpeg libpng libtiff )
+    local network_packages=( wget ack  openssl )
+    local queue_packages=( zeromq rabbitmq )
 
     homebrew_packages_install network_packages[@]
     homebrew_packages_install compression_packages[@]
@@ -136,16 +149,17 @@ function homebrew_install()
     brew doctor
 }
 
-function python_packages_install()
+function python_packages_install
 {
-    declare -a packages=("${!1}")
-    for package in ${packages[@]}
+    local -a packages=( "${!1}" )
+    for package in "${packages[@]}"
     do
-        pip install ${package}
+        pip install "${package}"
     done
 }
 
-function python_install()
+
+function python_install
 {
     # set up a default virtualenv (installed by homebrew)
     which virtualenv > /dev/null 2>&1 || { easy_install --upgrade pip && pip install virtualenv; >&2; }
@@ -154,12 +168,11 @@ function python_install()
     source "${path}/bin/activate"
 
     # install extra packages
-    scientific_packages=( numpy scipy scikit-learn matplotlib networkx pandas nltk )
-    ipython_packages=( readline ipython )
-    web_packages=( beautifulsoup requests )
-    django_packages=( django south )
-    linter_packages=( flake8 pyflakes pylint )
-    other_packages=( boto argparse nose python-dateutil pycrypto )
+    local scientific_packages=( numpy scipy scikit-learn matplotlib networkx pandas nltk )
+    local ipython_packages=( readline ipython )
+    local web_packages=( beautifulsoup requests )
+    local linter_packages=( flake8 pyflakes pylint )
+    local other_packages=( boto argparse nose python-dateutil pycrypto )
 
     python_packages_install scientific_packages[@]
     python_packages_install ipython_packages[@]
@@ -168,36 +181,40 @@ function python_install()
     python_packages_install other_packages[@]
 }
 
-function ruby_packages_install()
+
+function ruby_packages_install
 {
-    declare -a packages=("${!1}")
-    for package in ${packages[@]}
+    local -a packages=( "${!1}" )
+    for package in "${packages[@]}"
     do
         if grep '_' <<<"${package}"
         then
-            local gem_name=$(    cut -d'_' -f1 <<<"${package}" )
-            local gem_version=$( cut -d'_' -f2 <<<"${package}" )
-            gem install ${gem_name} -v ${gem_version} --no-rdoc --no-ri
+            local gem_name="$( cut -d'_' -f1 <<<"${package}" )"
+            local gem_version="$( cut -d'_' -f2 <<<"${package}" )"
+            gem install "${gem_name}" -v "${gem_version}" --no-rdoc --no-ri
         else
-            gem install ${package} --no-rdoc --no-ri
+            gem install "${package}" --no-rdoc --no-ri
         fi
     done
 }
 
-function ruby_install()
+
+function ruby_install
 {
-    deploy_packages=( chef_11.8.0 chef-zero_1.7.2 knife-solo_0.4.0 librarian_0.1.1 librarian-chef_0.0.2 berkshelf_2.0.10 )
+    local deploy_packages=( chef_11.8.0 chef-zero_1.7.2 knife-solo_0.4.0 librarian_0.1.1 librarian-chef_0.0.2 berkshelf_2.0.10 )
 
     ruby_packages_install deploy_packages[@]
 }
 
-function vim_bundle_install()
+
+function vim_bundle_install
 {
-    local bundle=$1
+    local bundle="$1"
     git_clone "${bundle}" "${VIM_BUNDLE_DIR}"
 }
 
-function vim_install()
+
+function vim_install
 {
     for folder in "autoload" "bundle" "vim"
     do
@@ -209,27 +226,29 @@ function vim_install()
     # git_clone https://github.com/Lokaltog/powerline-fonts.git ${HOME}/Library/Fonts
 
     # install addons using pathogen
-    curl -LSso ${VIM_DIR}/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+    curl -LSso "${VIM_DIR}/autoload/pathogen.vim https://tpo.pe/pathogen.vim"
 
     vim_bundle_install https://github.com/vim-scripts/taglist.vim
     vim_bundle_install https://github.com/tomtom/tcomment_vim
-    vim_bundle_install https://github.com/scrooloose/nerdtree.git
-    vim_bundle_install https://github.com/jistr/vim-nerdtree-tabs.git
+    vim_bundle_install https://github.com/scrooloose/nerdtree
+    vim_bundle_install https://github.com/jistr/vim-nerdtree-tabs
     vim_bundle_install https://github.com/vim-scripts/wombat256.vim
-    vim_bundle_install https://github.com/xuhdev/SingleCompile.git
+    vim_bundle_install https://github.com/xuhdev/SingleCompile
     vim_bundle_install https://github.com/bling/vim-airline
     vim_bundle_install https://github.com/Shougo/unite.vim
-    vim_bundle_install https://github.com/Shougo/vimproc.vim && cd ${VIM_BUNDLE_DIR}/vimproc.vim && make && cd -
+    vim_bundle_install https://github.com/Shougo/vimproc.vim && cd "${VIM_BUNDLE_DIR}/vimproc.vim" && make && cd -
     vim_bundle_install https://github.com/Shougo/neomru.vim
     vim_bundle_install https://github.com/airblade/vim-gitgutter
-    vim_bundle_install https://github.com/scrooloose/syntastic.git
+    vim_bundle_install https://github.com/scrooloose/syntastic
 }
 
-function git_install()
+
+function git_install
 {
     # fetch git-completion.bash
-    curl https://raw.github.com/git/git/master/contrib/completion/git-completion.bash > ${HOME}/.git-completion.bash
+    curl https://raw.github.com/git/git/master/contrib/completion/git-completion.bash > "${HOME}/.git-completion.bash"
 }
+
 
 ###############
 # 1. distribute configuration files
@@ -242,22 +261,22 @@ then
 fi
 
 # create soft links for all config files
-current_directory=$( pwd )
+current_directory="$( pwd )"
 ## git
-ln -fs ${current_directory}/git/gitconfig         /etc/gitconfig
+ln -fs "${current_directory}/git/gitconfig"         /etc/gitconfig
 ## ruby
-ln -fs ${current_directory}/ruby/irbrc            ${HOME}/.irbrc
-ln -fs ${current_directory}/ruby/rdebugrc         ${HOME}/.rdebugrc
+ln -fs "${current_directory}/ruby/irbrc"            "${HOME}/.irbrc"
+ln -fs "${current_directory}/ruby/rdebugrc"         "${HOME}/.rdebugrc"
 ## terminal
-ln -fs ${current_directory}/terminal/ackrc        ${HOME}/.ackrc
-ln -fs ${current_directory}/terminal/bash_profile ${HOME}/.bash_profile
-ln -fs ${current_directory}/terminal/gdbinit      ${HOME}/.gdbinit
-ln -fs ${current_directory}/terminal/inputrc      ${HOME}/.inputrc
-ln -fs ${current_directory}/terminal/screenrc     ${HOME}/.screenrc
+ln -fs "${current_directory}/terminal/ackrc"        "${HOME}/.ackrc"
+ln -fs "${current_directory}/terminal/bash_profile" "${HOME}/.bash_profile"
+ln -fs "${current_directory}/terminal/gdbinit"      "${HOME}/.gdbinit"
+ln -fs "${current_directory}/terminal/inputrc"      "${HOME}/.inputrc"
+ln -fs "${current_directory}/terminal/screenrc"     "${HOME}/.screenrc"
 ## vim
-ln -fs ${current_directory}/vim/vimrc             ${VIMRC}
+ln -fs "${current_directory}/vim/vimrc"             "${VIMRC}"
 
-source ${HOME}/.bash_profile
+source "${HOME}/.bash_profile"
 
 ###############
 # 2. install required components if needed
@@ -279,7 +298,7 @@ while [ $# -ge 1 ] ; do
             if ${IS_MACOS};
             then
               # terminal theme needs to be 'default'ed manually
-              open ${current_directory}/terminal/colors.terminal
+              open "${current_directory}/terminal/colors.terminal"
             fi
 
             # drop current command line arg
