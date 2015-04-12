@@ -101,7 +101,7 @@ function parse_diff()
 {
     if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1
     then
-        if ! git diff-index --quiet HEAD --;
+        if [ -n "$( git status --porcelain --ignored )" ]
         then
             echo "${orange}[±]"
         fi
