@@ -10,7 +10,7 @@ then
 else
     IS_MACOS=false
     VIM_DIR="/etc/vim"
-    VIMRC="${VIMD_IR}/vimrc"
+    VIMRC="${VIM_DIR}/vimrc"
 fi
 VIM_BUNDLE_DIR="${VIM_DIR}/bundle"
 
@@ -51,7 +51,7 @@ function git_clone
     make_dir "${clone_dir}"
 
     # human repo name
-    local repo="$( strip_extension "$( basename "${remote}" )" )"
+    local repo="$(  basename "${remote}" )"
 
     # clone absolute path
     clone="${clone_dir}/${repo}"
@@ -226,12 +226,10 @@ function vim_install
     # git_clone https://github.com/Lokaltog/powerline-fonts.git ${HOME}/Library/Fonts
 
     # install addons using pathogen
-    curl -LSso "${VIM_DIR}/autoload/pathogen.vim https://tpo.pe/pathogen.vim"
+    curl -LSso "${VIM_DIR}/autoload/pathogen.vim" https://tpo.pe/pathogen.vim
 
     vim_bundle_install https://github.com/vim-scripts/taglist.vim
     vim_bundle_install https://github.com/tomtom/tcomment_vim
-    vim_bundle_install https://github.com/scrooloose/nerdtree
-    vim_bundle_install https://github.com/jistr/vim-nerdtree-tabs
     vim_bundle_install https://github.com/vim-scripts/wombat256.vim
     vim_bundle_install https://github.com/xuhdev/SingleCompile
     vim_bundle_install https://github.com/bling/vim-airline

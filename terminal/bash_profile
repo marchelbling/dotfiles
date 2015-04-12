@@ -6,7 +6,10 @@ alias ls='ls -F'
 alias depends='otool -L'
 
 #### GIT
-source ~/.git-completion.bash
+if [ -e "${HOME}/.git-completion.bash" ]
+then
+    source "${HOME}/.git-completion.bash"
+fi
 # show git branch in shell prompt
 # http://betterexplained.com/articles/aha-moments-when-learning-git/ and http://asemanfar.com/Current-Git-Branch-in-Bash-Prompt
 
@@ -35,32 +38,32 @@ blue="\x01$( tput setaf 4 )\x02"
 
 function parse_shared_folder()
 {
-  local folder="${1}"
-  if [ -z "${folder}" ];
-  then
-    folder="$( pwd )"
-  fi
-  local mount_point="$( mount | grep "${folder} " 2>&1 )"
-  if [ -n "${mount_point}" ]
-  then
-    echo "${pink}$( echo ${mount_point} | cut -d':' -f1 )@"
-  fi
+    local folder="${1}"
+    if [ -z "${folder}" ];
+    then
+        folder="$( pwd )"
+    fi
+    local mount_point="$( mount | grep "${folder} " 2>&1 )"
+    if [ -n "${mount_point}" ]
+    then
+        echo "${pink}$( echo ${mount_point} | cut -d':' -f1 )@"
+    fi
 }
 
 function parse_upstream()
 {
-  local branch="$1"
-  if [ -n "${branch}" ]
-  then
-    local remote_branch="$( git rev-parse --abbrev-ref @{u} 2>/dev/null )"
-    local remote="$( echo "${remote_branch}" | sed "s#${branch}##g" )"
-    if [ -n "${remote_branch}" ] && git diff --quiet "${remote_branch}".."${branch}";
+    local branch="$1"
+    if [ -n "${branch}" ]
     then
-      echo "${red}(${grey}${remote}${red}${branch})"
-    else
-      echo "${red}(${orange}${remote}${red}${branch})"
+      local remote_branch="$( git rev-parse --abbrev-ref @{u} 2>/dev/null )"
+      local remote="$( echo "${remote_branch}" | sed "s#${branch}##g" )"
+      if [ -n "${remote_branch}" ] && git diff --quiet "${remote_branch}".."${branch}";
+      then
+          echo "${red}(${grey}${remote}${red}${branch})"
+      else
+          echo "${red}(${orange}${remote}${red}${branch})"
+      fi
     fi
-  fi
 }
 
 function parse_repo()
@@ -71,7 +74,7 @@ function parse_repo()
       local repo=$( basename "${repo_path}" )
       if [ "${repo_path}" != "$( pwd )" ]
       then
-        repo="${repo}:"
+          repo="${repo}:"
       fi
     fi
     echo "${green}${repo}"
@@ -83,12 +86,12 @@ function parse_path()
     local my_path="$( pwd )"
     if [ -n "${repo_path}" ]
     then
-      my_path=$( get_relative_path "${repo_path}" )
+        my_path=$( get_relative_path "${repo_path}" )
     else
-      if [ "${PWD##${HOME}}" != "${PWD}" ]
-      then
-        my_path="~$( get_relative_path "${HOME}" )"
-      fi
+        if [ "${PWD##${HOME}}" != "${PWD}" ]
+        then
+            my_path="~$( get_relative_path "${HOME}" )"
+        fi
     fi
 
     echo "${blue}${my_path}"
@@ -96,20 +99,20 @@ function parse_path()
 
 function parse_diff()
 {
-  if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1
-  then
-    if ! git diff-index --quiet HEAD --;
+    if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1
     then
-      echo "${orange}[±]"
+        if ! git diff-index --quiet HEAD --;
+        then
+            echo "${orange}[±]"
+        fi
     fi
-  fi
 }
 
 function git_prompt()
 {
-  local branch="$( parse_branch )"
-  local root="$( parse_repo_path )"
-  echo -e "$(parse_shared_folder "${root}" )$(parse_repo "${root}")$(parse_path "${root}") $(parse_upstream "${branch}")$(parse_diff)"
+    local branch="$( parse_branch )"
+    local root="$( parse_repo_path )"
+    echo -e "$(parse_shared_folder "${root}" )$(parse_repo "${root}")$(parse_path "${root}") $(parse_upstream "${branch}")$(parse_diff)"
 }
 
 # for color listing see http://misc.flogisoft.com/bash/tip_colors_and_formatting
@@ -124,18 +127,18 @@ export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
 #### SPECIFIC_PROFILE
-if [ -e "$HOME/.specific_profile" ]
+if [ -e "${HOME}/.specific_profile" ]
 then
-  source "$HOME/.specific_profile"
+  source "${HOME}/.specific_profile"
 fi
 
 #### PYTHON
-export VENV_DIR=$HOME/.venv
-export DEFAULT_VENV=${DEFAULT_VENV:-env}
+export VENV_DIR="${HOME}/.venv"
+export DEFAULT_VENV="${DEFAULT_VENV:-env}"
 
-if [ -d $VENV_DIR/$DEFAULT_VENV ]
+if [ -d "${VENV_DIR}/${DEFAULT_VENV}" ]
 then
-  source $VENV_DIR/$DEFAULT_VENV/bin/activate
+  source "${VENV_DIR}/${DEFAULT_VENV}/bin/activate"
 fi
 
 #### RUBY
@@ -144,7 +147,7 @@ if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 # bash completion for ssh (based on .ssh/config)
 if which ruby 2>&1 >/dev/null;
 then
-  complete -o default -o nospace -W "$(env ruby -ne 'puts $_.split(/[,\s]+/)[1..-1].reject{|host| host.match(/\*|\?/)} if $_.match(/^\s*Host\s+/);' < $HOME/.ssh/config)" scp sftp ssh
+    complete -o default -o nospace -W "$(env ruby -ne 'puts $_.split(/[,\s]+/)[1..-1].reject{|host| host.match(/\*|\?/)} if $_.match(/^\s*Host\s+/);' < ${HOME}/.ssh/config)" scp sftp ssh
 fi
 
 ### simple terminal calculator
@@ -155,7 +158,7 @@ function calc()
 export -f calc
 
 function tabname {
-  name="${1:-bash}"
-  printf "\e]1;${name}\a"
+    name="${1:-bash}"
+    printf "\e]1;${name}\a"
 }
 

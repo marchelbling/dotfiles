@@ -45,6 +45,12 @@ nmap <silent> <S-Down> :wincmd j<CR>
 nmap <silent> <S-Left> :wincmd h<CR>
 nmap <silent> <S-Right> :wincmd l<CR>
 
+"display side file explorer
+let g:netrw_liststyle = 3
+let g:netrw_winsize   = 15
+let g:netrw_banner = 0
+nmap <leader>d :Lex<CR> " This will toggle the file explorer on/off
+
 "indentation
 set tabstop=2
 set shiftwidth=2
@@ -61,7 +67,15 @@ set autoindent
 highlight TrailingSpaces ctermbg=red guibg=red
 match TrailingSpaces /\s\+$\|\t/
 
-set encoding=utf-8
+if has("multi_byte")
+  if &termencoding == ""
+    let &termencoding = &encoding
+  endif
+  set encoding=utf-8
+  setglobal fileencoding=utf-8
+  "setglobal bomb
+  set fileencodings=ucs-bom,utf-8,latin1
+endif
 set scrolloff=3
 set showmode
 set showcmd "display current command (nice for <leader>)
@@ -121,7 +135,7 @@ nnoremap <leader>t :TlistToggle<CR>
 let Tlist_Use_Right_Window = 1
 
 " toggle comment
-nnoremap <leader>c :TComment<CR>
+vnoremap <leader>c :TComment<CR>
 
 :silent !mkdir -p /tmp/vim/cache/unite >/dev/null 2>&1
 let g:unite_data_directory='/tmp/vim/cache/unite'
@@ -213,7 +227,7 @@ call SingleCompile#SetOutfile('cpp', 'c++11', '$(FILE_TITLE)$')
 call SingleCompile#ChooseCompiler('cpp', 'c++11')
 
 " git diff
-nmap <leader>d :GitGutterToggle
+nmap <leader>g :GitGutterToggle
 highlight SignColumn guibg=gray17
 let g:gitgutter_realtime = 0
 let g:gitgutter_eager = 0
