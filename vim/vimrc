@@ -231,13 +231,3 @@ nmap <leader>g :GitGutterToggle
 highlight SignColumn guibg=gray17
 let g:gitgutter_realtime = 0
 let g:gitgutter_eager = 0
-
-" change local directory to git root (using vim-fugitive);
-" http://www.reddit.com/r/vim/comments/2zc8sy/poors_man_vimrooter_git_only_using_fugitive/
-" Poor man vim-rooter, git only, using fugitive
-autocmd BufLeave * let b:last_cwd = getcwd()
-autocmd BufEnter * if exists('b:last_cwd')
-                \|   execute 'lcd' escape(b:last_cwd, ' ')
-                \| else
-                \|   silent! Glcd
-                \| endif
