@@ -174,3 +174,7 @@ function tabname {
     printf "\e]1;${name}\a"
 }
 
+function docker_clean()
+{
+    docker rmi -f $(docker images -a | grep "^<none>" | cut -b42-55)
+}
