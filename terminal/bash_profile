@@ -14,18 +14,18 @@ fi
 # show git branch in shell prompt
 # http://betterexplained.com/articles/aha-moments-when-learning-git/ and http://asemanfar.com/Current-Git-Branch-in-Bash-Prompt
 
-function get_relative_path()
+function get_relative_path
 {
     local root_path="$1"
     echo $( pwd ) | sed "s#${root_path}##g"
 }
 
-function parse_repo_path()
+function parse_repo_path
 {
     git rev-parse --show-toplevel 2> /dev/null
 }
 
-function parse_branch()
+function parse_branch
 {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
@@ -37,7 +37,7 @@ orange="\x01$( tput setaf 172 )\x02"
 green="\x01$( tput setaf 2 )\x02"
 blue="\x01$( tput setaf 4 )\x02"
 
-function parse_shared_folder()
+function parse_shared_folder
 {
     local folder="${1}"
     if [ -z "${folder}" ];
@@ -51,7 +51,7 @@ function parse_shared_folder()
     fi
 }
 
-function parse_upstream()
+function parse_upstream
 {
     local branch="$1"
     if [ -n "${branch}" ]
@@ -67,7 +67,7 @@ function parse_upstream()
     fi
 }
 
-function parse_repo()
+function parse_repo
 {
     local repo_path="$1"
     if [ -n "${repo_path}" ]
@@ -81,7 +81,7 @@ function parse_repo()
     echo "${green}${repo}"
 }
 
-function parse_path()
+function parse_path
 {
     local repo_path="$1"
     local my_path="$( pwd )"
@@ -98,7 +98,7 @@ function parse_path()
     echo "${blue}${my_path}"
 }
 
-function parse_diff()
+function parse_diff
 {
     if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1
     then
@@ -120,7 +120,7 @@ function parse_diff()
     fi
 }
 
-function git_prompt()
+function git_prompt
 {
     local branch="$( parse_branch )"
     local root="$( parse_repo_path )"
@@ -163,7 +163,7 @@ then
 fi
 
 ### simple terminal calculator
-function calc()
+function calc
 {
     awk "BEGIN{ print $* }";
 }
@@ -174,7 +174,32 @@ function tabname {
     printf "\e]1;${name}\a"
 }
 
-function docker_clean()
+function docker_clean
 {
     docker rmi -f $(docker images -a | grep "^<none>" | cut -b42-55)
+}
+
+function get_pixel
+{
+    local img="$1"
+    local x="$2"
+    local y="$3"
+
+    local pixel="$( convert "${img}"[1x1+${x}+${y}] -format "%[fx:int(255*r)],%[fx:int(255*g)],%[fx:int(255*b)],%[fx:int(255*a)]" info: )"
+    echo "${img} RGB@${x}x${y}: ${pixel}"
+}
+
+function nmap_norm
+{
+    local x="$1"
+    local y="$2"
+    local z="$3"
+
+cat <<-EOF | python -
+import sys
+to_float = lambda x: float(x) / 255.
+unpack = lambda x: x * 2. - 1.
+n_sq = lambda x: unpack(to_float(x)) ** 2
+sys.stdout.write("||(${x}, ${y}, ${z})|| = " + str(sum(map(n_sq, [$x, $y, $z]))) + "\n")
+EOF
 }
