@@ -148,6 +148,13 @@ call unite#filters#sorter_default#use(['sorter_rank'])
 call unite#custom#source('file_rec/async','sorters','sorter_rank')
 " replacing unite with ctrl-p
 nnoremap <silent> <leader>p :Unite -auto-resize file file_mru file_rec/async<cr>
+" from http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
+" use git for fast autocomplete
+let g:ctrlp_use_caching = 0
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+let g:ctrlp_prompt_mappings = {
+  \ 'AcceptSelection("e")': ['<space>', '<cr>', '<2-LeftMouse>'],
+  \ }
 
 
 " Search for selected text, forwards or backwards.
@@ -231,3 +238,6 @@ nmap <leader>g :GitGutterToggle
 highlight SignColumn guibg=gray17
 let g:gitgutter_realtime = 0
 let g:gitgutter_eager = 0
+
+" replace current line by the result of executing the command in a shell
+nnoremap <Leader>x !!sh<cr>
