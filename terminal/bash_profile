@@ -57,8 +57,14 @@ function parse_upstream
     if [ -n "${branch}" ]
     then
       local remote_branch="$( git rev-parse --abbrev-ref @{u} 2>/dev/null )"
-      local remote="$( echo "${remote_branch}" | sed "s#${branch}##g" )"
-      if [ -n "${remote_branch}" ] && git diff --quiet "${remote_branch}".."${branch}";
+      if [ -z "${remote_branch}" ]  # handle local branch
+      then
+          local remote=""
+      else
+          local remote="${remote_branch%$branch}"  # strip suffix (/branch)
+      fi
+
+      if git diff --quiet "${remote_branch}".."${branch}";
       then
           echo "${red}(${grey}${remote}${red}${branch})"
       else
@@ -105,12 +111,12 @@ function parse_diff
         local diff="$( git status --porcelain )"
         if [ -n "${diff}" ] && echo "${diff}" | grep -v "^?? " &>/dev/null;
         then
-            state="±"
+            state="✎ "
         fi
 
         if grep "^?? " <<<"${diff}" &>/dev/null;
         then
-            state="${state}✎ "
+            state="${state}⚑"
         fi
 
         if [ -n "${state}" ]
