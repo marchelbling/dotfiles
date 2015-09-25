@@ -145,19 +145,12 @@ let g:unite_data_directory='/tmp/vim/cache/unite'
 let g:unite_enable_start_insert=1
 " search in content
 nnoremap <Leader>f :Unite grep:.<cr>
-" search files CtrlP search
+" search files 'à la' Ctrl-P using Unite
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
+call unite#filters#sorter_default#use(['sorter_length'])
 call unite#custom#source('file_rec/async','sorters','sorter_rank')
-" replacing unite with ctrl-p
-nnoremap <silent> <leader>p :Unite -auto-resize file file_mru file_rec/async<cr>
-" from http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
-" use git for fast autocomplete
-let g:ctrlp_use_caching = 0
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
-let g:ctrlp_prompt_mappings = {
-  \ 'AcceptSelection("e")': ['<space>', '<cr>', '<2-LeftMouse>'],
-  \ }
+" search from project root
+nnoremap <silent> <leader>p :UniteWithProjectDir -auto-resize file file_rec/async file_mru<cr>
 
 
 " Search for selected text, forwards or backwards.
