@@ -138,7 +138,7 @@ nnoremap <leader>t :TlistToggle<CR>
 let Tlist_Use_Right_Window = 1
 
 " toggle comment
-vnoremap <leader>c :TComment<CR>
+map <leader>c :TComment<CR>
 
 :silent !mkdir -p /tmp/vim/cache/unite >/dev/null 2>&1
 let g:unite_data_directory='/tmp/vim/cache/unite'
