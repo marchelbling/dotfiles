@@ -129,7 +129,7 @@ function homebrew_install
     local db_packages=( sqlite mysql )
     local font_packages=( fontconfig freetype )
     local image_packages=( imagemagick ffmpeg jpeg libpng libtiff )
-    local network_packages=( wget ack  openssl )
+    local network_packages=( wget ack ag  openssl )
     local queue_packages=( zeromq rabbitmq )
 
     homebrew_packages_install network_packages[@]
@@ -239,6 +239,7 @@ function vim_install
     vim_bundle_install https://github.com/airblade/vim-gitgutter
     vim_bundle_install https://github.com/scrooloose/syntastic
     vim_bundle_install https://github.com/tpope/vim-fugitive
+    vim_bundle_install https://github.com/godlygeek/tabular
 }
 
 
