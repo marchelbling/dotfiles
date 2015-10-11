@@ -71,14 +71,13 @@ let g:gitgutter_eager = 0
 
 
 """"""" code layout
-
 " indentation
 set autoindent
 set expandtab
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
-set textwidth=100
+set textwidth=0
 set colorcolumn=100
 set scrolloff=5 " always show at least 5 lines below
 set formatoptions+=qrn1
@@ -90,6 +89,7 @@ set showcmd           " display current command (nice for <leader>)
 set showmatch         " show matching brackets
 set showmode
 set wrap
+set linebreak         " change long lines display
 set visualbell        " enable visual bell instead of audio bell
 set cursorline        " highlight current line
 set ttyfast
@@ -98,8 +98,8 @@ set gdefault          " set g by default for substitute commands (%s///g)
 set clipboard=unnamed " use the system clipboard
 
 au BufRead,BufNewFile *.json set filetype=javascript                 " json
-au BufNewFile,BufRead * if &syntax == '' | set filetype=cpp | endif  " no extension filetype from http://stackoverflow.com/a/2669295/626278
-autocmd Filetype tex setlocal ts=2 sw=2
+au BufRead,BufNewFile * if &syntax == '' | set filetype=cpp | endif  " no extension filetype from http://stackoverflow.com/a/2669295/626278
+au BufRead,BufNewFile *.tex setlocal ts=2 sw=2
 
 " automatically reload vim configuration when a change is detected (http://superuser.com/a/417997)
 augroup myvimrc
@@ -114,7 +114,7 @@ match TrailingSpaces /\s\+$\|\t/
 
 " editing
 set hidden                     " allow unsaved changes in buffer
-set backspace=indent,eol,start " smarter new line editing!
+set backspace=indent,eol,start " low backspacing over an indent, line break (end of line) or start of an insert
 
 " searching
 """ files
@@ -131,7 +131,7 @@ call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_length'])
 call unite#custom#source('file_rec/async','sorters','sorter_rank')
 " search from project root
-nnoremap <silent> <leader>p :UniteWithProjectDir -auto-resize file file_rec/async file_mru<cr>
+nnoremap <silent> <leader>p :UniteWithProjectDir -auto-resize buffer file_mru file_rec/async:!<cr>
 
 
 """ within buffer
