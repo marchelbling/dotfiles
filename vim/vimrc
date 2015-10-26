@@ -61,7 +61,7 @@ let g:syntastic_cpp_compiler_options      = '-Wall'
 let g:syntastic_cpp_check_header          = 1
 let g:syntastic_cpp_auto_refresh_includes = 1
 let g:syntastic_javascript_checkers       = ['eslint']
-let g:syntastic_tex_checkers              = []  " don't check .tex files
+let g:syntastic_mode_map                  = { "mode": "passive", "active_filetypes": ["python", "cpp"], "passive_filetypes": [] }
 
 " git gutter
 nmap <leader>g :GitGutterToggle
@@ -71,6 +71,17 @@ let g:gitgutter_eager = 0
 
 
 """"""" code layout
+
+au BufRead,BufNewFile *.json set filetype=javascript               " json
+au BufRead,BufNewFile * if &syntax == '' | set filetype=c | endif  " no extension filetype from http://stackoverflow.com/a/2669295/626278
+au BufRead,BufNewFile *.tex setlocal ts=2 sw=2
+
+" automatically reload vim configuration when a change is detected (http://superuser.com/a/417997)
+augroup myvimrc
+    au!
+    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+augroup END
+
 " indentation
 set autoindent
 set expandtab
@@ -96,17 +107,6 @@ set ttyfast
 set ruler             " show line/column in footer
 set gdefault          " set g by default for substitute commands (%s///g)
 set clipboard=unnamed " use the system clipboard
-
-au BufRead,BufNewFile *.json set filetype=javascript                 " json
-au BufRead,BufNewFile * if &syntax == '' | set filetype=cpp | endif  " no extension filetype from http://stackoverflow.com/a/2669295/626278
-au BufRead,BufNewFile *.tex setlocal ts=2 sw=2
-
-" automatically reload vim configuration when a change is detected (http://superuser.com/a/417997)
-augroup myvimrc
-    au!
-    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
-augroup END
-
 
 " trailing spaces (no automatic killing of them though)
 highlight TrailingSpaces ctermbg=red guibg=red
