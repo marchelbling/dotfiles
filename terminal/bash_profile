@@ -7,10 +7,14 @@ alias ls='ls -F'
 alias depends='otool -L'
 
 #### GIT
-if [ -e "${HOME}/.git-completion.bash" ]
-then
-    source "${HOME}/.git-completion.bash"
-fi
+for binary in "git" "docker"
+do
+    _autocomplete="${HOME}/.${binary}-completion.bash"
+    if [ -e "${_autocomplete}" ]
+    then
+        source "${_autocomplete}"
+    fi
+done
 # show git branch in shell prompt
 # http://betterexplained.com/articles/aha-moments-when-learning-git/ and http://asemanfar.com/Current-Git-Branch-in-Bash-Prompt
 

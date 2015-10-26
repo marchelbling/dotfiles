@@ -249,6 +249,12 @@ function git_install
     curl https://raw.github.com/git/git/master/contrib/completion/git-completion.bash > "${HOME}/.git-completion.bash"
 }
 
+function docker_install
+{
+    # fetch docker-completion.bash
+    curl https://raw.githubusercontent.com/docker/docker/master/contrib/completion/bash/docker > "${HOME}/.docker-completion.bash"
+}
+
 
 ###############
 # 1. distribute configuration files
