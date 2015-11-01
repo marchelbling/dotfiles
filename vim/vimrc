@@ -131,7 +131,7 @@ call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_length'])
 call unite#custom#source('file_rec/async','sorters','sorter_rank')
 " search from project root
-nnoremap <silent> <leader>p :UniteWithProjectDir -auto-resize buffer file_mru file_rec/async:!<cr>
+nnoremap <silent> <leader>p :UniteWithProjectDir -auto-resize buffer file_rec/async:!<cr>
 
 
 """ within buffer
