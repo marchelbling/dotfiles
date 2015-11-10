@@ -240,6 +240,7 @@ function vim_install
     vim_bundle_install https://github.com/scrooloose/syntastic
     vim_bundle_install https://github.com/tpope/vim-fugitive
     vim_bundle_install https://github.com/godlygeek/tabular
+    vim_bundle_install https://github.com/henrik/vim-indexed-search
 }
 
 
