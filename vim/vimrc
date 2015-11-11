@@ -35,7 +35,7 @@ let g:airline_theme='wombat'
 let g:airline_powerline_fonts=1
 set laststatus=2
 set t_Co=256
-let g:airline#extensions#tabline#enabled=1    " display list of opened buffers
+let g:airline#extensions#tabline#enabled=1     " display list of opened buffers
 let g:airline#extensions#tabline#fnamemod=':t' " display buffer filename only
 
 " display side file explorer
@@ -45,15 +45,15 @@ let g:netrw_banner    = 0
 nmap <leader>d :Lex<CR> " This will toggle the file explorer on/off
 
 " syntastic
-set statusline += %#warningmsg#                " from the documentation
-set statusline += %{SyntasticStatuslineFlag()} " from the documentation
-set statusline += %*                           " from the documentation
+set statusline+=%#warningmsg#                " from the documentation
+set statusline+=%{SyntasticStatuslineFlag()} " from the documentation
+set statusline+=%*                           " from the documentation
 let g:syntastic_always_populate_loc_list  = 1
 let g:syntastic_auto_loc_list             = 1
 let g:syntastic_check_on_open             = 1
 let g:syntastic_check_on_wq               = 1
 let g:syntastic_aggregate_errors          = 1 " run all checkers no matter what
-let g:syntastic_auto_jump                 = 1 " jump to first error upon save
+let g:syntastic_auto_jump                 = 0 " jump to first error upon save
 let g:syntastic_python_checkers           = ['flake8']
 let g:syntastic_python_flake8_args        = "--max-line-length=119"
 let g:syntastic_cpp_compiler              = 'g++'
