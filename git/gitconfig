@@ -9,6 +9,10 @@
     conflictstyle = diff3
 [diff]
     wordRegex = .
+[rebase]
+    autoSquash = true
+    autoStash = true
+    missingCommitsCheck = "warn"
 [alias]
     br = branch -avv
     st = status
