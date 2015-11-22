@@ -129,7 +129,8 @@ if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
   " Use project root for ag search by default
   let g:ag_working_path_mode='r'
-  nnoremap <silent> <leader>f :Ag --smart-case<cr>
+  let g:ag_prg='ag --vimgrep --smart-case '
+  nnoremap <silent> <leader>f :Ag!<space>
 endif
 
 
