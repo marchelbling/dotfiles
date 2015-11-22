@@ -123,6 +123,15 @@ set wildmenu       " bash-like tab completion
 set wildmode=list:longest,full
 set wildignore+=*.o,*.so,*.swp,*.zip,*.pyc,*/vendor/*,*/node_modules/*
 
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+  " Use project root for ag search by default
+  let g:ag_working_path_mode='r'
+  nnoremap <silent> <leader>f :Ag --smart-case<cr>
+endif
+
 
 :silent !mkdir -p /tmp/vim/cache/unite >/dev/null 2>&1
 let g:unite_data_directory = '/tmp/vim/cache/unite'
@@ -133,6 +142,8 @@ call unite#filters#sorter_default#use(['sorter_length'])
 call unite#custom#source('file_rec/async','sorters','sorter_rank')
 " search from project root
 nnoremap <silent> <leader>p :UniteWithProjectDir -auto-resize buffer file_rec/async:!<cr>
+" bind F to grep word under cursor (see https://robots.thoughtbot.com/faster-grepping-in-vim)
+nnoremap F :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 
 """ within buffer
@@ -150,21 +161,6 @@ vnoremap <silent> * :<C-U>
   \gvy/<C-R><C-R>=substitute(
   \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
   \gV:call setreg('"', old_reg, old_regtype)<CR>
-
-" search in content
-let g:unite_source_grep_max_candidates = 100
-" Use ag in unite grep source.
-let g:unite_source_grep_command = 'ag'
-let g:unite_source_grep_default_opts = '--line-numbers --nogroup --smart-case'
-let g:unite_source_grep_recursive_opt = ''
-
-" search a file in the filetree
-nnoremap <space><space> :<C-u>Unite file_rec/async<cr>
-" reset not it is <C-l> normally
-:nnoremap <space>r <Plug>(unite_restart)
-" nnoremap <silent> <leader>f :UniteWithProjectDir file file_rec/async file_mru<cr>
-nnoremap <space>/ :<C-u>Unite -buffer-name=grep grep:.<cr>
-
 
 
 
