@@ -216,6 +216,8 @@ function vim_bundle_install
 
 function vim_install
 {
+    # requires vim 7.4.615+ (see https://github.com/Shougo/unite.vim/issues/798)
+    # Use e.g. `[sudo] add-apt-repository ppa:pi-rho/dev`
     for folder in "autoload" "bundle" "vim"
     do
         make_dir "${VIM_DIR}/${folder}"
@@ -241,6 +243,8 @@ function vim_install
     vim_bundle_install https://github.com/tpope/vim-fugitive
     vim_bundle_install https://github.com/godlygeek/tabular
     vim_bundle_install https://github.com/henrik/vim-indexed-search
+    vim_bundle_install https://github.com/rking/ag.vim
+    vim_bundle_install https://github.com/skammer/vim-css-color
 }
 
 
