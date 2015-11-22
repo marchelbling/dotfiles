@@ -1,6 +1,0 @@
---type-set=c=.c,.cpp,.cxx,.h,.hpp,.hxx
---ignore-dir=tmp,build*
---smart-case
---sort-files
---follow
---break

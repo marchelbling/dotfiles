@@ -1,0 +1,7 @@
+build*
+examples
+CMakeFiles
+node_modules
+vendor
+debug
+ChangeLog
