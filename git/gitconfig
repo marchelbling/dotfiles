@@ -33,5 +33,5 @@
     ack = !git log --notes --format=full | ack
     # show commit messages for a particular loc: $1 => file, $2 => line
     line = !sh -c 'git log --topo-order --graph -u -L$2,$2:$1' -
-    fixup = "!sh -c '(git diff-files --quiet || (echo Unstaged changes, please commit or stash with --keep-index; exit 1)) && revision="$( git rev-parse $1 )" && git commit --fixup="${revision}" && git rebase -i --autosquash "${revision}"^' -"
-    squash = "!sh -c '(git diff-files --quiet || (echo Unstaged changes, please commit or stash with --keep-index; exit 1)) && revision="$( git rev-parse $1 )" && git commit --squash="${revision}" && git rebase -i --autosquash "${revision}"^' -"
+    fixup = "!sh -c 'revision="$( git rev-parse $1 )" && git commit --fixup="${revision}" && git rebase -i --autosquash "${revision}"^' -"
+    squash = "!sh -c 'revision="$( git rev-parse $1 )" && git commit --squash="${revision}" && git rebase -i --autosquash "${revision}"^' -"
