@@ -121,7 +121,8 @@ set backspace=indent,eol,start " low backspacing over an indent, line break (end
 set wildignorecase " case insensitive file completion
 set wildmenu       " bash-like tab completion
 set wildmode=list:longest,full
-set wildignore+=*/tmp/*,*/build*/*,*.o,*.so,*.swp,*.zip,*/vendor/*,*/\.git/*
+set wildignore+=*.o,*.so,*.swp,*.zip,*.pyc,*/vendor/*,*/node_modules/*
+
 
 :silent !mkdir -p /tmp/vim/cache/unite >/dev/null 2>&1
 let g:unite_data_directory = '/tmp/vim/cache/unite'
@@ -174,7 +175,7 @@ nnoremap <C-h> :bprevious<CR>
 nnoremap <C-l> :bnext<CR>
 inoremap <C-h> <Esc>:bprevious<CR>i
 inoremap <C-l> <Esc>:bnext<CR>i
-nnoremap <C-w> :bd<CR>
+nnoremap <C-x> :bd<CR>
 
 " navigate through splits using arrows
 nmap <silent> <S-Up> :wincmd k<CR>
