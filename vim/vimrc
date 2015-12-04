@@ -189,7 +189,6 @@ nmap <silent> <S-Right> :wincmd l<CR>
 if has("spell")
   au BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
 endif
-au BufNewFile,BufRead COMMIT_EDITMSG call feedkeys("i", "t")
 
 " taglist
 nnoremap <leader>t :TlistToggle<CR>
