@@ -57,24 +57,26 @@ function parse_shared_folder
 
 function parse_upstream
 {
-    local branch="$1"
-    if [ -n "${branch}" ]
+    local branch="${1}"
+    local remote_branch="$( git rev-parse --abbrev-ref @{u} 2>/dev/null )"
+    local color="${grey}"
+    if [ -z "${remote_branch}" ]  # handle local branch
     then
-      local remote_branch="$( git rev-parse --abbrev-ref @{u} 2>/dev/null )"
-      if [ -z "${remote_branch}" ]  # handle local branch
-      then
-          local remote=""
-      else
-          local remote="${remote_branch%$branch}"  # strip suffix (/branch)
-      fi
+        local remote=""
+    else
+        if [ "${remote_branch}" == "@{u}" ]
+        then
+            local remote="∅ /"  # remote branch deleted
+        else
+            local remote="${remote_branch%$branch}"  # strip suffix (/branch)
 
-      if git diff --quiet "${remote_branch}".."${branch}";
-      then
-          echo "${red}(${grey}${remote}${red}${branch})"
-      else
-          echo "${red}(${orange}${remote}${red}${branch})"
-      fi
+            if ! git diff --quiet "${remote_branch}".."${branch}" 2>&1 >/dev/null;
+            then
+                local color="${orange}"
+            fi
+        fi
     fi
+    echo "${red}(${color}${remote}${red}${branch})"
 }
 
 function parse_repo
