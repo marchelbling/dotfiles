@@ -26,7 +26,7 @@
     # show full history with graph & branches:
     hist = log --graph --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
     # list commits that modified a given file:
-    history = whatchanged --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+    history = whatchanged --follow --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
     # list filetree at given revision:
     ls = ls-tree -r --name-only --full-tree
     # search in full commit messages
