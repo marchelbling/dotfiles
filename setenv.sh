@@ -1,16 +1,16 @@
 #!/bin/bash
 
-RUBY_VERSION="2.0.0-p247"
-
 if [ "$( uname )" == "Darwin" ];
 then
     IS_MACOS=true
     VIM_DIR="${HOME}/.vim"
     VIMRC="${HOME}/.vimrc"
+    GITCONFIG="${HOME}/.gitconfig"
 else
     IS_MACOS=false
     VIM_DIR="/etc/vim"
     VIMRC="${VIM_DIR}/vimrc"
+    GITCONFIG="/etc/gitconfig"
 fi
 VIM_BUNDLE_DIR="${VIM_DIR}/bundle"
 
@@ -72,18 +72,6 @@ function git_clone
 }
 
 
-function clean_macvim_install
-{
-    cd /System/Library/Frameworks/Python.framework/Versions
-    sudo mv Current Current-sys
-    sudo ln -s /usr/local/Cellar/python/2.7.*/Frameworks/Python.framework/Versions/Current Current
-    brew install macvim
-    sudo rm Current
-    sudo mv Current-sys Current
-    cd -
-}
-
-
 function homebrew_packages_install
 {
     declare -a packages=("${!1}")
@@ -102,15 +90,6 @@ function homebrew_packages_install
 function clean_python_install
 {
     brew install python --framework
-}
-
-
-function clean_ruby_install
-{
-    brew install rbenv
-    brew install ruby-build
-    rbenv install ${RUBY_VERSION}
-    rbenv global ${RUBY_VERSION}
 }
 
 
@@ -141,10 +120,6 @@ function homebrew_install
     homebrew_packages_install queue_packages[@]
 
     clean_python_install
-    clean_ruby_install
-
-    # see http://stackoverflow.com/questions/11148403/homebrew-macvim-with-python2-7-3-support-not-working:
-    clean_macvim_install
 
     brew doctor
 }
@@ -172,38 +147,13 @@ function python_install
     local ipython_packages=( readline ipython )
     local web_packages=( beautifulsoup requests )
     local linter_packages=( flake8 pyflakes pylint )
-    local other_packages=( boto argparse nose python-dateutil pycrypto )
+    local other_packages=( awscli argparse nose python-dateutil pycrypto )
 
     python_packages_install scientific_packages[@]
     python_packages_install ipython_packages[@]
     python_packages_install web_packages[@]
     python_packages_install linter_packages[@]
     python_packages_install other_packages[@]
-}
-
-
-function ruby_packages_install
-{
-    local -a packages=( "${!1}" )
-    for package in "${packages[@]}"
-    do
-        if grep '_' <<<"${package}"
-        then
-            local gem_name="$( cut -d'_' -f1 <<<"${package}" )"
-            local gem_version="$( cut -d'_' -f2 <<<"${package}" )"
-            gem install "${gem_name}" -v "${gem_version}" --no-rdoc --no-ri
-        else
-            gem install "${package}" --no-rdoc --no-ri
-        fi
-    done
-}
-
-
-function ruby_install
-{
-    local deploy_packages=( chef_11.8.0 chef-zero_1.7.2 knife-solo_0.4.0 librarian_0.1.1 librarian-chef_0.0.2 berkshelf_2.0.10 )
-
-    ruby_packages_install deploy_packages[@]
 }
 
 
@@ -245,6 +195,9 @@ function vim_install
     vim_bundle_install https://github.com/henrik/vim-indexed-search
     vim_bundle_install https://github.com/rking/ag.vim
     vim_bundle_install https://github.com/skammer/vim-css-color
+    vim_bundle_install https://github.com/Valloric/YouCompleteMe && cd "${VIM_BUNDLE_DIR}/YouCompleteMe" \
+                                                                 && git submodule update --init --recursive \
+                                                                 && ./install.py --clang-completer
 }
 
 
@@ -253,6 +206,7 @@ function git_install
     # fetch git-completion.bash
     curl https://raw.github.com/git/git/master/contrib/completion/git-completion.bash > "${HOME}/.git-completion.bash"
 }
+
 
 function docker_install
 {
@@ -274,10 +228,7 @@ fi
 # create soft links for all config files
 current_directory="$( pwd )"
 ## git
-ln -fs "${current_directory}/git/gitconfig"         /etc/gitconfig
-## ruby
-ln -fs "${current_directory}/ruby/irbrc"            "${HOME}/.irbrc"
-ln -fs "${current_directory}/ruby/rdebugrc"         "${HOME}/.rdebugrc"
+ln -fs "${current_directory}/git/gitconfig"         "${GITCONFIG}"
 ## terminal
 ln -fs "${current_directory}/terminal/agignore"     "${HOME}/.agignore"
 ln -fs "${current_directory}/terminal/bash_profile" "${HOME}/.bash_profile"
@@ -286,6 +237,7 @@ ln -fs "${current_directory}/terminal/inputrc"      "${HOME}/.inputrc"
 ln -fs "${current_directory}/terminal/screenrc"     "${HOME}/.screenrc"
 ## vim
 ln -fs "${current_directory}/vim/vimrc"             "${VIMRC}"
+ln -fs "${current_directory}/vim/ycm_cpp_conf.py"   "${HOME}/.ycm_cpp_conf.py"
 
 source "${HOME}/.bash_profile"
 
@@ -299,21 +251,16 @@ while [ $# -ge 1 ] ; do
             if ${IS_MACOS};
             then
               homebrew_install
-            fi
 
-            git_install
-            python_install
-            ruby_install
-            vim_install
-
-            if ${IS_MACOS};
-            then
               # terminal theme needs to be 'default'ed manually
               open "${current_directory}/terminal/colors.terminal"
             fi
 
-            # drop current command line arg
-            shift 1 ;;
+            git_install
+            python_install
+            vim_install
+
+            shift 1 ;;  # drop current command line arg
         --git)
             git_install
             shift 1 ;;
@@ -323,14 +270,11 @@ while [ $# -ge 1 ] ; do
         --python)
             python_install
             shift 1 ;;
-        --ruby)
-            ruby_install
-            shift 1 ;;
         --vim)
             vim_install
             shift 1 ;;
         --help)
-            echo "Usage: ./setenv.sh [--all|--homebrew|--vim|--python|--ruby|--git|--help]" ; shift 1 ;;
-        # -d) dest_dir=$2 ; shift 2 ;;
+            echo "Usage: $0 [--all|--homebrew|--vim|--python|--git|--help]"
+            shift 1 ;;
     esac
 done
