@@ -180,21 +180,17 @@ function vim_install
     # install addons using pathogen
     curl -LSso "${VIM_DIR}/autoload/pathogen.vim" https://tpo.pe/pathogen.vim
 
-    vim_bundle_install https://github.com/vim-scripts/taglist.vim
     vim_bundle_install https://github.com/tomtom/tcomment_vim
     vim_bundle_install https://github.com/vim-scripts/wombat256.vim
     vim_bundle_install https://github.com/xuhdev/SingleCompile
     vim_bundle_install https://github.com/bling/vim-airline
     vim_bundle_install https://github.com/Shougo/unite.vim
-    vim_bundle_install https://github.com/Shougo/vimproc.vim && cd "${VIM_BUNDLE_DIR}/vimproc.vim" && make && cd -
-    vim_bundle_install https://github.com/Shougo/neomru.vim
     vim_bundle_install https://github.com/airblade/vim-gitgutter
     vim_bundle_install https://github.com/scrooloose/syntastic
     vim_bundle_install https://github.com/tpope/vim-fugitive
     vim_bundle_install https://github.com/godlygeek/tabular
     vim_bundle_install https://github.com/henrik/vim-indexed-search
     vim_bundle_install https://github.com/rking/ag.vim
-    vim_bundle_install https://github.com/skammer/vim-css-color
     vim_bundle_install https://github.com/Valloric/YouCompleteMe && cd "${VIM_BUNDLE_DIR}/YouCompleteMe" \
                                                                  && git submodule update --init --recursive \
                                                                  && ./install.py --clang-completer
