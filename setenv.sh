@@ -82,12 +82,6 @@ function homebrew_packages_install
 }
 
 
-function clean_python_install
-{
-    brew install python --framework
-}
-
-
 function homebrew_install
 {
     # install homebrew and some utils
@@ -98,13 +92,12 @@ function homebrew_install
     brew update
     brew doctor
 
-    local code_packages=( git readline cmake ctags valgrind libyaml boost node gfortran htop-osx )
-    local compression_packages=( p7zip zlib xz )
-    local db_packages=( sqlite mysql )
+    local code_packages=( git readline cmake valgrind libyaml htop-osx )
+    local compression_packages=( p7zip )
+    local db_packages=( sqlite )
     local font_packages=( fontconfig freetype )
     local image_packages=( imagemagick ffmpeg jpeg libpng libtiff )
-    local network_packages=( wget ack ag  openssl )
-    local queue_packages=( zeromq rabbitmq )
+    local network_packages=( wget ack ag openssl )
 
     homebrew_packages_install network_packages[@]
     homebrew_packages_install compression_packages[@]
@@ -112,9 +105,6 @@ function homebrew_install
     homebrew_packages_install db_packages[@]
     homebrew_packages_install font_packages[@]
     homebrew_packages_install code_packages[@]
-    homebrew_packages_install queue_packages[@]
-
-    clean_python_install
 
     brew doctor
 }
