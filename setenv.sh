@@ -210,7 +210,7 @@ while [ $# -ge 1 ] ; do
               homebrew_install
 
               # terminal theme needs to be 'default'ed manually
-              open "${current_directory}/terminal/colors.terminal"
+              open "${current_directory}/terminal/wombat.terminal"
             fi
 
             git_install
