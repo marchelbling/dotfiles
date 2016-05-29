@@ -10,10 +10,12 @@ filetype plugin on         " use specific filetype plugins
 filetype plugin indent on
 runtime macros/matchit.vim " activate matchit (extended '%' behavior)
 
-:silent !mkdir -p /tmp/vim/undo >/dev/null 2>&1
-set nobackup              " ⚠  beware here: no backup
-set noswapfile            " ⚠  beware here: no swap (so no .~foo on disk!)
-set undodir=/tmp/vim/undo " ⚠  undodir will be killed upon restart
+:silent !mkdir -p ~/.vim/udata/undo >/dev/null 2>&1
+:silent !mkdir -p ~/.vim/udata/back >/dev/null 2>&1
+:silent !mkdir -p ~/.vim/udata/swap >/dev/null 2>&1
+set backupdir=~/.vim/udata/back
+set directory=~/.vim/udata/swap
+set undodir=~/.vim/udata/undo
 set undofile
 set history=1000
 set undolevels=1000
