@@ -187,8 +187,6 @@ then
 fi
 
 #### RUBY
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-
 # bash completion for ssh (based on .ssh/config)
 if which ruby 2>&1 >/dev/null;
 then
