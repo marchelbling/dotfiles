@@ -142,43 +142,19 @@ function python_install
 }
 
 
-function vim_bundle_install
-{
-    local bundle="$1"
-    git_clone "${bundle}" "${VIM_BUNDLE_DIR}"
-}
-
-
 function vim_install
 {
     # requires vim 7.4.615+ (see https://github.com/Shougo/unite.vim/issues/798)
     # Use e.g. `[sudo] add-apt-repository ppa:pi-rho/dev`
-    for folder in "autoload" "bundle" "vim"
-    do
-        make_dir "${VIM_DIR}/${folder}"
-    done
 
-    # # setup vim environment: font & plugins using pathogen
-    # make_dir ${HOME}/Library/Fonts
-    # git_clone https://github.com/Lokaltog/powerline-fonts.git ${HOME}/Library/Fonts
+    git clone https://github.com/VundleVim/Vundle.vim.git ${VIM_DIR}/bundle/Vundle.vim
+    vim +PluginInstall +qall  # install all plugins from vimrc
 
-    # install addons using pathogen
-    curl -LSso "${VIM_DIR}/autoload/pathogen.vim" https://tpo.pe/pathogen.vim
-
-    vim_bundle_install https://github.com/tomtom/tcomment_vim
-    vim_bundle_install https://github.com/vim-scripts/wombat256.vim
-    vim_bundle_install https://github.com/xuhdev/SingleCompile
-    vim_bundle_install https://github.com/bling/vim-airline
-    vim_bundle_install https://github.com/Shougo/unite.vim
-    vim_bundle_install https://github.com/airblade/vim-gitgutter
-    vim_bundle_install https://github.com/scrooloose/syntastic
-    vim_bundle_install https://github.com/tpope/vim-fugitive
-    vim_bundle_install https://github.com/godlygeek/tabular
-    vim_bundle_install https://github.com/henrik/vim-indexed-search
-    vim_bundle_install https://github.com/rking/ag.vim
-    vim_bundle_install https://github.com/Valloric/YouCompleteMe && cd "${VIM_BUNDLE_DIR}/YouCompleteMe" \
-                                                                 && git submodule update --init --recursive \
-                                                                 && ./install.py --clang-completer
+    local ycm="~/.vim/bundle/YouCompleteMe"
+    if [ -d "${ycm}" ]
+    then
+        cd "${ycm}" && ./install.py --clang-completer
+    fi
 }
 
 
