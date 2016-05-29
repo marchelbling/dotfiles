@@ -3,16 +3,11 @@
 if [ "$( uname )" == "Darwin" ];
 then
     IS_MACOS=true
-    VIM_DIR="${HOME}/.vim"
-    VIMRC="${HOME}/.vimrc"
-    GITCONFIG="${HOME}/.gitconfig"
-else
-    IS_MACOS=false
-    VIM_DIR="/etc/vim"
-    VIMRC="${VIM_DIR}/vimrc"
-    GITCONFIG="/etc/gitconfig"
 fi
-VIM_BUNDLE_DIR="${VIM_DIR}/bundle"
+
+VIM_DIR="${HOME}/.vim"
+VIMRC="${HOME}/.vimrc"
+GITCONFIG="${HOME}/.gitconfig"
 
 
 function get_extension
