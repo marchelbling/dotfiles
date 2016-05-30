@@ -170,9 +170,9 @@ let g:unite_enable_start_insert = 1
 " search files 'à la' Ctrl-P using Unite
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_length'])
-call unite#custom#source('file_rec/async','sorters','sorter_rank')
+call unite#custom#source('file_rec','sorters','sorter_rank')
 " search from project root
-nnoremap <silent> <leader>p :UniteWithProjectDir -auto-resize buffer file_rec/async:!<cr>
+nnoremap <silent> <leader>p :UniteWithProjectDir -auto-resize buffer file_rec:!<cr>
 " bind F to grep word under cursor (see https://robots.thoughtbot.com/faster-grepping-in-vim)
 nnoremap F :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
