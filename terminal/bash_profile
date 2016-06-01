@@ -8,15 +8,6 @@ alias depends='otool -L'
 
 
 #### HISTORY (from https://github.com/mrzool/bash-sensible/blob/master/sensible.bash)
-# Append to the history file, don't overwrite it
-shopt -s histappend
-
-# Save multi-line commands as one command
-shopt -s cmdhist
-
-# Record each line as it gets issued
-PROMPT_COMMAND='history -a'
-
 # Huge history. Doesn't appear to slow things down, so why not?
 HISTSIZE=500000
 HISTFILESIZE=100000
@@ -26,6 +17,15 @@ HISTCONTROL="erasedups:ignoreboth"
 
 # Don't record some commands
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history"
+
+# Append to the history file, don't overwrite it
+shopt -s histappend
+
+# Save multi-line commands as one command
+shopt -s cmdhist
+
+# Record each line as it gets issued
+export PROMPT_COMMAND="history -a; history -c; history -r; ${PROMPT_COMMAND}"
 
 #### GIT
 for binary in "git" "docker"
