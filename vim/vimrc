@@ -39,9 +39,8 @@ runtime macros/matchit.vim " activate matchit (extended '%' behavior)
 
 :silent !mkdir -p ~/.vim/udata/undo >/dev/null 2>&1
 :silent !mkdir -p ~/.vim/udata/back >/dev/null 2>&1
-:silent !mkdir -p ~/.vim/udata/swap >/dev/null 2>&1
+set noswapfile
 set backupdir=~/.vim/udata/back
-set directory=~/.vim/udata/swap
 set undodir=~/.vim/udata/undo
 set undofile
 set history=1000
