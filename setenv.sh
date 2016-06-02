@@ -147,8 +147,18 @@ function vim_install
     # requires vim 7.4.615+ (see https://github.com/Shougo/unite.vim/issues/798)
     # Use e.g. `[sudo] add-apt-repository ppa:pi-rho/dev`
 
-    git clone https://github.com/VundleVim/Vundle.vim.git ${VIM_DIR}/bundle/Vundle.vim
-    vim +PluginInstall +qall  # install all plugins from vimrc
+    local vundle="${VIM_DIR}/bundle/Vundle.vim"
+    if [ ! -d "${vundle}" ]
+    then
+        git clone "https://github.com/VundleVim/Vundle.vim.git" "${vundle}"
+        vim +PluginInstall +qall  # install all plugins from vimrc
+    fi
+
+    local vimproc="${VIM_DIR}/bundle/vimproc.vim"
+    if [ -d "${vimproc}" ]
+    then
+        cd "${vimproc}" && make
+    fi
 
     local ycm="~/.vim/bundle/YouCompleteMe"
     if [ -d "${ycm}" ]
