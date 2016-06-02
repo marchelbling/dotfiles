@@ -176,7 +176,7 @@ function vim_install
         cd "${vimproc}" && make
     fi
 
-    local ycm="~/.vim/bundle/YouCompleteMe"
+    local ycm="${VIM_DIR}/bundle/YouCompleteMe"
     if [ -d "${ycm}" ]
     then
         cd "${ycm}" && ./install.py --clang-completer

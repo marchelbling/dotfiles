@@ -25,6 +25,7 @@ Plugin 'https://github.com/scrooloose/syntastic'
 Plugin 'https://github.com/tpope/vim-fugitive'
 Plugin 'https://github.com/godlygeek/tabular'
 Plugin 'https://github.com/henrik/vim-indexed-search'
+Plugin 'https://github.com/Valloric/YouCompleteMe'
 
 call vundle#end()  " required
 
