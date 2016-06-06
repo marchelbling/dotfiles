@@ -154,6 +154,22 @@ function vim_install
         vim +PluginInstall +qall  # install all plugins from vimrc
     fi
 
+    if ${IS_MACOS};
+    then
+        local powerline="${VIM_DIR}/bundle/powerline-fonts"
+        local font_dir="${HOME}/Library/Fonts"
+        if [ ! -d "${font_dir}" ]
+        then
+            mkdir -p "${font_dir}"
+        fi
+
+        if [ -d "${powerline}" ]
+        then
+            # custom install is fine (instead of using the install.sh script)
+            cd "${powerline}" && cp "AnonymousPro/Anonymice\ Powerline.ttf" "${font_dir}"
+        fi
+    fi
+
     local vimproc="${VIM_DIR}/bundle/vimproc.vim"
     if [ -d "${vimproc}" ]
     then

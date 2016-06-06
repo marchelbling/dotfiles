@@ -52,7 +52,7 @@ let mapleader = ","
 """"""" look'n'feel
 
 colorscheme wombat256mod
-set guifont=Anonymice\ Powerline\ for\ Powerline:h14
+set guifont=Anonymice\ Powerline:h14
 
 " vim-airline (status bar)
 let g:airline_theme='wombat'
