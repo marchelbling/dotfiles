@@ -312,3 +312,21 @@ call SingleCompile#SetCompilerTemplate('cpp', 'c++11', 'g++ with C++11 support',
                                       \'echo -e "\n---\nOutput:\n" && ./$(FILE_TITLE)$')
 call SingleCompile#SetOutfile('cpp', 'c++11', '$(FILE_TITLE)$')
 call SingleCompile#ChooseCompiler('cpp', 'c++11')
+
+" " autocomplete
+" need bundle: 'Shougo/neocomplcache'
+" let g:acp_enableAtStartup              = 0
+" let g:neocomplcache_enable_at_startup  = 1
+" let g:neocomplcache_enable_smart_case  = 1
+" let g:neocomplcache_min_syntax_length  = 2
+" let g:neocomplcache_enable_auto_select = 1
+" let g:neocomplcache_max_list           = 12
+" let g:neocomplcache_enable_camel_case_completion = 1
+" let g:neocomplcache_enable_underbar_completion   = 1
+
+" YouCompleteMe
+let g:ycm_global_ycm_extra_conf = '~/.ycm_cpp_conf.py'
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_server_use_vim_stdout = 0
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
