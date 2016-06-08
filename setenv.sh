@@ -154,7 +154,7 @@ function vim_install
         vim +PluginInstall +qall  # install all plugins from vimrc
     fi
 
-    if ${IS_MACOS};
+    if [ "${IS_MACOS}" == "true" ];
     then
         local powerline="${VIM_DIR}/bundle/powerline-fonts"
         local font_dir="${HOME}/Library/Fonts"
@@ -203,7 +203,7 @@ function docker_install
 ###############
 # sets medium font anti-aliasing
 ## see: http://osxdaily.com/2012/06/09/mac-screen-blurry-optimize-troubleshoot-font-smoothing-os-x/
-if ${IS_MACOS};
+if [ "${IS_MACOS}" == "true" ];
 then
     defaults -currentHost write -globalDomain AppleFontSmoothing -int 2
 fi
@@ -231,7 +231,7 @@ source "${HOME}/.bash_profile"
 while [ $# -ge 1 ] ; do
     case $1 in
         --all)
-            if ${IS_MACOS};
+            if [ "${IS_MACOS}" == "true" ];
             then
               homebrew_install
 
