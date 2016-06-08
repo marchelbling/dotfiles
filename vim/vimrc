@@ -210,6 +210,8 @@ nmap <silent> <S-Left> :wincmd h<CR>
 nmap <silent> <S-Right> :wincmd l<CR>
 
 
+" YouCompleteMe setup
+let g:ycm_autoclose_preview_window_after_completion=1
 
 
 """""" utilities
