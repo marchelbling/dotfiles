@@ -26,6 +26,7 @@ Plugin 'https://github.com/tpope/vim-fugitive'
 Plugin 'https://github.com/godlygeek/tabular'
 Plugin 'https://github.com/henrik/vim-indexed-search'
 Plugin 'https://github.com/Valloric/YouCompleteMe'
+Plugin 'https://github.com/jiangmiao/auto-pairs'
 
 call vundle#end()  " required
 
@@ -89,7 +90,6 @@ let g:syntastic_javascript_checkers       = ['eslint']
 let g:syntastic_mode_map                  = { "mode": "passive", "active_filetypes": ["python", "cpp"], "passive_filetypes": [] }
 
 " git gutter
-nmap <leader>g :GitGutterToggle
 highlight SignColumn guibg=gray17
 let g:gitgutter_realtime = 0
 let g:gitgutter_eager = 0
@@ -210,10 +210,6 @@ nmap <silent> <S-Left> :wincmd h<CR>
 nmap <silent> <S-Right> :wincmd l<CR>
 
 
-" YouCompleteMe setup
-let g:ycm_autoclose_preview_window_after_completion=1
-
-
 """""" utilities
 
 " git commit messages with spelling and automatic insert mode
@@ -316,16 +312,6 @@ call SingleCompile#SetCompilerTemplate('cpp', 'c++11', 'g++ with C++11 support',
 call SingleCompile#SetOutfile('cpp', 'c++11', '$(FILE_TITLE)$')
 call SingleCompile#ChooseCompiler('cpp', 'c++11')
 
-" " autocomplete
-" need bundle: 'Shougo/neocomplcache'
-" let g:acp_enableAtStartup              = 0
-" let g:neocomplcache_enable_at_startup  = 1
-" let g:neocomplcache_enable_smart_case  = 1
-" let g:neocomplcache_min_syntax_length  = 2
-" let g:neocomplcache_enable_auto_select = 1
-" let g:neocomplcache_max_list           = 12
-" let g:neocomplcache_enable_camel_case_completion = 1
-" let g:neocomplcache_enable_underbar_completion   = 1
 
 " YouCompleteMe
 let g:ycm_global_ycm_extra_conf = '~/.ycm_cpp_conf.py'
@@ -333,3 +319,8 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_server_use_vim_stdout = 0
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
+nmap <leader>g  :YcmCompleter GoToImprecise<CR>
+
+
+" auto-pairs setup
+let g:AutoPairsFlyMode=1
