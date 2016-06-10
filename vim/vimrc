@@ -145,7 +145,7 @@ set backspace=indent,eol,start " low backspacing over an indent, line break (end
 """ files
 if v:version >= 700
     try
-        wildignorecase " case insensitive file completion
+        set wildignorecase " case insensitive file completion
     catch
     endtry
 endif
