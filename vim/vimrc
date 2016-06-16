@@ -26,7 +26,7 @@ Plugin 'https://github.com/tpope/vim-fugitive'
 Plugin 'https://github.com/godlygeek/tabular'
 Plugin 'https://github.com/henrik/vim-indexed-search'
 Plugin 'https://github.com/Valloric/YouCompleteMe'
-Plugin 'https://github.com/jiangmiao/auto-pairs'
+Plugin 'https://github.com/vim-scripts/AutoClose'
 
 call vundle#end()  " required
 
