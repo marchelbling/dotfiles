@@ -27,6 +27,7 @@ Plugin 'https://github.com/godlygeek/tabular'
 Plugin 'https://github.com/henrik/vim-indexed-search'
 Plugin 'https://github.com/Valloric/YouCompleteMe'
 Plugin 'https://github.com/vim-scripts/AutoClose'
+Plugin 'https://github.com/sheerun/vim-polyglot'
 
 call vundle#end()  " required
 
