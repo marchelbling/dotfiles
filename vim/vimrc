@@ -98,7 +98,7 @@ let g:gitgutter_eager = 0
 """"""" code layout
 
 au BufRead,BufNewFile *.json set filetype=javascript               " json
-au BufRead,BufNewFile * if &syntax == '' | set filetype=c | endif  " no extension filetype from http://stackoverflow.com/a/2669295/626278
+au BufRead * if search('\M-*-c++-*-', 'n', 1) | setlocal ft=cpp | endif
 au BufRead,BufNewFile *.tex setlocal ts=2 sw=2
 
 " automatically reload vim configuration when a change is detected (http://superuser.com/a/417997)
