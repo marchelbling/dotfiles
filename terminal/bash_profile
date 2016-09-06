@@ -188,9 +188,10 @@ fi
 
 #### RUBY
 # bash completion for ssh (based on .ssh/config)
-if which ruby 2>&1 >/dev/null;
+ssh_config="${HOME}/.ssh/config"
+if [ -f ${ssh_config} ] && which ruby 2>&1 >/dev/null;
 then
-    complete -o default -o nospace -W "$(env ruby -ne 'puts $_.split(/[,\s]+/)[1..-1].reject{|host| host.match(/\*|\?/)} if $_.match(/^\s*Host\s+/);' < ${HOME}/.ssh/config)" scp sftp ssh
+    complete -o default -o nospace -W "$( env ruby -ne 'puts $_.split(/[,\s]+/)[1..-1].reject{|host| host.match(/\*|\?/)} if $_.match(/^\s*Host\s+/);' < ${ssh_config} )" scp sftp ssh
 fi
 
 ### simple terminal calculator
