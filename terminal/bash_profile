@@ -208,7 +208,8 @@ function tabname {
 
 function docker_clean
 {
-    docker rmi -f $(docker images -a | grep "^<none>" | cut -b42-55)
+    docker rm $( docker ps -q -f status=exited )
+    docker rmi $( docker images -f "dangling=true" -q )
 }
 
 function get_pixel
