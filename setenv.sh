@@ -80,7 +80,9 @@ function ubuntu_install {
                             git \
                             mercurial \
                             subversion \
+                            silversearcher-ag \
                             vim-nox
+
 
     # docker:
     sudo apt-get install -y apt-transport-https ca-certificates linux-image-extra-$(uname -r) linux-image-extra-virtual
