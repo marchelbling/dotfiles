@@ -48,6 +48,7 @@ set undodir=~/.vim/udata/undo
 set undofile
 set history=1000
 set undolevels=1000
+set confirm " warn for unsaved changes before exiting
 
 let mapleader = ","
 
