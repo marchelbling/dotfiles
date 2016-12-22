@@ -25,7 +25,6 @@ Plugin 'https://github.com/scrooloose/syntastic'
 Plugin 'https://github.com/tpope/vim-fugitive'
 Plugin 'https://github.com/godlygeek/tabular'
 Plugin 'https://github.com/henrik/vim-indexed-search'
-Plugin 'https://github.com/Valloric/YouCompleteMe'
 Plugin 'https://github.com/vim-scripts/AutoClose'
 Plugin 'https://github.com/sheerun/vim-polyglot'
 
@@ -313,15 +312,6 @@ call SingleCompile#SetCompilerTemplate('cpp', 'c++11', 'g++ with C++11 support',
                                       \'echo -e "\n---\nOutput:\n" && ./$(FILE_TITLE)$')
 call SingleCompile#SetOutfile('cpp', 'c++11', '$(FILE_TITLE)$')
 call SingleCompile#ChooseCompiler('cpp', 'c++11')
-
-
-" YouCompleteMe
-let g:ycm_global_ycm_extra_conf = '~/.ycm_cpp_conf.py'
-let g:ycm_confirm_extra_conf = 0
-let g:ycm_server_use_vim_stdout = 0
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
-nmap <leader>g  :YcmCompleter GoToImprecise<CR>
 
 
 " auto-pairs setup

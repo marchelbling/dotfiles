@@ -212,12 +212,6 @@ function vim_install
     then
         cd "${vimproc}" && make
     fi
-
-    local ycm="${VIM_DIR}/bundle/YouCompleteMe"
-    if [ -d "${ycm}" ]
-    then
-        cd "${ycm}" && ./install.py --clang-completer
-    fi
 }
 
 
@@ -257,7 +251,6 @@ ln -fs "${current_directory}/terminal/inputrc"      "${HOME}/.inputrc"
 ln -fs "${current_directory}/terminal/screenrc"     "${HOME}/.screenrc"
 ## vim
 ln -fs "${current_directory}/vim/vimrc"             "${VIMRC}"
-ln -fs "${current_directory}/vim/ycm_cpp_conf.py"   "${HOME}/.ycm_cpp_conf.py"
 
 source "${HOME}/.bash_profile"
 
