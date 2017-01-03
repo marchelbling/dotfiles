@@ -83,12 +83,15 @@ function ubuntu_install {
                             htop \
                             tree \
                             rsync \
-                            git \
                             mercurial \
                             subversion \
                             silversearcher-ag \
                             vim-nox
 
+    # uptodate git
+    sudo add-apt-repository ppa:git-core/ppa
+    sudo apt-get update
+    sudo apt-get install git
 
     # docker:
     sudo apt-get install -y apt-transport-https ca-certificates linux-image-extra-$(uname -r) linux-image-extra-virtual
@@ -260,10 +263,16 @@ while [ $# -ge 1 ] ; do
         --all)
             if [ "${IS_MACOS}" == "true" ];
             then
-              homebrew_install
-
-              # terminal theme needs to be 'default'ed manually
-              open "${current_directory}/terminal/wombat.terminal"
+                homebrew_install
+                # terminal theme needs to be 'default'ed manually
+                open "${current_directory}/terminal/wombat.terminal"
+            else
+                ubuntu_install
+                # http://stackoverflow.com/questions/31097684/ctrl-v-mapped-to-paste-instead-block-visual-mode-in-vim-on-elementary-os-linux
+                if "$( lsb_release -si )" = "elementary";
+                then
+                    dconf write /org/pantheon/terminal/settings/natural-copy-paste false
+                fi
             fi
 
             fonts_install
