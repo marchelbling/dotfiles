@@ -9,6 +9,12 @@ VIM_DIR="${HOME}/.vim"
 VIMRC="${HOME}/.vimrc"
 GITCONFIG="${HOME}/.gitconfig"
 
+if ${IS_MACOS};
+then
+    FONTS_DIR="${HOME}/Library/Fonts"
+else
+    FONTS_DIR="${HOME}/.fonts"
+fi
 
 function get_extension
 {
@@ -191,27 +197,18 @@ function vim_install
         vim +PluginInstall +qall  # install all plugins from vimrc
     fi
 
-    if [ "${IS_MACOS}" == "true" ];
-    then
-        local powerline="${VIM_DIR}/bundle/powerline-fonts"
-        local font_dir="${HOME}/Library/Fonts"
-        if [ ! -d "${font_dir}" ]
-        then
-            mkdir -p "${font_dir}"
-        fi
-
-        if [ -d "${powerline}" ]
-        then
-            # custom install is fine (instead of using the install.sh script)
-            cd "${powerline}" && cp "AnonymousPro/Anonymice\ Powerline.ttf" "${font_dir}"
-        fi
-    fi
-
     local vimproc="${VIM_DIR}/bundle/vimproc.vim"
     if [ -d "${vimproc}" ]
     then
         cd "${vimproc}" && make
     fi
+}
+
+
+function fonts_install {
+    mkdir -p "${FONTS_DIR}"
+    sudo cp "fonts/Anonymice Powerline.ttf" "${FONTS_DIR}"
+    fc-cache -f -v
 }
 
 
@@ -269,11 +266,15 @@ while [ $# -ge 1 ] ; do
               open "${current_directory}/terminal/wombat.terminal"
             fi
 
+            fonts_install
             git_install
             python_install
             vim_install
 
             shift 1 ;;  # drop current command line arg
+        --fonts)
+            fonts_install
+            shift 1 ;;
         --git)
             git_install
             shift 1 ;;
@@ -290,7 +291,7 @@ while [ $# -ge 1 ] ; do
             ubuntu_install
             shift 1 ;;
         --help)
-            echo "Usage: $0 [--all|--homebrew|--vim|--python|--git|--help]"
+            echo "Usage: $0 [--all|--fonts|--ubuntu|--homebrew|--vim|--python|--git|--help]"
             shift 1 ;;
     esac
 done
