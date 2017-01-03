@@ -86,7 +86,9 @@ function ubuntu_install {
                             mercurial \
                             subversion \
                             silversearcher-ag \
-                            vim-nox
+                            vim-nox \
+                            imagemagick \
+                            openimageio-tools
 
     # uptodate git
     sudo add-apt-repository ppa:git-core/ppa
@@ -103,7 +105,7 @@ function ubuntu_install {
         echo "${docker_source}" | sudo tee -a "${docker_sources}"
     fi
     sudo apt-get update
-    sudo apt-get install docker-engine
+    sudo apt-get install -y docker-engine
     sudo service docker start
 
     # slow down on brute force ssh (see http://askubuntu.com/a/32256/212079)
@@ -261,7 +263,7 @@ source "${HOME}/.bash_profile"
 while [ $# -ge 1 ] ; do
     case $1 in
         --all)
-            if [ "${IS_MACOS}" == "true" ];
+            if [ "${IS_MACOS}" == "true" ];
             then
                 homebrew_install
                 # terminal theme needs to be 'default'ed manually
