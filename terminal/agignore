@@ -1,4 +1,5 @@
-build*
+build/**
+build-*/**
 examples
 CMakeFiles
 node_modules
