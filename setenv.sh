@@ -9,11 +9,13 @@ VIM_DIR="${HOME}/.vim"
 VIMRC="${HOME}/.vimrc"
 GITCONFIG="${HOME}/.gitconfig"
 
-if ${IS_MACOS};
+if [ "${IS_MACOS}" == "true" ];
 then
     FONTS_DIR="${HOME}/Library/Fonts"
+    BASH_PROFILE="${HOME}/.bash_profile"
 else
     FONTS_DIR="${HOME}/.fonts"
+    BASH_PROFILE="${HOME}/.bashrc"
 fi
 
 function get_extension
@@ -247,7 +249,7 @@ current_directory="$( pwd )"
 ln -fs "${current_directory}/git/gitconfig"         "${GITCONFIG}"
 ## terminal
 ln -fs "${current_directory}/terminal/agignore"     "${HOME}/.agignore"
-ln -fs "${current_directory}/terminal/bash_profile" "${HOME}/.bash_profile"
+ln -fs "${current_directory}/terminal/bash_profile" "${BASH_PROFILE}"
 ln -fs "${current_directory}/terminal/gdbinit"      "${HOME}/.gdbinit"
 ln -fs "${current_directory}/terminal/inputrc"      "${HOME}/.inputrc"
 ln -fs "${current_directory}/terminal/screenrc"     "${HOME}/.screenrc"
