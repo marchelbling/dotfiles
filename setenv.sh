@@ -61,7 +61,7 @@ function git_clone
     if [ -d "${clone}" ]
     then
         echo "Repository '${repo}' already cloned. Updating from upstream..."
-        cd "${clone}" && git pull --rebase && git submodule update --init --recursive --force && cd -
+        ( cd "${clone}" && git pull --rebase && git submodule update --init --recursive --force )
     else
         if [ -n "${branch_or_tag}" ]
         then
@@ -70,8 +70,6 @@ function git_clone
             git clone --recursive "${remote}" "${clone}"
         fi
     fi
-
-    cd "${current}"
 }
 
 
@@ -215,7 +213,14 @@ function vim_install
     local vimproc="${VIM_DIR}/bundle/vimproc.vim"
     if [ -d "${vimproc}" ]
     then
-        cd "${vimproc}" && make
+        ( cd "${vimproc}" && make )
+    fi
+
+    local ycm="${VIM_DIR}/bundle/YouCompleteMe"
+    if [ -d "${ycm}" ]
+    then
+        ( cd "${ycm}" && ./install.py --clang-completer )
+        ln -s vim/ycm_extra_conf.py ${HOME}/.vim/ycm_extra_conf.py
     fi
 }
 
