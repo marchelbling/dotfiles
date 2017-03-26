@@ -280,6 +280,7 @@ while [ $# -ge 1 ] ; do
                 open "${current_directory}/terminal/wombat.terminal"
             else
                 ubuntu_install
+                gconftool-2 --load terminal/gnome-profile.terminal
                 # http://stackoverflow.com/questions/31097684/ctrl-v-mapped-to-paste-instead-block-visual-mode-in-vim-on-elementary-os-linux
                 if "$( lsb_release -si )" = "elementary";
                 then
