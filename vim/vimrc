@@ -100,13 +100,6 @@ let g:gitgutter_eager = 0
 
 """"""" code layout
 
-" autoformat code upon save"
-au BufWrite * :Autoformat
-" set default autoformat behavior:
-let g:autoformat_autoindent = 0
-let g:autoformat_retab = 0
-let g:autoformat_remove_trailing_spaces = 1
-
 au BufRead,BufNewFile *.json set filetype=javascript               " json
 au BufRead * if search('\M-*-c++-*-', 'n', 1) | setlocal ft=cpp | endif
 au BufRead,BufNewFile *.tex setlocal ts=2 sw=2
