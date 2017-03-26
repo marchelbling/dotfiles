@@ -79,9 +79,12 @@ function ubuntu_install {
     sudo apt-get update
     sudo apt-get install -y software-properties-common \
                             build-essential \
+                            bash-completion \
                             cmake \
                             clang \
                             python-dev \
+                            python3-dev \
+                            curl \
                             htop \
                             tree \
                             rsync \
@@ -90,7 +93,9 @@ function ubuntu_install {
                             silversearcher-ag \
                             vim-nox \
                             imagemagick \
-                            openimageio-tools
+                            openimageio-tools \
+                            p7zip-full \
+                            p7zip-rar
 
     # uptodate git
     sudo add-apt-repository ppa:git-core/ppa
@@ -114,6 +119,9 @@ function ubuntu_install {
     sudo iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --set --name SSH -j ACCEPT
     sudo iptables -A INPUT -p tcp --dport 22 -m recent --update --seconds 60 --hitcount 4 --rttl --name SSH -j LOG --log-prefix "SSH_brute_force "
     sudo iptables -A INPUT -p tcp --dport 22 -m recent --update --seconds 60 --hitcount 4 --rttl --name SSH -j DROP
+
+    git_completion
+    docker_completion
 }
 
 
@@ -219,14 +227,14 @@ function fonts_install {
 }
 
 
-function git_install
+function git_completion
 {
     # fetch git-completion.bash
-    curl https://raw.github.com/git/git/master/contrib/completion/git-completion.bash > "${HOME}/.git-completion.bash"
+    curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > "${HOME}/.git-completion.bash"
 }
 
 
-function docker_install
+function docker_completion
 {
     # fetch docker-completion.bash
     curl https://raw.githubusercontent.com/docker/docker/master/contrib/completion/bash/docker > "${HOME}/.docker-completion.bash"
@@ -280,7 +288,7 @@ while [ $# -ge 1 ] ; do
             fi
 
             fonts_install
-            git_install
+            git_completion
             python_install
             vim_install
 
@@ -289,7 +297,7 @@ while [ $# -ge 1 ] ; do
             fonts_install
             shift 1 ;;
         --git)
-            git_install
+            git_completion
             shift 1 ;;
         --homebrew)
             homebrew_install
