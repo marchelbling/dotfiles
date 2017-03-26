@@ -28,12 +28,17 @@ shopt -s cmdhist
 export PROMPT_COMMAND="history -a; history -c; history -r; ${PROMPT_COMMAND}"
 
 #### GIT
+if [ -e /etc/bash-completion ];
+then
+    . /etc/bash-completion
+fi
+
 for binary in "git" "docker"
 do
     _autocomplete="${HOME}/.${binary}-completion.bash"
     if [ -e "${_autocomplete}" ]
     then
-        source "${_autocomplete}"
+        . "${_autocomplete}"
     fi
 done
 # show git branch in shell prompt
@@ -55,12 +60,19 @@ function parse_branch
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
 
-pink="\x01$( tput setaf 218 )\x02"
-red="\x01$( tput setaf 1 )\x02"
-grey="\x01$( tput setaf 240 )\x02"
-orange="\x01$( tput setaf 172 )\x02"
-green="\x01$( tput setaf 2 )\x02"
-blue="\x01$( tput setaf 4 )\x02"
+if tty -s && [ $(tput colors) -ge 8 ]  # make sure we are in interactive mode and colors
+then
+    none="\x01$(      tput sgr0 )\x02"
+    pink="\x01$(      tput setaf 218 )\x02"
+    red="\x01$(       tput setaf 1 )\x02"
+    gray="\x01$(      tput setaf 240 )\x02"
+    orange="\x01$(    tput setaf 172 )\x02"
+    green="\x01$(     tput setaf 2 )\x02"
+    blue="\x01$(      tput setaf 4 )\x02"
+    lightgray="\x01$( tput setaf 7 )\x02"
+    darkgray="\x01$(  tput bold setaf 0 )\x02"
+    bold="\x01$(      tput bold )\x02"
+fi
 
 function parse_shared_folder
 {
@@ -69,10 +81,10 @@ function parse_shared_folder
     then
         folder="$( pwd )"
     fi
-    local mount_point="$( mount | grep "${folder} " 2>&1 )"
-    if [ -n "${mount_point}" ]
+    local partition="$( df -h . | tail -1 | cut -d' ' -f1 )"
+    if grep -q ':' <<<${partition};
     then
-        echo "${pink}$( echo ${mount_point} | cut -d':' -f1 )@"
+        echo "${pink}@$( echo ${partition} | cut -d':' -f1 ):"
     fi
 }
 
@@ -80,7 +92,7 @@ function parse_upstream
 {
     local branch="${1}"
     local remote_branch="$( git rev-parse --abbrev-ref @{u} 2>/dev/null )"
-    local color="${grey}"
+    local color="${gray}"
     if [ -z "${remote_branch}" ]  # handle local branch
     then
         local remote=""
@@ -157,12 +169,28 @@ function git_prompt
 {
     local branch="$( parse_branch )"
     local root="$( parse_repo_path )"
-    echo -e "$(parse_shared_folder "${root}" )$(parse_repo "${root}")$(parse_path "${root}") $(parse_upstream "${branch}")$(parse_diff)"
+    echo -e "$( parse_shared_folder "${root}" )$( parse_repo "${root}" )$( parse_path "${root}" ) $( parse_upstream "${branch}" )$( parse_diff )"
+}
+
+function parse_exit
+{
+    local value=$?
+    [ $value == 0 ] && echo "" || echo -e "${bold}${red}↳ ${value} "
+}
+
+function parse_time
+{
+    echo -e "${gray}$( date +%H:%M:%S )"
+}
+
+function parse_user
+{
+    echo -e "${bold}${USER}"
 }
 
 # for color listing see http://misc.flogisoft.com/bash/tip_colors_and_formatting
 shopt -s checkwinsize
-export PS1="\[\033[00m\]\u@\h \$(git_prompt) \[\033[00m\]$\[\033[00m\] "
+export PS1="\[\033[00m\]\$( parse_exit )\[\033[00m\]\$( parse_time )\[\033[00m\] \$( parse_user)\[\033[00m\] \$( git_prompt ) \[\033[00m\]$\[\033[00m\] "
 
 #### COLORS
 # to get colors in terminal (see: http://it.toolbox.com/blogs/lim/how-to-fix-colors-on-mac-osx-terminal-37214):
