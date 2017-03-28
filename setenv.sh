@@ -204,8 +204,8 @@ function vim_install
     if [ ! -d "${vundle}" ]
     then
         git clone "https://github.com/VundleVim/Vundle.vim.git" "${vundle}"
-        vim +PluginInstall +qall  # install all plugins from vimrc
     fi
+    vim +VundleClean +VundleInstall +qall  # install all plugins from vimrc
 
     local vimproc="${VIM_DIR}/bundle/vimproc.vim"
     if [ -d "${vimproc}" ]
@@ -218,6 +218,7 @@ function vim_install
     then
         ( cd "${ycm}" && ./install.py --clang-completer )
         ln -s vim/ycm_extra_conf.py ${HOME}/.vim/ycm_extra_conf.py
+        pip install jedi  # python autocompletion
     fi
 }
 
