@@ -178,10 +178,7 @@ function python_packages_install
 function python_install
 {
     # set up a default virtualenv (installed by homebrew)
-    which virtualenv > /dev/null 2>&1 || { easy_install --upgrade pip && pip install virtualenv; >&2; }
-    local path="${VENV_DIR}/${DEFAULT_VENV}"
-    virtualenv --distribute --no-site-packages "${path}"
-    source "${path}/bin/activate"
+    easy_install --upgrade pip
 
     # install extra packages
     local scientific_packages=( numpy scipy scikit-learn matplotlib networkx pandas nltk )
