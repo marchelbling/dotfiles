@@ -267,7 +267,7 @@ ln -fs "${current_directory}/terminal/screenrc"     "${HOME}/.screenrc"
 ## vim
 ln -fs "${current_directory}/vim/vimrc"             "${VIMRC}"
 
-source "${HOME}/.bash_profile"
+source "${BASH_PROFILE}"
 
 ###############
 # 2. install required components if needed
