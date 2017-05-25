@@ -1,44 +1,142 @@
 set encoding=utf-8
-
 set nocompatible  " break vi compatibility
-filetype off
 
+let mapleader = ","
 
 " Plugins install
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/plugged')
 
-" required:
-Plugin 'VundleVim/Vundle.vim'
-" custom:
-Plugin 'https://github.com/tomtom/tcomment_vim'
-Plugin 'https://github.com/vim-scripts/wombat256.vim'
-Plugin 'https://github.com/bling/vim-airline'
-Plugin 'https://github.com/vim-airline/vim-airline-themes'
-Plugin 'https://github.com/xuhdev/SingleCompile'
-Plugin 'https://github.com/Shougo/unite.vim'
-Plugin 'https://github.com/Shougo/vimproc.vim'
-Plugin 'https://github.com/Shougo/neomru.vim'
-Plugin 'https://github.com/airblade/vim-gitgutter'
-Plugin 'https://github.com/scrooloose/syntastic'
-Plugin 'https://github.com/tpope/vim-fugitive'
-Plugin 'https://github.com/godlygeek/tabular'
-Plugin 'https://github.com/henrik/vim-indexed-search'
-Plugin 'https://github.com/Raimondi/delimitMate'
-Plugin 'https://github.com/sheerun/vim-polyglot'
-Plugin 'https://github.com/majutsushi/tagbar'
-Plugin 'https://github.com/Valloric/YouCompleteMe'
+Plug 'https://github.com/vim-scripts/wombat256.vim'
+Plug 'https://github.com/tpope/vim-fugitive'
+Plug 'https://github.com/henrik/vim-indexed-search'
+Plug 'https://github.com/Raimondi/delimitMate'
+Plug 'https://github.com/sheerun/vim-polyglot'
+Plug 'https://github.com/majutsushi/tagbar'
 
-call vundle#end()  " required
+Plug 'https://github.com/godlygeek/tabular'
+"{{{
+" see http://vimcasts.org/episodes/aligning-text-with-tabular-vim/ for details
+nmap <Leader>a= :Tabularize /=<CR>
+vmap <Leader>a= :Tabularize /=<CR>
+nmap <Leader>a: :Tabularize /:\zs<CR>
+vmap <Leader>a: :Tabularize /:\zs<CR>
+
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+function! s:align()
+    let p = '^\s*|\s.*\s|\s*$'
+    if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+        let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+        let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+        Tabularize/|/l1
+        normal! 0
+        call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+    endif
+endfunction
+"}}}
+
+Plug 'https://github.com/tomtom/tcomment_vim'
+"{{{
+  " toggle comment on current line/visual selection
+  map <leader>c :TComment<CR>
+"}}}
+
+Plug 'https://github.com/bling/vim-airline'
+Plug 'https://github.com/vim-airline/vim-airline-themes'
+"{{{
+" vim-airline (status bar)
+  let g:airline_theme='wombat'
+  let g:airline_powerline_fonts=1
+  set laststatus=2
+  set t_Co=256
+  let g:airline#extensions#tabline#enabled=1     " display list of opened buffers
+  let g:airline#extensions#tabline#fnamemod=':t' " display buffer filename only
+"}}}
+
+Plug 'https://github.com/xuhdev/SingleCompile'
+"{{{
+" singlecompile shortcuts
+  nmap <F5> :SCCompile<cr>
+  nmap <F6> :SCCompileRun<cr>
+  " use g++ with C++11 support as default C++ compiler
+  call SingleCompile#SetCompilerTemplate('cpp', 'c++', 'g++ with C++11 support',
+                                        \'clang++', '-std=c++11 -stdlib=libc++ -Wall -o $(FILE_TITLE)$',
+                                        \'echo -e "\n---\nOutput:\n" && ./$(FILE_TITLE)$')
+  call SingleCompile#SetOutfile('cpp', 'c++', '$(FILE_TITLE)$')
+  call SingleCompile#ChooseCompiler('cpp', 'c++')
+"}}}
+
+Plug 'https://github.com/Shougo/vimproc.vim', { 'do': 'make' }
+Plug 'https://github.com/Shougo/neomru.vim'
+Plug 'https://github.com/Shougo/unite.vim'
+"{{{
+  :silent !mkdir -p ~/.vim/udata/cache/unite >/dev/null 2>&1
+  let g:unite_data_directory = '~/.vim/udata/cache/unite'
+  let g:unite_enable_start_insert = 1
+  " search files 'à la' Ctrl-P using Unite
+  call unite#filters#matcher_default#use(['matcher_fuzzy'])
+  call unite#filters#sorter_default#use(['sorter_length'])
+  call unite#custom#source('file_rec/async','sorters','sorter_rank')
+  " search from project root
+  nnoremap <silent> <leader>p :UniteWithProjectDir -auto-resize buffer file_rec/async:!<cr>
+
+  " The Silver Searcher
+  if executable('ag')
+      let g:unite_source_grep_command = 'ag'
+      let g:unite_source_grep_default_opts = '--smart-case --vimgrep --hidden --ignore ''.git'' '
+      let g:unite_source_grep_recursive_opt = ''
+  elseif executable('ack')
+    let g:unite_source_grep_command = 'ack'
+    let g:unite_source_grep_default_opts = '--smart-case'
+    let g:unite_source_grep_recursive_opt = ''
+  endif
+  nnoremap <silent> <leader>f :UniteWithProjectDir -auto-resize grep:::<cr>
+"}}}
+
+Plug 'https://github.com/airblade/vim-gitgutter'
+"{{{
+  highlight SignColumn guibg=gray17
+  let g:gitgutter_realtime = 0
+  let g:gitgutter_eager = 0
+"}}}
+
+Plug 'https://github.com/scrooloose/syntastic'
+"{{{
+  " set statusline+=%#warningmsg#                " from the documentation
+  " set statusline+=%{SyntasticStatuslineFlag()} " from the documentation
+  " set statusline+=%*                           " from the documentation
+
+  " see also statusline updates
+  let g:syntastic_always_populate_loc_list  = 1
+  let g:syntastic_auto_loc_list             = 1
+  let g:syntastic_check_on_open             = 1
+  let g:syntastic_check_on_wq               = 1
+  let g:syntastic_aggregate_errors          = 1 " run all checkers no matter what
+  let g:syntastic_auto_jump                 = 0 " jump to first error upon save
+  let g:syntastic_python_checkers           = ['flake8']
+  let g:syntastic_python_flake8_args        = "--max-line-length=119"
+  let g:syntastic_cpp_compiler              = 'g++'
+  let g:syntastic_cpp_compiler_options      = '-Wall'
+  let g:syntastic_cpp_check_header          = 1
+  let g:syntastic_cpp_auto_refresh_includes = 1
+  let g:syntastic_javascript_checkers       = ['eslint']
+  let g:syntastic_mode_map                  = { 'mode': 'passive', 'active_filetypes': ['python', 'cpp'], 'passive_filetypes': [] }
+"}}}
+
+
+Plug 'https://github.com/Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
+"{{{
+  let g:ycm_global_ycm_extra_conf='~/.vim/ycm_extra_conf.py'
+  let g:ycm_show_diagnostics_ui=1
+  let g:ycm_max_diagnostics_to_display=10
+  nnoremap <leader>g :YcmCompleter GoTo<CR>
+"}}}
+
+call plug#end()  " required
 
 
 set modelines=0   " prevent file exploit
 set title         " change terminal/window title to buffer name
-syntax on                  " code highlight
 filetype on                " detect file type
-filetype plugin on         " use specific filetype plugins
-filetype plugin indent on
 runtime macros/matchit.vim " activate matchit (extended '%' behavior)
 
 :silent !mkdir -p ~/.vim/udata/undo >/dev/null 2>&1
@@ -51,51 +149,17 @@ set history=1000
 set undolevels=1000
 set confirm " warn for unsaved changes before exiting
 
-let mapleader = ","
-
 
 """"""" look'n'feel
 
 colorscheme wombat256mod
 set guifont=Anonymous\ Pro\ for\ Powerline:h14
 
-" vim-airline (status bar)
-let g:airline_theme='wombat'
-let g:airline_powerline_fonts=1
-set laststatus=2
-set t_Co=256
-let g:airline#extensions#tabline#enabled=1     " display list of opened buffers
-let g:airline#extensions#tabline#fnamemod=':t' " display buffer filename only
-
 " display side file explorer
 let g:netrw_liststyle = 3
 let g:netrw_winsize   = 15
 let g:netrw_banner    = 0
 nmap <leader>d :Lex<CR> " This will toggle the file explorer on/off
-
-" syntastic
-set statusline+=%#warningmsg#                " from the documentation
-set statusline+=%{SyntasticStatuslineFlag()} " from the documentation
-set statusline+=%*                           " from the documentation
-let g:syntastic_always_populate_loc_list  = 1
-let g:syntastic_auto_loc_list             = 1
-let g:syntastic_check_on_open             = 1
-let g:syntastic_check_on_wq               = 1
-let g:syntastic_aggregate_errors          = 1 " run all checkers no matter what
-let g:syntastic_auto_jump                 = 0 " jump to first error upon save
-let g:syntastic_python_checkers           = ['flake8']
-let g:syntastic_python_flake8_args        = "--max-line-length=119"
-let g:syntastic_cpp_compiler              = 'g++'
-let g:syntastic_cpp_compiler_options      = '-Wall'
-let g:syntastic_cpp_check_header          = 1
-let g:syntastic_cpp_auto_refresh_includes = 1
-let g:syntastic_javascript_checkers       = ['eslint']
-let g:syntastic_mode_map                  = { "mode": "passive", "active_filetypes": ["python", "cpp"], "passive_filetypes": [] }
-
-" git gutter
-highlight SignColumn guibg=gray17
-let g:gitgutter_realtime = 0
-let g:gitgutter_eager = 0
 
 
 """"""" code layout
@@ -156,28 +220,6 @@ set wildmenu       " bash-like tab completion
 set wildmode=list:longest,full
 set wildignore+=*.o,*.so,*.swp,*.zip,*.pyc,*/vendor/*,*/node_modules/*
 
-:silent !mkdir -p ~/.vim/udata/cache/unite >/dev/null 2>&1
-let g:unite_data_directory = '~/.vim/udata/cache/unite'
-let g:unite_enable_start_insert = 1
-" search files 'à la' Ctrl-P using Unite
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_length'])
-call unite#custom#source('file_rec/async','sorters','sorter_rank')
-" search from project root
-nnoremap <silent> <leader>p :UniteWithProjectDir -auto-resize buffer file_rec/async:!<cr>
-
-" The Silver Searcher
-if executable('ag')
-    let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts = '--smart-case --vimgrep --hidden --ignore ''.git'' '
-    let g:unite_source_grep_recursive_opt = ''
-elseif executable('ack')
-  let g:unite_source_grep_command = 'ack'
-  let g:unite_source_grep_default_opts = '--smart-case'
-  let g:unite_source_grep_recursive_opt = ''
-endif
-nnoremap <silent> <leader>f :UniteWithProjectDir -auto-resize grep:::<cr>
-
 
 """ within buffer
 set ignorecase
@@ -220,9 +262,6 @@ if has("spell")
   au BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
 endif
 
-" toggle comment on current line/visual selection
-map <leader>c :TComment<CR>
-
 " replace current line by the result of executing the command in a shell
 nnoremap <Leader>x !!sh<cr>
 
@@ -264,25 +303,6 @@ endfunction
 map <leader>w :call RenameFile()<cr>
 
 
-" see http://vimcasts.org/episodes/aligning-text-with-tabular-vim/ for details
-nmap <Leader>a= :Tabularize /=<CR>
-vmap <Leader>a= :Tabularize /=<CR>
-nmap <Leader>a: :Tabularize /:\zs<CR>
-vmap <Leader>a: :Tabularize /:\zs<CR>
-
-inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
-function! s:align()
-    let p = '^\s*|\s.*\s|\s*$'
-    if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
-        let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
-        let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
-        Tabularize/|/l1
-        normal! 0
-        call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
-    endif
-endfunction
-
-
 " function! RunTests(filename)
 "   " Write the file and run tests for the given filename
 "   :w
@@ -303,25 +323,3 @@ endfunction
 "     end
 "   end
 " endfunction
-
-
-" singlecompile shortcuts
-nmap <F5> :SCCompile<cr>
-nmap <F6> :SCCompileRun<cr>
-" use g++ with C++11 support as default C++ compiler
-call SingleCompile#SetCompilerTemplate('cpp', 'c++', 'g++ with C++11 support',
-                                      \'clang++', '-std=c++11 -stdlib=libc++ -Wall -o $(FILE_TITLE)$',
-                                      \'echo -e "\n---\nOutput:\n" && ./$(FILE_TITLE)$')
-call SingleCompile#SetOutfile('cpp', 'c++', '$(FILE_TITLE)$')
-call SingleCompile#ChooseCompiler('cpp', 'c++')
-
-
-" auto-pairs setup
-let g:AutoPairsFlyMode=1
-
-
-" YouCompleteMe
-let g:ycm_global_ycm_extra_conf='~/.vim/ycm_extra_conf.py'
-let g:ycm_show_diagnostics_ui=1
-let g:ycm_max_diagnostics_to_display=10
-nnoremap <leader>g :YcmCompleter GoTo<CR>

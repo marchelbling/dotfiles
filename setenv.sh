@@ -200,25 +200,14 @@ function vim_install
     # requires vim 7.4.615+ (see https://github.com/Shougo/unite.vim/issues/798)
     # Use e.g. `[sudo] add-apt-repository ppa:pi-rho/dev`
 
-    local vundle="${VIM_DIR}/bundle/Vundle.vim"
-    if [ ! -d "${vundle}" ]
-    then
-        git clone "https://github.com/VundleVim/Vundle.vim.git" "${vundle}"
-    fi
-    vim +VundleClean +VundleInstall +qall  # install all plugins from vimrc
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    vim +PlugClean +PlugInstall +qall  # install all plugins from vimrc
 
-    local vimproc="${VIM_DIR}/bundle/vimproc.vim"
-    if [ -d "${vimproc}" ]
-    then
-        ( cd "${vimproc}" && make )
-    fi
-
-    local ycm="${VIM_DIR}/bundle/YouCompleteMe"
+    local ycm="${VIM_DIR}/plugged/YouCompleteMe"
     if [ -d "${ycm}" ]
     then
-        ( cd "${ycm}" && ./install.py --clang-completer )
         ln -s vim/ycm_extra_conf.py ${HOME}/.vim/ycm_extra_conf.py
-        pip install jedi  # python autocompletion
     fi
 }
 
