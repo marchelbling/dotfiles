@@ -52,19 +52,6 @@ Plug 'https://github.com/vim-airline/vim-airline-themes'
   let g:airline#extensions#tabline#fnamemod=':t' " display buffer filename only
 "}}}
 
-Plug 'https://github.com/xuhdev/SingleCompile'
-"{{{
-" singlecompile shortcuts
-  nmap <F5> :SCCompile<cr>
-  nmap <F6> :SCCompileRun<cr>
-  " use g++ with C++11 support as default C++ compiler
-  call SingleCompile#SetCompilerTemplate('cpp', 'c++', 'g++ with C++11 support',
-                                        \'clang++', '-std=c++11 -stdlib=libc++ -Wall -o $(FILE_TITLE)$',
-                                        \'echo -e "\n---\nOutput:\n" && ./$(FILE_TITLE)$')
-  call SingleCompile#SetOutfile('cpp', 'c++', '$(FILE_TITLE)$')
-  call SingleCompile#ChooseCompiler('cpp', 'c++')
-"}}}
-
 Plug 'https://github.com/Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'https://github.com/Shougo/neomru.vim'
 Plug 'https://github.com/Shougo/unite.vim'
