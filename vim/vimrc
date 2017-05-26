@@ -263,19 +263,6 @@ endfunction
 command! PrettyXML call DoPrettyXML()
 
 
-" rename current file
-function! RenameFile()
-  let old_name = expand('%')
-  let new_name = input('New file name: ', expand('%'))
-  if new_name != '' && new_name != old_name
-    exec ':saveas ' . new_name
-    exec ':silent !rm ' . old_name
-    redraw!
-  endif
-endfunction
-map <leader>w :call RenameFile()<cr>
-
-
 " function! RunTests(filename)
 "   " Write the file and run tests for the given filename
 "   :w
