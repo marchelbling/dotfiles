@@ -264,3 +264,5 @@ n_sq = lambda x: unpack(to_float(x)) ** 2
 sys.stdout.write("||(${x}, ${y}, ${z})|| = " + str(sum(map(n_sq, [$x, $y, $z]))) + "\n")
 EOF
 }
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
