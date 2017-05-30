@@ -73,33 +73,7 @@ function git_clone
 }
 
 
-function ubuntu_install {
-    sudo apt-get update
-    sudo apt-get install -y software-properties-common \
-                            build-essential \
-                            bash-completion \
-                            cmake \
-                            clang \
-                            python-dev \
-                            python3-dev \
-                            curl \
-                            htop \
-                            tree \
-                            rsync \
-                            mercurial \
-                            subversion \
-                            silversearcher-ag \
-                            vim-nox \
-                            imagemagick \
-                            openimageio-tools \
-                            p7zip-full \
-                            p7zip-rar
-
-    # uptodate git
-    sudo add-apt-repository ppa:git-core/ppa
-    sudo apt-get update
-    sudo apt-get install git
-
+function docker_install {
     # docker:
     sudo apt-get install -y apt-transport-https ca-certificates linux-image-extra-$(uname -r) linux-image-extra-virtual
     sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
@@ -118,7 +92,6 @@ function ubuntu_install {
     sudo iptables -A INPUT -p tcp --dport 22 -m recent --update --seconds 60 --hitcount 4 --rttl --name SSH -j LOG --log-prefix "SSH_brute_force "
     sudo iptables -A INPUT -p tcp --dport 22 -m recent --update --seconds 60 --hitcount 4 --rttl --name SSH -j DROP
 
-    git_completion
     docker_completion
 }
 
