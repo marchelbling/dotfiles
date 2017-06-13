@@ -34,7 +34,11 @@ sudo apt-get install -y numix-gtk-theme \
                         openimageio-tools \
                         p7zip-full \
                         p7zip-rar \
-                        fluxgui
+                        fluxgui \
+                        dconf-tools
+
+# disable alt+drag to move windows (see https://askubuntu.com/a/118179/212079)
+gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier "<Super>"
 
 # fetch git-completion.bash
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > "${HOME}/.git-completion.bash"
