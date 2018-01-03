@@ -35,3 +35,5 @@
     line = !sh -c 'git log --topo-order --graph -u -L$2,$2:$1' -
     fixup = "!sh -c 'revision="$( git rev-parse $1 )" && git commit --fixup="${revision}" && git rebase -i --autosquash "${revision}"^' -"
     squash = "!sh -c 'revision="$( git rev-parse $1 )" && git commit --squash="${revision}" && git rebase -i --autosquash "${revision}"^' -"
+[url "git@github.com:"]
+	insteadOf = https://github.com/
