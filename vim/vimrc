@@ -104,6 +104,9 @@ Plug 'https://github.com/Valloric/YouCompleteMe', { 'do': './install.py --clang-
   nnoremap <leader>g :YcmCompleter GoTo<CR>
 "}}}
 
+Plug 'https://github.com/fatih/vim-go',  { 'do': ':GoInstallBinaries' }
+let g:go_fmt_command = "goimports"
+
 call plug#end()  " required
 
 
@@ -175,7 +178,7 @@ set clipboard=unnamed " use the system clipboard
 
 " trailing spaces (no automatic killing of them though)
 highlight TrailingSpaces ctermbg=red guibg=red
-match TrailingSpaces /\s\+$\|\t/
+match TrailingSpaces /\s\+$/
 
 " editing
 set hidden                     " allow unsaved changes in buffer
