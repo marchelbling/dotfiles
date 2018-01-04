@@ -267,8 +267,11 @@ EOF
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-if go version >/dev/null && [ -z "$GOPATH" ];
+if go version >/dev/null;
 then
-    mkdir -p "$HOME/Developer/go"
+    if [ -z "$GOPATH" ]; then
+        mkdir -p "$HOME/Developer/go"
+        export GOPATH="$HOME/Developer/go"
+    fi
+    export PATH="${PATH}:${GOPATH}/bin"
 fi
-export GOPATH="$HOME/Developer/go"
