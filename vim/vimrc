@@ -61,8 +61,8 @@ Plug 'junegunn/fzf.vim'
   nnoremap <silent> <leader>f :execute 'Ag ' . input('Ag/')<CR>
   nnoremap <silent> <leader>. :AgIn
 
-  nnoremap <silent> K :call SearchWordWithAg()<CR>
-  vnoremap <silent> K :call SearchVisualSelectionWithAg()<CR>
+  nnoremap <silent> <leader>K :call SearchWordWithAg()<CR>
+  vnoremap <silent> <leader>K :call SearchVisualSelectionWithAg()<CR>
   nnoremap <silent> <leader>gl :Commits<CR>
   nnoremap <silent> <leader>ga :BCommits<CR>
 
