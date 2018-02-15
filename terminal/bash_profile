@@ -169,11 +169,19 @@ function parse_diff
     fi
 }
 
+function parse_k8s
+{
+    if kubectl version >/dev/null 2>&1;
+    then
+        echo "${bold}${gray}(k8s=$( kubectl config current-context | rev | cut -d'_' -f1 | rev ))"
+    fi
+}
+
 function git_prompt
 {
     local branch="$( parse_branch )"
     local root="$( parse_repo_path )"
-    echo -e "$( parse_shared_folder "${root}" )$( parse_repo "${root}" )$( parse_path "${root}" ) $( parse_upstream "${branch}" )$( parse_diff )"
+    echo -e "$( parse_shared_folder "${root}" )$( parse_repo "${root}" )$( parse_path "${root}" ) $( parse_upstream "${branch}" )$( parse_diff )$( parse_k8s )"
 }
 
 function parse_exit
