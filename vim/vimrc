@@ -12,7 +12,6 @@ Plug 'https://github.com/henrik/vim-indexed-search'
 Plug 'https://github.com/Raimondi/delimitMate'
 Plug 'https://github.com/sheerun/vim-polyglot'
 Plug 'https://github.com/majutsushi/tagbar'
-
 Plug 'https://github.com/godlygeek/tabular'
 "{{{
 " see http://vimcasts.org/episodes/aligning-text-with-tabular-vim/ for details
@@ -95,7 +94,7 @@ Plug 'https://github.com/airblade/vim-gitgutter'
   let g:gitgutter_eager = 0
 "}}}
 
-Plug 'https://github.com/Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
+Plug 'https://github.com/Valloric/YouCompleteMe', {'do': './install.py --clang-completer --go-completer' }
 "{{{
   let g:ycm_global_ycm_extra_conf='~/.vim/ycm_extra_conf.py'
   let g:ycm_autoclose_preview_window_after_insertion=1
