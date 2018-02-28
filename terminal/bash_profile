@@ -171,7 +171,7 @@ function parse_diff
 
 function parse_k8s
 {
-    if kubectl version >/dev/null 2>&1;
+    if which kubectl >/dev/null && kubectl version --request-timeout=1 >/dev/null 2>&1;
     then
         echo "${bold}${gray}(k8s=$( kubectl config current-context | rev | cut -d'_' -f1 | rev ))"
     fi
