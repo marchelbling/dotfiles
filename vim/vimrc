@@ -33,6 +33,7 @@ function! s:align()
 endfunction
 "}}}
 
+Plug 'https://github.com/plasticboy/vim-markdown'
 Plug 'https://github.com/tomtom/tcomment_vim'
 "{{{
   " toggle comment on current line/visual selection
@@ -56,17 +57,20 @@ Plug 'junegunn/fzf.vim'
 " {{{
   let g:fzf_nvim_statusline = 0 " disable statusline overwriting
 
-  nnoremap <silent> <leader>p :Files<CR>
-  nnoremap <silent> <leader>f :execute 'Ag ' . input('Ag/')<CR>
-  nnoremap <silent> <leader>. :AgIn
-
-  nnoremap <silent> <leader>K :call SearchWordWithAg()<CR>
-  vnoremap <silent> <leader>K :call SearchVisualSelectionWithAg()<CR>
+  nnoremap <silent> <leader>p :ProjectFiles<CR>
+  nnoremap <silent> <leader>k :call SearchWordWithAg()<CR>
+  vnoremap <silent> <leader>v :call SearchVisualSelectionWithAg()<CR>
   nnoremap <silent> <leader>gl :Commits<CR>
   nnoremap <silent> <leader>ga :BCommits<CR>
 
+  " from: https://github.com/junegunn/fzf.vim/issues/47#issuecomment-160237795
+  function! s:find_git_root()
+	  return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+  endfunction
+  command! ProjectFiles execute 'Files' s:find_git_root()
+
   function! SearchWordWithAg()
-    execute 'Ag' expand('<cword>')
+	  execute 'Ag' expand('<cword>')
   endfunction
 
   function! SearchVisualSelectionWithAg() range
@@ -80,11 +84,6 @@ Plug 'junegunn/fzf.vim'
     let &clipboard = old_clipboard
     execute 'Ag' selection
   endfunction
-
-  function! SearchWithAgInDirectory(...)
-    call fzf#vim#ag(join(a:000[1:], ' '), extend({'dir': a:1}, g:fzf#vim#default_layout))
-  endfunction
-  command! -nargs=+ -complete=dir AgIn call SearchWithAgInDirectory(<f-args>)
 " }}}
 
 Plug 'https://github.com/airblade/vim-gitgutter'
