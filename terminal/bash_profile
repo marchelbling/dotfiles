@@ -279,7 +279,7 @@ EOF
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-if go version >/dev/null;
+if which go && go version >/dev/null;
 then
     if [ -z "$GOPATH" ]; then
         mkdir -p "$HOME/Developer/go"
