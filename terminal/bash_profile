@@ -78,20 +78,6 @@ then
     bold="\x01$(      tput bold )\x02"
 fi
 
-function parse_shared_folder
-{
-    local folder="${1}"
-    if [ -z "${folder}" ];
-    then
-        folder="$( pwd )"
-    fi
-    local partition="$( df -h . | tail -1 | cut -d' ' -f1 )"
-    if grep -q ':' <<<${partition};
-    then
-        echo "${pink}@$( echo ${partition} | cut -d':' -f1 ):"
-    fi
-}
-
 function parse_upstream
 {
     local branch="${1}"
@@ -113,7 +99,7 @@ function parse_upstream
             fi
         fi
     fi
-    echo "${red}(${color}${remote}${red}${branch})"
+    echo -e "${red}(${none}${color}${remote}${none}${red}${branch})${none}"
 }
 
 function parse_repo
@@ -127,7 +113,7 @@ function parse_repo
           repo="${repo}:"
       fi
     fi
-    echo "${green}${repo}"
+    echo -e "${green}${repo}"
 }
 
 function parse_path
@@ -144,7 +130,7 @@ function parse_path
         fi
     fi
 
-    echo "${blue}${my_path}"
+    echo -e "${blue}${my_path}"
 }
 
 function parse_diff
@@ -164,7 +150,7 @@ function parse_diff
 
         if [ -n "${state}" ]
         then
-            echo "${orange}[${state}]"
+            echo "${orange}[${state}]${none}"
         fi
     fi
 }
@@ -173,7 +159,7 @@ function parse_k8s
 {
     if which kubectl >/dev/null && kubectl version --request-timeout=1 >/dev/null 2>&1;
     then
-        echo "${bold}${gray}(k8s=$( kubectl config current-context | rev | cut -d'_' -f1 | rev ))"
+        echo -e "${bold}${gray}(k8s=$( kubectl config current-context | rev | cut -d'_' -f1 | rev ))${none}"
     fi
 }
 
@@ -181,35 +167,35 @@ function git_prompt
 {
     local branch="$( parse_branch )"
     local root="$( parse_repo_path )"
-    echo -e "$( parse_shared_folder "${root}" )$( parse_repo "${root}" )$( parse_path "${root}" ) $( parse_upstream "${branch}" )$( parse_diff )$( parse_k8s )"
+    echo -e "$( parse_repo "${root}" )$( parse_path "${root}" ) $( parse_upstream "${branch}" )$( parse_diff )"
 }
 
 function parse_exit
 {
     local value=$?
-    [ $value == 0 ] && echo "" || echo -e "${bold}${red}↳ ${value} "
+    [ $value == 0 ] && echo -e "" || echo -e "${bold}${red}↳ ${value}${none} "
 }
 
 function parse_time
 {
-    echo -e "${gray}$( date +%H:%M:%S )"
+    echo -e "${gray}$( date +%H:%M:%S )${none}"
 }
 
 function parse_user
 {
-    echo -e "${bold}${USER}"
+    echo -e "${bold}${USER}${none}"
 }
 
 # for color listing see http://misc.flogisoft.com/bash/tip_colors_and_formatting
 shopt -s checkwinsize
-export PS1="\[\033[00m\]\$( parse_exit )\[\033[00m\]\$( parse_time )\[\033[00m\] \$( parse_user)\[\033[00m\] \$( git_prompt ) \[\033[00m\]$\[\033[00m\] "
+PS1="\$( parse_exit )\$( parse_time ) \$( parse_user ) \$( git_prompt )\$( parse_k8s ) $ "
 
 #### COLORS
 # to get colors in terminal (see: http://it.toolbox.com/blogs/lim/how-to-fix-colors-on-mac-osx-terminal-37214):
 # enables coloring of your terminal:
-export CLICOLOR=1
+CLICOLOR=1
 # specifies how to color specific items:
-export LSCOLORS=GxFxCxDxBxegedabagaced
+LSCOLORS=GxFxCxDxBxegedabagaced
 
 #### SPECIFIC_PROFILE
 if [ -e "${HOME}/.specific_profile" ]
@@ -279,7 +265,7 @@ EOF
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-if which go && go version >/dev/null;
+if which go >/dev/null && go version >/dev/null;
 then
     if [ -z "$GOPATH" ]; then
         mkdir -p "$HOME/Developer/go"
