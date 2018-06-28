@@ -34,6 +34,8 @@ endfunction
 "}}}
 
 Plug 'https://github.com/plasticboy/vim-markdown'
+let g:vim_markdown_folding_disabled = 1
+
 Plug 'https://github.com/tomtom/tcomment_vim'
 "{{{
   " toggle comment on current line/visual selection
@@ -104,6 +106,9 @@ Plug 'https://github.com/Valloric/YouCompleteMe', {'do': './install.py --clang-c
 
 Plug 'https://github.com/fatih/vim-go',  { 'do': ':GoInstallBinaries' }
 let g:go_fmt_command = "goimports"
+
+Plug 'https://github.com/w0rp/ale'
+let g:airline#extensions#ale#enabled = 1
 
 call plug#end()  " required
 
