@@ -226,6 +226,7 @@ ln -fs "${current_directory}/terminal/bash_profile" "${BASH_PROFILE}"
 ln -fs "${current_directory}/terminal/gdbinit"      "${HOME}/.gdbinit"
 ln -fs "${current_directory}/terminal/inputrc"      "${HOME}/.inputrc"
 ln -fs "${current_directory}/terminal/screenrc"     "${HOME}/.screenrc"
+ln -fs "${current_directory}/terminal/curlrc"       "${HOME}/.curlrc"
 ## vim
 ln -fs "${current_directory}/vim/vimrc"             "${VIMRC}"
 
