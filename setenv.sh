@@ -244,14 +244,6 @@ while [ $# -ge 1 ] ; do
                 homebrew_install
                 # terminal theme needs to be 'default'ed manually
                 open "${current_directory}/terminal/wombat.terminal"
-            else
-                ubuntu_install
-                gconftool-2 --load terminal/gnome-profile.terminal
-                # http://stackoverflow.com/questions/31097684/ctrl-v-mapped-to-paste-instead-block-visual-mode-in-vim-on-elementary-os-linux
-                if "$( lsb_release -si )" = "elementary";
-                then
-                    dconf write /org/pantheon/terminal/settings/natural-copy-paste false
-                fi
             fi
 
             fonts_install
@@ -274,9 +266,6 @@ while [ $# -ge 1 ] ; do
             shift 1 ;;
         --vim)
             vim_install
-            shift 1 ;;
-        --ubuntu)
-            ubuntu_install
             shift 1 ;;
         --help)
             echo "Usage: $0 [--all|--fonts|--ubuntu|--homebrew|--vim|--python|--git|--help]"
