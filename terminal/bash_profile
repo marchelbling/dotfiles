@@ -273,3 +273,12 @@ then
     fi
     export PATH="${PATH}:${GOPATH}/bin"
 fi
+
+
+function uuid4 {
+    uuidgen | tr -d '-'  | tr '[:upper:]' '[:lower:]'
+}
+
+function ts {
+    gdate -u +'%s'
+}
