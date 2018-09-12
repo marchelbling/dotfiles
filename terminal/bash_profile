@@ -268,8 +268,8 @@ EOF
 if which go >/dev/null && go version >/dev/null;
 then
     if [ -z "$GOPATH" ]; then
-        mkdir -p "$HOME/Developer/go"
-        export GOPATH="$HOME/Developer/go"
+        mkdir -p "$HOME/go"
+        export GOPATH="$HOME/go"
     fi
     export PATH="${PATH}:${GOPATH}/bin"
 fi
