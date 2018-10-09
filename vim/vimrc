@@ -16,23 +16,23 @@ Plug 'https://github.com/godlygeek/tabular'
 
 Plug 'https://github.com/junegunn/goyo.vim'
 function! s:goyo_enter()
-  " silent !tmux set status off
-  " silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
-  set noshowmode
-  set noshowcmd
-  set scrolloff=999
-  Limelight
-  " ...
+    " silent !tmux set status off
+    " silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+    set noshowmode
+    set noshowcmd
+    set scrolloff=999
+    Limelight
+    " ...
 endfunction
 
 function! s:goyo_leave()
-  " silent !tmux set status on
-  " silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
-  set showmode
-  set showcmd
-  set scrolloff=5
-  Limelight!
-  " ...
+    " silent !tmux set status on
+    " silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+    set showmode
+    set showcmd
+    set scrolloff=5
+    Limelight!
+    " ...
 endfunction
 
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
@@ -65,44 +65,44 @@ let g:vim_markdown_folding_disabled = 1
 
 Plug 'https://github.com/tomtom/tcomment_vim'
 "{{{
-  " toggle comment on current line/visual selection
-  map <leader>c :TComment<CR>
+" toggle comment on current line/visual selection
+map <leader>c :TComment<CR>
 "}}}
 
 Plug 'https://github.com/bling/vim-airline'
 Plug 'https://github.com/vim-airline/vim-airline-themes'
 "{{{
 " vim-airline (status bar)
-  let g:airline_theme='wombat'
-  let g:airline_powerline_fonts=1
-  set laststatus=2
-  set t_Co=256
-  let g:airline#extensions#tabline#enabled=1     " display list of opened buffers
-  let g:airline#extensions#tabline#fnamemod=':t' " display buffer filename only
+let g:airline_theme='wombat'
+let g:airline_powerline_fonts=1
+set laststatus=2
+set t_Co=256
+let g:airline#extensions#tabline#enabled=1     " display list of opened buffers
+let g:airline#extensions#tabline#fnamemod=':t' " display buffer filename only
 "}}}
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " {{{
-  let g:fzf_nvim_statusline = 0 " disable statusline overwriting
+let g:fzf_nvim_statusline = 0 " disable statusline overwriting
 
-  nnoremap <silent> <leader>p :ProjectFiles<CR>
-  nnoremap <silent> <leader>k :call SearchWordWithAg()<CR>
-  vnoremap <silent> <leader>v :call SearchVisualSelectionWithAg()<CR>
-  nnoremap <silent> <leader>gl :Commits<CR>
-  nnoremap <silent> <leader>ga :BCommits<CR>
+nnoremap <silent> <leader>p :ProjectFiles<CR>
+nnoremap <silent> <leader>k :call SearchWordWithAg()<CR>
+vnoremap <silent> <leader>v :call SearchVisualSelectionWithAg()<CR>
+nnoremap <silent> <leader>gl :Commits<CR>
+nnoremap <silent> <leader>ga :BCommits<CR>
 
-  " from: https://github.com/junegunn/fzf.vim/issues/47#issuecomment-160237795
-  function! s:find_git_root()
-	  return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
-  endfunction
-  command! ProjectFiles execute 'Files' s:find_git_root()
+" from: https://github.com/junegunn/fzf.vim/issues/47#issuecomment-160237795
+function! s:find_git_root()
+    return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+endfunction
+command! ProjectFiles execute 'Files' s:find_git_root()
 
-  function! SearchWordWithAg()
-	  execute 'Ag' expand('<cword>')
-  endfunction
+function! SearchWordWithAg()
+    execute 'Ag' expand('<cword>')
+endfunction
 
-  function! SearchVisualSelectionWithAg() range
+function! SearchVisualSelectionWithAg() range
     let old_reg = getreg('"')
     let old_regtype = getregtype('"')
     let old_clipboard = &clipboard
@@ -112,27 +112,42 @@ Plug 'junegunn/fzf.vim'
     call setreg('"', old_reg, old_regtype)
     let &clipboard = old_clipboard
     execute 'Ag' selection
-  endfunction
+endfunction
 " }}}
 
 Plug 'https://github.com/airblade/vim-gitgutter'
 "{{{
-  highlight SignColumn guibg=gray17
-  let g:gitgutter_realtime = 0
-  let g:gitgutter_eager = 0
+highlight SignColumn guibg=gray17
+let g:gitgutter_realtime = 0
+let g:gitgutter_eager = 0
 "}}}
 
-Plug 'https://github.com/Valloric/YouCompleteMe', {'do': './install.py --clang-completer --go-completer' }
-"{{{
-  let g:ycm_global_ycm_extra_conf='~/.vim/ycm_extra_conf.py'
-  let g:ycm_autoclose_preview_window_after_insertion=1
-  let g:ycm_show_diagnostics_ui=1
-  let g:ycm_max_diagnostics_to_display=10
-  nnoremap <leader>g :YcmCompleter GoTo<CR>
-"}}}
-
-Plug 'https://github.com/fatih/vim-go',  { 'do': ':GoInstallBinaries' }
+Plug 'https://github.com/fatih/vim-go',  { 'do': ':GoUpdateBinaries' }
 let g:go_fmt_command = "goimports"
+let g:go_debug_windows = {
+            \ 'stack': 'leftabove 30vnew',
+            \ 'out':   'botright 20new',
+            \ 'vars':  'leftabove 30vnew',
+            \ }
+
+
+" autcomplete
+if has('nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'roxma/nvim-yarp'
+    Plug 'roxma/vim-hug-neovim-rpc'
+endif
+Plug 'zchee/deoplete-go'
+let g:deoplete#enable_at_startup = 1
+
+
+" delve integration (golang debugger); see vim-go :help go-debug for vim
+if has('nvim')
+    Plug 'sebdah/vim-delve'
+endif
+
 
 Plug 'https://github.com/w0rp/ale'
 let g:airline#extensions#ale#enabled = 1
@@ -191,7 +206,7 @@ set colorcolumn=100
 set scrolloff=5 " always show at least 5 lines below
 set formatoptions+=qrn1
 if v:version > 703 || v:version == 703 && has("patch541")
-  set formatoptions+=j " Delete comment character when joining commented lines
+    set formatoptions+=j " Delete comment character when joining commented lines
 endif
 set shiftround        " round indent to multiple of shiftwidth
 set showcmd           " display current command (nice for <leader>)
@@ -238,10 +253,10 @@ nnoremap <silent> <CR> :noh<CR>
 
 " use visual selection as (forward) search
 vnoremap <silent> * :<C-U>
-  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
-  \gvy/<C-R><C-R>=substitute(
-  \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
-  \gV:call setreg('"', old_reg, old_regtype)<CR>
+            \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+            \gvy/<C-R><C-R>=substitute(
+            \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+            \gV:call setreg('"', old_reg, old_regtype)<CR>
 
 
 
@@ -265,7 +280,7 @@ nmap <silent> <S-Right> :wincmd l<CR>
 
 " git commit messages with spelling and automatic insert mode
 if has("spell")
-  au BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
+    au BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
 endif
 
 " replace current line by the result of executing the command in a shell
@@ -273,25 +288,25 @@ nnoremap <Leader>x !!sh<cr>
 
 " prettify json
 function! DoPrettyJSON()
-  let l:origft = &ft
-  silent %!python -m json.tool
-  exe "set ft=" . l:origft
+    let l:origft = &ft
+    silent %!python -m json.tool
+    exe "set ft=" . l:origft
 endfunction
 command! PrettyJSON call DoPrettyJSON()
 
 " prettify xml
 function! DoPrettyXML()
-  let l:origft = &ft
-  set ft=
-  1s/<?xml .*?>//e
-  0put ='<PrettyXML>'
-  $put ='</PrettyXML>'
-  silent %!xmllint --format -
-  2d
-  $d
-  silent %<
-  1
-  exe "set ft=" . l:origft
+    let l:origft = &ft
+    set ft=
+    1s/<?xml .*?>//e
+    0put ='<PrettyXML>'
+    $put ='</PrettyXML>'
+    silent %!xmllint --format -
+    2d
+    $d
+    silent %<
+    1
+    exe "set ft=" . l:origft
 endfunction
 command! PrettyXML call DoPrettyXML()
 

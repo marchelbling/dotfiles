@@ -7,6 +7,7 @@ fi
 
 VIM_DIR="${HOME}/.vim"
 VIMRC="${HOME}/.vimrc"
+NEOVIMRC="${HOME}/.config/nvim/init.vim"
 GITCONFIG="${HOME}/.gitconfig"
 
 if [ "${IS_MACOS}" == "true" ];
@@ -118,61 +119,25 @@ function homebrew_install
     then
         ruby -e "$( curl -fsSkL raw.github.com/mxcl/homebrew/go )"
     fi
-    brew update
-    brew doctor
 
-    local code_packages=( git readline cmake valgrind libyaml htop-osx )
+    local code_packages=( go cmake valgrind libyaml htop-osx python3 )
     local compression_packages=( p7zip )
     local db_packages=( sqlite )
+    local editor_packages=( vim nvim ack ag )
     local font_packages=( fontconfig freetype )
-    local image_packages=( imagemagick ffmpeg jpeg libpng libtiff )
-    local network_packages=( wget ack ag openssl )
 
-    homebrew_packages_install network_packages[@]
-    homebrew_packages_install compression_packages[@]
-    homebrew_packages_install image_packages[@]
-    homebrew_packages_install db_packages[@]
-    homebrew_packages_install font_packages[@]
     homebrew_packages_install code_packages[@]
+    homebrew_packages_install compression_packages[@]
+    homebrew_packages_install db_packages[@]
+    homebrew_packages_install editor_packages[@]
+    homebrew_packages_install font_packages[@]
 
     brew doctor
-}
-
-function python_packages_install
-{
-    local -a packages=( "${!1}" )
-    for package in "${packages[@]}"
-    do
-        pip install "${package}"
-    done
-}
-
-
-function python_install
-{
-    # set up a default virtualenv (installed by homebrew)
-    easy_install --upgrade pip
-
-    # install extra packages
-    local scientific_packages=( numpy scipy scikit-learn matplotlib networkx pandas nltk )
-    local ipython_packages=( readline ipython )
-    local web_packages=( beautifulsoup requests )
-    local linter_packages=( flake8 pyflakes pylint )
-    local other_packages=( awscli argparse nose python-dateutil pycrypto )
-
-    python_packages_install scientific_packages[@]
-    python_packages_install ipython_packages[@]
-    python_packages_install web_packages[@]
-    python_packages_install linter_packages[@]
-    python_packages_install other_packages[@]
 }
 
 
 function vim_install
 {
-    # requires vim 7.4.615+ (see https://github.com/Shougo/unite.vim/issues/798)
-    # Use e.g. `[sudo] add-apt-repository ppa:pi-rho/dev`
-
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     vim +PlugClean +PlugInstall +qall  # install all plugins from vimrc
@@ -182,6 +147,11 @@ function vim_install
     then
         ln -s vim/ycm_extra_conf.py ${HOME}/.vim/ycm_extra_conf.py
     fi
+
+    pip3 install --upgrade neovim
+    curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    nvim +PlugClean +PlugInstall +qall  # install all plugins from vimrc
 }
 
 
@@ -207,33 +177,7 @@ function docker_completion
 
 
 ###############
-# 1. distribute configuration files
-###############
-# sets medium font anti-aliasing
-## see: http://osxdaily.com/2012/06/09/mac-screen-blurry-optimize-troubleshoot-font-smoothing-os-x/
-if [ "${IS_MACOS}" == "true" ];
-then
-    defaults -currentHost write -globalDomain AppleFontSmoothing -int 2
-fi
-
-# create soft links for all config files
-current_directory="$( pwd )"
-## git
-ln -fs "${current_directory}/git/gitconfig"         "${GITCONFIG}"
-## terminal
-ln -fs "${current_directory}/terminal/agignore"     "${HOME}/.agignore"
-ln -fs "${current_directory}/terminal/bash_profile" "${BASH_PROFILE}"
-ln -fs "${current_directory}/terminal/gdbinit"      "${HOME}/.gdbinit"
-ln -fs "${current_directory}/terminal/inputrc"      "${HOME}/.inputrc"
-ln -fs "${current_directory}/terminal/screenrc"     "${HOME}/.screenrc"
-ln -fs "${current_directory}/terminal/curlrc"       "${HOME}/.curlrc"
-## vim
-ln -fs "${current_directory}/vim/vimrc"             "${VIMRC}"
-
-source "${BASH_PROFILE}"
-
-###############
-# 2. install required components if needed
+# 1. install required components if needed
 ###############
 # parse command line arguments
 while [ $# -ge 1 ] ; do
@@ -261,9 +205,6 @@ while [ $# -ge 1 ] ; do
         --homebrew)
             homebrew_install
             shift 1 ;;
-        --python)
-            python_install
-            shift 1 ;;
         --vim)
             vim_install
             shift 1 ;;
@@ -272,3 +213,34 @@ while [ $# -ge 1 ] ; do
             shift 1 ;;
     esac
 done
+
+
+###############
+# 2. distribute configuration files
+###############
+# sets medium font anti-aliasing
+## see: http://osxdaily.com/2012/06/09/mac-screen-blurry-optimize-troubleshoot-font-smoothing-os-x/
+if [ "${IS_MACOS}" == "true" ];
+then
+    defaults -currentHost write -globalDomain AppleFontSmoothing -int 2
+fi
+
+# create soft links for all config files
+current_directory="$( pwd )"
+## git
+ln -fs "${current_directory}/git/gitconfig"         "${GITCONFIG}"
+## terminal
+ln -fs "${current_directory}/terminal/agignore"     "${HOME}/.agignore"
+ln -fs "${current_directory}/terminal/bash_profile" "${BASH_PROFILE}"
+ln -fs "${current_directory}/terminal/gdbinit"      "${HOME}/.gdbinit"
+ln -fs "${current_directory}/terminal/inputrc"      "${HOME}/.inputrc"
+ln -fs "${current_directory}/terminal/screenrc"     "${HOME}/.screenrc"
+ln -fs "${current_directory}/terminal/curlrc"       "${HOME}/.curlrc"
+## vim
+ln -fs "${current_directory}/vim/vimrc"             "${VIMRC}"
+## neovim
+mkdir -p $( dirname ${NEOVIMRC} )
+ln -fs "${current_directory}/vim/vimrc"             "${NEOVIMRC}"
+
+source "${BASH_PROFILE}"
+
