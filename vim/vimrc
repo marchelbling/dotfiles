@@ -121,26 +121,33 @@ let g:gitgutter_realtime = 0
 let g:gitgutter_eager = 0
 "}}}
 
+Plug 'https://github.com/Valloric/YouCompleteMe', {'do': './install.py --clang-completer --go-completer' }
+"{{{
+let g:ycm_global_ycm_extra_conf='~/.vim/ycm_extra_conf.py'
+let g:ycm_autoclose_preview_window_after_insertion=1
+let g:ycm_show_diagnostics_ui=1
+let g:ycm_max_diagnostics_to_display=10
+nnoremap <leader>g :YcmCompleter GoTo<CR>
+
+"}}}
+
 Plug 'https://github.com/fatih/vim-go',  { 'do': ':GoUpdateBinaries', 'tag': 'v1.19' }
+"{{{
 map <leader>l :GoDef<CR>
+
+" from: https://hackernoon.com/my-neovim-setup-for-go-7f7b6e805876
+let g:go_auto_type_info = 1
+let g:go_addtags_transform = "snakecase"
+
+au FileType go nmap <F10> :GoTest -short<cr>
+
 let g:go_fmt_command = "goimports"
 let g:go_debug_windows = {
             \ 'stack': 'leftabove 30vnew',
             \ 'out':   'botright 20new',
             \ 'vars':  'leftabove 30vnew',
             \ }
-
-
-" autcomplete
-if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-    Plug 'Shougo/deoplete.nvim'
-    Plug 'roxma/nvim-yarp'
-    Plug 'roxma/vim-hug-neovim-rpc'
-endif
-Plug 'zchee/deoplete-go'
-let g:deoplete#enable_at_startup = 1
+"}}}
 
 
 " delve integration (golang debugger); see vim-go :help go-debug for vim
