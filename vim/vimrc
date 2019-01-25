@@ -155,9 +155,12 @@ if has('nvim')
     Plug 'sebdah/vim-delve'
 endif
 
-
 Plug 'https://github.com/w0rp/ale'
+"{{{
+let g:ale_sign_error = '⤫ '
+let g:ale_sign_warning = '⚠ '
 let g:airline#extensions#ale#enabled = 1
+"}}}
 
 Plug 'https://github.com/sheerun/vim-polyglot' " {'do': './build' }
 let g:polyglot_disabled = ['go']
