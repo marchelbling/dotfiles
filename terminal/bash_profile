@@ -188,7 +188,7 @@ function parse_user
 
 # for color listing see http://misc.flogisoft.com/bash/tip_colors_and_formatting
 shopt -s checkwinsize
-PS1="\$( parse_exit )\$( parse_time ) \$( parse_user ) \$( git_prompt )\$( parse_k8s ) $ "
+PS1="\$( parse_exit )\$( parse_time ) \$( parse_user ) \$( git_prompt ) $ " #"\$( parse_k8s ) $ "
 
 #### COLORS
 # to get colors in terminal (see: http://it.toolbox.com/blogs/lim/how-to-fix-colors-on-mac-osx-terminal-37214):
@@ -281,4 +281,20 @@ function uuid4 {
 
 function ts {
     gdate -u +'%s'
+}
+
+export GPG_TTY=$(tty)
+
+if which rbenv >/dev/null;
+then
+    eval "$(rbenv init -)"
+fi
+
+
+function urldecode {
+    python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.argv[1]))" "$1"
+}
+
+function urlencode {
+    python3 -c "import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))" "$1"
 }
