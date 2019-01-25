@@ -202,6 +202,12 @@ au BufRead,BufNewFile *.json set filetype=javascript               " json
 au BufRead * if search('\M-*-c++-*-', 'n', 1) | setlocal ft=cpp | endif
 au BufRead,BufNewFile *.tex setlocal ts=2 sw=2
 
+au FileType go set noexpandtab
+au FileType go set shiftwidth=4
+au FileType go set softtabstop=4
+au FileType go set tabstop=4
+
+
 " automatically reload vim configuration when a change is detected (http://superuser.com/a/417997)
 augroup myvimrc
     au!
