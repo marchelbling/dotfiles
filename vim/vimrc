@@ -119,15 +119,6 @@ let g:gitgutter_realtime = 0
 let g:gitgutter_eager = 0
 "}}}
 
-Plug 'https://github.com/Valloric/YouCompleteMe', {'do': './install.py --clang-completer --go-completer' }
-"{{{
-let g:ycm_global_ycm_extra_conf='~/.vim/ycm_extra_conf.py'
-let g:ycm_autoclose_preview_window_after_insertion=1
-let g:ycm_show_diagnostics_ui=1
-let g:ycm_max_diagnostics_to_display=10
-nnoremap <leader>g :YcmCompleter GoTo<CR>
-
-"}}}
 
 Plug 'https://github.com/fatih/vim-go',  { 'do': ':GoUpdateBinaries', 'tag': 'v1.19' }
 "{{{

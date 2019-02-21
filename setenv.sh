@@ -142,12 +142,6 @@ function vim_install
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     vim +PlugClean +PlugInstall +qall  # install all plugins from vimrc
 
-    local ycm="${VIM_DIR}/plugged/YouCompleteMe"
-    if [ -d "${ycm}" ]
-    then
-        ln -s vim/ycm_extra_conf.py ${HOME}/.vim/ycm_extra_conf.py
-    fi
-
     pip3 install --upgrade neovim
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -243,4 +237,3 @@ mkdir -p $( dirname ${NEOVIMRC} )
 ln -fs "${current_directory}/vim/vimrc"             "${NEOVIMRC}"
 
 source "${BASH_PROFILE}"
-
