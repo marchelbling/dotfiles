@@ -120,39 +120,66 @@ let g:gitgutter_eager = 0
 "}}}
 
 
-Plug 'https://github.com/fatih/vim-go',  { 'do': ':GoUpdateBinaries', 'tag': 'v1.19' }
-"{{{
-map <leader>l :GoDef<CR>
-
-" from: https://hackernoon.com/my-neovim-setup-for-go-7f7b6e805876
-let g:go_auto_type_info = 1
-let g:go_addtags_transform = "snakecase"
-
-au FileType go nmap <F10> :GoTest -short<cr>
-
-let g:go_fmt_command = "goimports"
-let g:go_debug_windows = {
-            \ 'stack': 'leftabove 30vnew',
-            \ 'out':   'botright 20new',
-            \ 'vars':  'leftabove 30vnew',
-            \ }
-"}}}
-
-
 " delve integration (golang debugger); see vim-go :help go-debug for vim
 if has('nvim')
     Plug 'sebdah/vim-delve'
 endif
 
+Plug 'https://github.com/janko/vim-test'
+
 Plug 'https://github.com/w0rp/ale'
 "{{{
+" pip3 install vint pyflakes pylint flake8 python-language-server
+" go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+" go get -u github.com/sourcegraph/go-langserver
+" npm install -g bash-language-server
+" npm install -g jsonlint
+" npm install -g prettier
+" brew install yamllint
+" gem install solargraph
+
 let g:ale_sign_error = '⤫ '
 let g:ale_sign_warning = '⚠ '
 let g:airline#extensions#ale#enabled = 1
-"}}}
 
-Plug 'https://github.com/sheerun/vim-polyglot' " {'do': './build' }
-let g:polyglot_disabled = ['go']
+let g:ale_open_list = 1 " display list of errors/warnings
+let g:ale_warn_about_trailing_whitespace = 0
+
+let g:ale_completion_enabled = 1
+" temporary fix for autocomplete greediness
+set completeopt=menu,menuone,preview,noselect,noinsert
+
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {
+\   'go': ['goimports', 'gofmt'],
+\}
+
+let g:ale_lint_on_enter = 0 " lint when opening
+let g:ale_lint_on_text_changed = 0 " lint when editing
+let g:ale_lint_on_save = 1 " lint when saving
+let g:ale_linters = {
+\   'python': ['pyls'],
+\   'ruby': ['solargraph'],
+\   'go': ['golangci-lint', 'golangserver'],
+\   'sh': ['language_server', 'shellcheck'],
+\}
+let g:ale_go_golangci_lint_options = '--disable-all'
+            \ . ' --enable=errcheck'
+            \ . ' --enable=goconst'
+            \ . ' --enable=golint'
+            \ . ' --enable=gosimple'
+            \ . ' --enable=govet'
+            \ . ' --enable=ineffassign'
+            \ . ' --enable=staticcheck'
+            \ . ' --enable=misspell'
+            \ . ' --enable=structcheck'
+            \ . ' --enable=unconvert'
+            \ . ' --enable=unparam'
+            \ . ' --enable=varcheck'
+
+noremap <Leader>l :ALEGoToDefinition<CR>
+noremap <Leader>d :ALEHover<CR>
+"}}}
 
 call plug#end()  " required
 
