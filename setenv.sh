@@ -230,9 +230,6 @@ ln -fs "${current_directory}/terminal/gdbinit"      "${HOME}/.gdbinit"
 ln -fs "${current_directory}/terminal/inputrc"      "${HOME}/.inputrc"
 ln -fs "${current_directory}/terminal/screenrc"     "${HOME}/.screenrc"
 ln -fs "${current_directory}/terminal/curlrc"       "${HOME}/.curlrc"
-## GPG
-ln -fs "${current_directory}/terminal/gpg-agent.conf" "${HOME}/.gnupg/gpg-agent.conf"
-ln -fs "${current_directory}/terminal/gpg.conf"       "${HOME}/.gnupg/gpg.conf"
 ## vim
 ln -fs "${current_directory}/vim/vimrc"             "${VIMRC}"
 ## neovim
