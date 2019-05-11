@@ -7,7 +7,8 @@ fi
 
 VIM_DIR="${HOME}/.vim"
 VIMRC="${HOME}/.vimrc"
-NEOVIMRC="${HOME}/.config/nvim/init.vim"
+NEOVIM_DIR="${HOME}/.config/nvim"
+NEOVIMRC="${NEOVIM_DIR}/init.vim"
 GITCONFIG="${HOME}/.gitconfig"
 
 if [ "${IS_MACOS}" == "true" ];
@@ -89,6 +90,21 @@ function homebrew_packages_install
 }
 
 
+function homebrew_cask_install
+{
+    declare -a packages=("${!1}")
+    for package in "${packages[@]}"
+    do
+        if ! brew cask list "${package}" 1>/dev/null
+        then
+            brew cask install "${package}"
+        else
+            brew cask upgrade "${package}"
+        fi
+    done
+}
+
+
 function homebrew_install
 {
     # install homebrew and some utils
@@ -97,10 +113,11 @@ function homebrew_install
         ruby -e "$( curl -fsSkL raw.github.com/mxcl/homebrew/go )"
     fi
 
-    local code_packages=( go cmake valgrind libyaml htop-osx python3 )
+    local code_packages=( go cmake valgrind libyaml htop-osx python3 yarn npm )
+    local infra_packages=( vault docker )
     local compression_packages=( p7zip )
-    local db_packages=( sqlite )
-    local editor_packages=( vim nvim ack ag )
+    local db_packages=( sqlite postgresql )
+    local editor_packages=( vim nvim ag )
     local font_packages=( fontconfig freetype )
 
     homebrew_packages_install code_packages[@]
@@ -109,7 +126,8 @@ function homebrew_install
     homebrew_packages_install editor_packages[@]
     homebrew_packages_install font_packages[@]
 
-    brew doctor
+    local binaries=( oni )
+    homebrew_cask_install binaries[@]
 }
 
 
@@ -119,10 +137,12 @@ function vim_install
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     vim +PlugClean +PlugInstall +qall  # install all plugins from vimrc
 
-    pip3 install --upgrade neovim
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     nvim +PlugClean +PlugInstall +qall  # install all plugins from vimrc
+
+    # setup extensions (see https://github.com/neoclide/coc.nvim/issues/118)
+    ( cd ~/.config/coc/extensions && yarn add coc-json coc-python coc-solargraph coc-yaml )
 }
 
 
@@ -133,17 +153,35 @@ function fonts_install {
 }
 
 
-function git_completion
+function terminal_completion
 {
     # fetch git-completion.bash
     curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > "${HOME}/.git-completion.bash"
+
+    # fetch docker-completion.bash
+    curl https://raw.githubusercontent.com/docker/docker/master/contrib/completion/bash/docker > "${HOME}/.docker-completion.bash"
 }
 
 
-function docker_completion
-{
-    # fetch docker-completion.bash
-    curl https://raw.githubusercontent.com/docker/docker/master/contrib/completion/bash/docker > "${HOME}/.docker-completion.bash"
+function lsp_completion {
+    # golang: gopls
+    if which go 2>&1 >/dev/null
+    then
+        go get -u golang.org/x/tools/cmd/gopls
+    fi
+
+    # bash: bash-language-server
+    npm i -g bash-language-server
+
+    # yaml: yamllint
+    brew install yamllint
+
+    # json: jsonlint
+    npm install -g jsonlint
+    npm install -g prettier
+
+    # ruby: solargraph
+    gem install solargraph
 }
 
 
@@ -161,26 +199,26 @@ while [ $# -ge 1 ] ; do
                 open "${current_directory}/terminal/wombat.terminal"
             fi
 
+            lsp_completion
             fonts_install
-            git_completion
-            python_install
+            terminal_completion
             vim_install
 
             shift 1 ;;  # drop current command line arg
         --fonts)
             fonts_install
             shift 1 ;;
-        --git)
-            git_completion
-            shift 1 ;;
         --homebrew)
             homebrew_install
+            shift 1 ;;
+        --lsp)
+            lsp_completion
             shift 1 ;;
         --vim)
             vim_install
             shift 1 ;;
         --help)
-            echo "Usage: $0 [--all|--fonts|--ubuntu|--homebrew|--vim|--python|--git|--help]"
+            echo "Usage: $0 [--all|--fonts|--homebrew|--vim|--git|--help]"
             shift 1 ;;
     esac
 done
@@ -209,8 +247,10 @@ ln -fs "${current_directory}/terminal/screenrc"     "${HOME}/.screenrc"
 ln -fs "${current_directory}/terminal/curlrc"       "${HOME}/.curlrc"
 ## vim
 ln -fs "${current_directory}/vim/vimrc"             "${VIMRC}"
+ln -fs "${current_directory}/vim/coc-settings.json" "${VIM_DIR}"
 ## neovim
 mkdir -p $( dirname ${NEOVIMRC} )
 ln -fs "${current_directory}/vim/vimrc"             "${NEOVIMRC}"
+ln -fs "${current_directory}/vim/coc-settings.json" "${NEOVIM_DIR}"
 
 source "${BASH_PROFILE}"

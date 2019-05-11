@@ -86,6 +86,7 @@ Plug 'junegunn/fzf.vim'
 let g:fzf_nvim_statusline = 0 " disable statusline overwriting
 
 nnoremap <silent> <leader>p :ProjectFiles<CR>
+nnoremap <silent> <leader>f :Ag
 nnoremap <silent> <leader>k :call SearchWordWithAg()<CR>
 vnoremap <silent> <leader>v :call SearchVisualSelectionWithAg()<CR>
 
@@ -120,66 +121,101 @@ let g:gitgutter_eager = 0
 "}}}
 
 
-" delve integration (golang debugger); see vim-go :help go-debug for vim
-if has('nvim')
-    Plug 'sebdah/vim-delve'
-endif
-
-Plug 'https://github.com/janko/vim-test'
+Plug 'https://github.com/fatih/vim-go',  { 'do': ':GoUpdateBinaries' }
+"{{{
+let g:go_metalinter_command = "golangci-lint"
+let g:go_addtags_transform = "snakecase"
+let g:go_fmt_command = "goimports"
+" autocompletion left to CoC
+let g:go_def_mapping_enabled = 0
+"}}}
 
 Plug 'https://github.com/w0rp/ale'
 "{{{
-" pip3 install vint pyflakes pylint flake8 python-language-server
-" go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
-" go get -u github.com/sourcegraph/go-langserver
-" npm install -g bash-language-server
-" npm install -g jsonlint
-" npm install -g prettier
-" brew install yamllint
-" gem install solargraph
-
-let g:ale_sign_error = '⤫ '
-let g:ale_sign_warning = '⚠ '
 let g:airline#extensions#ale#enabled = 1
 
 let g:ale_open_list = 1 " display list of errors/warnings
 let g:ale_warn_about_trailing_whitespace = 0
-
-let g:ale_completion_enabled = 1
-" temporary fix for autocomplete greediness
-set completeopt=menu,menuone,preview,noselect,noinsert
-
-let g:ale_fix_on_save = 1
-let g:ale_fixers = {
-\   'go': ['goimports', 'gofmt'],
-\}
-
 let g:ale_lint_on_enter = 0 " lint when opening
 let g:ale_lint_on_text_changed = 0 " lint when editing
 let g:ale_lint_on_save = 1 " lint when saving
-let g:ale_linters = {
-\   'python': ['pyls'],
-\   'ruby': ['solargraph'],
-\   'go': ['golangci-lint', 'golangserver'],
-\   'sh': ['language_server', 'shellcheck'],
-\}
-let g:ale_go_golangci_lint_options = '--disable-all'
-            \ . ' --enable=errcheck'
-            \ . ' --enable=goconst'
-            \ . ' --enable=golint'
-            \ . ' --enable=gosimple'
-            \ . ' --enable=govet'
-            \ . ' --enable=ineffassign'
-            \ . ' --enable=staticcheck'
-            \ . ' --enable=misspell'
-            \ . ' --enable=structcheck'
-            \ . ' --enable=unconvert'
-            \ . ' --enable=unparam'
-            \ . ' --enable=varcheck'
 
-noremap <Leader>l :ALEGoToDefinition<CR>
-noremap <Leader>d :ALEHover<CR>
 "}}}
+
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+" -------------------------------------------------------------------------------------------------
+" coc.nvim default settings
+" -------------------------------------------------------------------------------------------------
+
+" if hidden is not set, TextEdit might fail.
+set hidden
+" Better display for messages
+set cmdheight=2
+" Smaller updatetime for CursorHold & CursorHoldI
+set updatetime=300
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+" always show signcolumns
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use U to show documentation in preview window
+nnoremap <silent> U :call <SID>show_documentation()<CR>
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+" }} CoC setup
+
+" Plug 'https://github.com/sheerun/vim-polyglot' " {'do': './build' }
+" let g:polyglot_disabled = ['go']
+" if !empty(matchstr(system('which ruby'), 'rbenv'))
+"     let g:ruby_path = system('echo $HOME/.rbenv/shims')
+" endif
 
 call plug#end()  " required
 
