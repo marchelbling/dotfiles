@@ -74,29 +74,6 @@ function git_clone
 }
 
 
-function docker_install {
-    # docker:
-    sudo apt-get install -y apt-transport-https ca-certificates linux-image-extra-$(uname -r) linux-image-extra-virtual
-    sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-    local docker_source="deb https://apt.dockerproject.org/repo ubuntu-xenial main"
-    local docker_sources="/etc/apt/sources.list.d/docker.list"
-    if ! grep -q "${dockersource}" "${docker_sources}";
-    then
-        echo "${docker_source}" | sudo tee -a "${docker_sources}"
-    fi
-    sudo apt-get update
-    sudo apt-get install -y docker-engine
-    sudo service docker start
-
-    # slow down on brute force ssh (see http://askubuntu.com/a/32256/212079)
-    sudo iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --set --name SSH -j ACCEPT
-    sudo iptables -A INPUT -p tcp --dport 22 -m recent --update --seconds 60 --hitcount 4 --rttl --name SSH -j LOG --log-prefix "SSH_brute_force "
-    sudo iptables -A INPUT -p tcp --dport 22 -m recent --update --seconds 60 --hitcount 4 --rttl --name SSH -j DROP
-
-    docker_completion
-}
-
-
 function homebrew_packages_install
 {
     declare -a packages=("${!1}")
