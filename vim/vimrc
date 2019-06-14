@@ -130,17 +130,6 @@ let g:go_fmt_command = "goimports"
 let g:go_def_mapping_enabled = 0
 "}}}
 
-Plug 'https://github.com/w0rp/ale'
-"{{{
-let g:airline#extensions#ale#enabled = 1
-
-let g:ale_open_list = 1 " display list of errors/warnings
-let g:ale_warn_about_trailing_whitespace = 0
-let g:ale_lint_on_enter = 0 " lint when opening
-let g:ale_lint_on_text_changed = 0 " lint when editing
-let g:ale_lint_on_save = 1 " lint when saving
-
-"}}}
 
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 " -------------------------------------------------------------------------------------------------
@@ -211,11 +200,17 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 " }} CoC setup
 
-" Plug 'https://github.com/sheerun/vim-polyglot' " {'do': './build' }
-" let g:polyglot_disabled = ['go']
-" if !empty(matchstr(system('which ruby'), 'rbenv'))
-"     let g:ruby_path = system('echo $HOME/.rbenv/shims')
-" endif
+Plug 'https://github.com/sheerun/vim-polyglot' " {'do': './build' }
+let g:polyglot_disabled = ['go']
+if !empty(matchstr(system('which ruby'), 'rbenv'))
+    let g:ruby_path = system('echo $HOME/.rbenv/shims')
+endif
+
+
+" see https://github.com/neovim/neovim/issues/1822
+Plug 'bfredl/nvim-miniyank'
+map p <Plug>(miniyank-autoput)
+map P <Plug>(miniyank-autoPut)
 
 call plug#end()  " required
 
