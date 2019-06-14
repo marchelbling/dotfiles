@@ -1,5 +1,5 @@
 #### PATH
-export PATH=/usr/local/bin:/usr/local/sbin:$PATH:${HOME}/.todo
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 export EDITOR="$( which vim )"
 
 #### SHORTCUTS
@@ -42,12 +42,12 @@ do
     _autocomplete="${HOME}/.${binary}-completion.bash"
     if [ -e "${_autocomplete}" ]
     then
-        . "${_autocomplete}"
+        . "${_autocomplete}" >/dev/null 2>&1
     fi
 done
+
 # show git branch in shell prompt
 # http://betterexplained.com/articles/aha-moments-when-learning-git/ and http://asemanfar.com/Current-Git-Branch-in-Bash-Prompt
-
 function get_relative_path
 {
     local root_path="$1"
@@ -56,12 +56,12 @@ function get_relative_path
 
 function parse_repo_path
 {
-    git rev-parse --show-toplevel 2> /dev/null
+    git rev-parse --show-toplevel 2>/dev/null
 }
 
 function parse_branch
 {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+    git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
 
 if tty -s && [ $(tput colors) -ge 8 ]  # make sure we are in interactive mode and colors
@@ -93,7 +93,7 @@ function parse_upstream
         else
             local remote="${remote_branch%$branch}"  # strip suffix (/branch)
 
-            if ! git diff --quiet "${remote_branch}".."${branch}" 2>&1 >/dev/null;
+            if ! git diff --quiet "${remote_branch}".."${branch}" >/dev/null 2>&1;
             then
                 local color="${orange}"
             fi
@@ -135,7 +135,7 @@ function parse_path
 
 function parse_diff
 {
-    if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1
+    if [ -d .git ] || git rev-parse --git-dir >/dev/null 2>&1
     then
         local diff="$( git status --porcelain )"
         if [ -n "${diff}" ] && echo "${diff}" | grep -v "^?? " &>/dev/null;
@@ -157,7 +157,7 @@ function parse_diff
 
 function parse_k8s
 {
-    if which kubectl >/dev/null && kubectl version --request-timeout=1 >/dev/null 2>&1;
+    if which kubectl >/dev/null 2>&1 && kubectl version --request-timeout=1 >/dev/null 2>&1;
     then
         echo -e "${bold}${gray}(k8s=$( kubectl config current-context | rev | cut -d'_' -f1 | rev ))${none}"
     fi
@@ -203,19 +203,10 @@ then
   source "${HOME}/.specific_profile"
 fi
 
-#### PYTHON
-export VENV_DIR="${HOME}/.venv"
-export DEFAULT_VENV="${DEFAULT_VENV:-env}"
-
-if [ -d "${VENV_DIR}/${DEFAULT_VENV}" ]
-then
-  source "${VENV_DIR}/${DEFAULT_VENV}/bin/activate"
-fi
-
 #### RUBY
 # bash completion for ssh (based on .ssh/config)
 ssh_config="${HOME}/.ssh/config"
-if [ -f ${ssh_config} ] && which ruby 2>&1 >/dev/null;
+if [ -f ${ssh_config} ] && which ruby >/dev/null 2>&1;
 then
     complete -o default -o nospace -W "$( env ruby -ne 'puts $_.split(/[,\s]+/)[1..-1].reject{|host| host.match(/\*|\?/)} if $_.match(/^\s*Host\s+/);' < ${ssh_config} )" scp sftp ssh
 fi
@@ -282,8 +273,6 @@ function uuid4 {
 function ts {
     gdate -u +'%s'
 }
-
-export GPG_TTY=$(tty)
 
 if which rbenv >/dev/null;
 then
