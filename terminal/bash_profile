@@ -1,5 +1,6 @@
 #### PATH
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+export LC_ALL=en_US.UTF-8
 export EDITOR="$( which vim )"
 
 #### SHORTCUTS
