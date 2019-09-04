@@ -142,7 +142,7 @@ function vim_install
     nvim +PlugClean +PlugInstall +qall  # install all plugins from vimrc
 
     # setup extensions (see https://github.com/neoclide/coc.nvim/issues/118)
-    ( cd ~/.config/coc/extensions && yarn add coc-json coc-python coc-solargraph coc-yaml )
+    ( mkdir -p ~/.config/coc/extensions && cd ~/.config/coc/extensions && yarn add coc-json coc-python coc-solargraph coc-yaml )
 }
 
 
