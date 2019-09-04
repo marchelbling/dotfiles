@@ -38,7 +38,7 @@ then
     . /etc/bash-completion
 fi
 
-for binary in "git" "docker"
+for binary in "git" "docker" "rake" "kubectl"
 do
     _autocomplete="${HOME}/.${binary}-completion.bash"
     if [ -e "${_autocomplete}" ]

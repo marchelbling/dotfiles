@@ -160,6 +160,12 @@ function terminal_completion
 
     # fetch docker-completion.bash
     curl https://raw.githubusercontent.com/docker/docker/master/contrib/completion/bash/docker > "${HOME}/.docker-completion.bash"
+
+    # fetch rake-completion.bash
+    curl https://raw.githubusercontent.com/modosc/rake-autocomplete/master/rake > "${HOME}/.rake-completion.bash"
+
+    # generate kubernetes autocompletion
+    kubectl completion bash > "${HOME}/.kubectl-completion.bash"
 }
 
 
