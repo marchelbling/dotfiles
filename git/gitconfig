@@ -1,7 +1,11 @@
 [user]
     name = Marc Helbling
     email = marc.d.helbling@gmail.com
-    signingkey = 9F748C2CAF2F520D
+    signingkey = 833D46F97913BC7E
+[commit]
+	gpgsign = true
+[gpg]
+	program = /usr/local/bin/gpg-with-key
 [color]
     ui = auto
 [help]
@@ -38,7 +42,3 @@
     squash = "!sh -c 'revision="$( git rev-parse $1 )" && git commit --squash="${revision}" && git rebase -i --autosquash "${revision}"^' -"
 [url "git@github.com:"]
 	insteadOf = https://github.com/
-[commit]
-	gpgsign = true
-[gpg]
-	program = /usr/local/bin/gpg-with-key
