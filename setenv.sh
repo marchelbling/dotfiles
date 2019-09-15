@@ -113,20 +113,23 @@ function homebrew_install
         ruby -e "$( curl -fsSkL raw.github.com/mxcl/homebrew/go )"
     fi
 
-    local code_packages=( go cmake valgrind libyaml htop-osx python3 yarn npm )
-    local infra_packages=( vault docker )
-    local compression_packages=( p7zip )
-    local db_packages=( sqlite postgresql )
-    local editor_packages=( vim nvim ag )
-    local font_packages=( fontconfig freetype )
+    local packages=( \
+        golang \
+        make \
+        rbenv \
+        python3 \
+        yarn npm \
+        yamllint \
+        p7zip coreutils htop-osx ag jq \
+        bash-completion \
+        vault postgresql redis \
+        vim nvim codemod \
+        fontconfig freetype \
+    )
 
-    homebrew_packages_install code_packages[@]
-    homebrew_packages_install compression_packages[@]
-    homebrew_packages_install db_packages[@]
-    homebrew_packages_install editor_packages[@]
-    homebrew_packages_install font_packages[@]
+    homebrew_packages_install packages[@]
 
-    local binaries=( oni )
+    local binaries=( oni tunnelblick )
     homebrew_cask_install binaries[@]
 }
 
@@ -155,14 +158,13 @@ function fonts_install {
 
 function terminal_completion
 {
-    # fetch git-completion.bash
     curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > "${HOME}/.git-completion.bash"
-
-    # fetch docker-completion.bash
     curl https://raw.githubusercontent.com/docker/docker/master/contrib/completion/bash/docker > "${HOME}/.docker-completion.bash"
 
-    # fetch rake-completion.bash
+
+    # FIXME: freeze and host assets locally for security
     curl https://raw.githubusercontent.com/modosc/rake-autocomplete/master/rake > "${HOME}/.rake-completion.bash"
+    curl https://raw.githubusercontent.com/Bash-it/bash-it/master/completion/available/makefile.completion.bash > "${HOME}/.make-completion.bash"
 
     # generate kubernetes autocompletion
     kubectl completion bash > "${HOME}/.kubectl-completion.bash"
@@ -178,9 +180,6 @@ function lsp_completion {
 
     # bash: bash-language-server
     npm i -g bash-language-server
-
-    # yaml: yamllint
-    brew install yamllint
 
     # json: jsonlint
     npm install -g jsonlint
