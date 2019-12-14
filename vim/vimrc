@@ -86,9 +86,11 @@ Plug 'junegunn/fzf.vim'
 let g:fzf_nvim_statusline = 0 " disable statusline overwriting
 
 nnoremap <silent> <leader>p :ProjectFiles<CR>
-nnoremap <silent> <leader>f :Ag
+" search word under cursor or visual selection (if currently in visual mode)
+" if invoked with no visual selection or no word under the cursor, this will search in the
+" full project as expected
 nnoremap <silent> <leader>k :call SearchWordWithAg()<CR>
-vnoremap <silent> <leader>v :call SearchVisualSelectionWithAg()<CR>
+vnoremap <silent> <leader>k :call SearchVisualSelectionWithAg()<CR>
 
 " from: https://github.com/junegunn/fzf.vim/issues/47#issuecomment-160237795
 function! s:find_git_root()
@@ -126,6 +128,7 @@ Plug 'https://github.com/fatih/vim-go',  { 'do': ':GoUpdateBinaries' }
 let g:go_metalinter_command = "golangci-lint"
 let g:go_addtags_transform = "snakecase"
 let g:go_fmt_command = "goimports"
+let g:go_test_show_name=1
 " autocompletion left to CoC
 let g:go_def_mapping_enabled = 0
 "}}}
@@ -163,10 +166,6 @@ endfunction
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
-" Use `[c` and `]c` to navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
-
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
@@ -179,25 +178,10 @@ nnoremap <silent> U :call <SID>show_documentation()<CR>
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
 
-" Remap for format selected region
-vmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
 " Show all diagnostics
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-" Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 " }} CoC setup
 
 Plug 'https://github.com/sheerun/vim-polyglot' " {'do': './build' }
