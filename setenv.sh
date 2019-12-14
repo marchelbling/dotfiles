@@ -120,7 +120,7 @@ function homebrew_install
         python3 \
         yarn npm \
         yamllint \
-        p7zip coreutils htop-osx ag jq \
+        p7zip coreutils htop-osx ag jq num-utils \
         bash-completion \
         vault postgresql redis \
         vim nvim codemod \
@@ -187,6 +187,9 @@ function lsp_completion {
 
     # ruby: solargraph
     gem install solargraph
+
+    # c++: ccls
+    brew install ccls
 }
 
 
