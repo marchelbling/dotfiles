@@ -42,3 +42,8 @@
     squash = "!sh -c 'revision="$( git rev-parse $1 )" && git commit --squash="${revision}" && git rebase -i --autosquash "${revision}"^' -"
 [url "git@github.com:"]
 	insteadOf = https://github.com/
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
