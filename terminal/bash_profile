@@ -281,6 +281,10 @@ then
 fi
 
 
+function k8s_detach {
+    kubectl config unset clusters.$( kubectl config current-context )
+}
+
 function urldecode {
     python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.argv[1]))" "$1"
 }
