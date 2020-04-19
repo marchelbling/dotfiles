@@ -129,7 +129,7 @@ function homebrew_install
 
     homebrew_packages_install packages[@]
 
-    local binaries=( oni tunnelblick )
+    local binaries=( tunnelblick basictex )
     homebrew_cask_install binaries[@]
 }
 
