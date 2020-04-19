@@ -32,7 +32,7 @@ shopt -s cmdhist
 # Record each line as it gets issued
 export PROMPT_COMMAND="history -a; history -c; history -r; ${PROMPT_COMMAND}"
 
-#### GIT
+#### terminal completion
 if [ -e /etc/bash-completion ];
 then
     . /etc/bash-completion
@@ -51,8 +51,9 @@ done
 # http://betterexplained.com/articles/aha-moments-when-learning-git/ and http://asemanfar.com/Current-Git-Branch-in-Bash-Prompt
 function get_relative_path
 {
-    local root_path="$1"
-    echo $( pwd ) | sed "s#${root_path}##g"
+    local from="$1"
+    local to="$( pwd )"
+    echo "${to}" | sed "s#${from}##g"
 }
 
 function parse_repo_path
@@ -62,22 +63,8 @@ function parse_repo_path
 
 function parse_branch
 {
-    git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+    git branch --show-current 2>/dev/null
 }
-
-if tty -s && [ $(tput colors) -ge 8 ]  # make sure we are in interactive mode and colors
-then
-    none="\x01$(      tput sgr0 )\x02"
-    pink="\x01$(      tput setaf 218 )\x02"
-    red="\x01$(       tput setaf 1 )\x02"
-    gray="\x01$(      tput setaf 240 )\x02"
-    orange="\x01$(    tput setaf 172 )\x02"
-    green="\x01$(     tput setaf 2 )\x02"
-    blue="\x01$(      tput setaf 4 )\x02"
-    lightgray="\x01$( tput setaf 7 )\x02"
-    darkgray="\x01$(  tput bold setaf 0 )\x02"
-    bold="\x01$(      tput bold )\x02"
-fi
 
 function parse_upstream
 {
@@ -186,6 +173,20 @@ function parse_user
 {
     echo -e "${bold}${USER}${none}"
 }
+
+if tty -s && [ $(tput colors) -ge 8 ]  # make sure we are in interactive mode and colors
+then
+    none="\x01$(      tput sgr0 )\x02"
+    pink="\x01$(      tput setaf 218 )\x02"
+    red="\x01$(       tput setaf 1 )\x02"
+    gray="\x01$(      tput setaf 240 )\x02"
+    orange="\x01$(    tput setaf 172 )\x02"
+    green="\x01$(     tput setaf 2 )\x02"
+    blue="\x01$(      tput setaf 4 )\x02"
+    lightgray="\x01$( tput setaf 7 )\x02"
+    darkgray="\x01$(  tput bold setaf 0 )\x02"
+    bold="\x01$(      tput bold )\x02"
+fi
 
 # for color listing see http://misc.flogisoft.com/bash/tip_colors_and_formatting
 shopt -s checkwinsize
