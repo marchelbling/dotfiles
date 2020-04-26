@@ -1,0 +1,85 @@
+#### PATH
+export GOPATH="${HOME}/go"
+export PATH=/usr/local/bin:/usr/local/sbin:${GOPATH}/bin:$PATH
+export LC_ALL=en_US.UTF-8
+export EDITOR="$( which vim )"
+
+#### SHORTCUTS
+alias ls='ls -F'
+alias depends='otool -L'
+alias igt='git'
+alias gti='git'
+alias gigt='git'
+alias gitg='git'
+
+# prompt
+source "${HOME}/.zsh/theme.zsh"
+
+if [ -f "${HOME}/.specific_profile" ]
+then
+    . "${HOME}/.specific_profile"
+fi
+
+#### HISTORY (from https://github.com/mrzool/bash-sensible/blob/master/sensible.bash)
+# Huge history. Doesn't appear to slow things down, so why not?
+HISTSIZE=500000
+HISTFILESIZE=100000
+
+# Avoid duplicate entries
+HISTCONTROL="erasedups:ignoreboth"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# navigation
+## history (https://unix.stackexchange.com/questions/97843/how-can-i-search-history-with-text-already-entered-at-the-prompt-in-zsh)
+bindkey "^[[A" history-beginning-search-backward
+bindkey "^[[B" history-beginning-search-forward
+## line (https://gist.github.com/acamino/2bc8df5e2ed0f99ddbe7a6fddb7773a6)
+bindkey -e
+bindkey \^u backward-kill-line
+
+
+
+
+
+function k8s_detach {
+    kubectl config unset current-context
+}
+
+#### RUBY
+# bash completion for ssh (based on .ssh/config)
+ssh_config="${HOME}/.ssh/config"
+if [ -f ${ssh_config} ] && which ruby >/dev/null 2>&1;
+then
+    complete -o default -o nospace -W "$( env ruby -ne 'puts $_.split(/[,\s]+/)[1..-1].reject{|host| host.match(/\*|\?/)} if $_.match(/^\s*Host\s+/);' < ${ssh_config} )" scp sftp ssh
+fi
+
+if which rbenv >/dev/null;
+then
+    eval "$(rbenv init -)"
+fi
+
+function docker_clean {
+    docker rm $( docker ps -q -f status=exited )
+    docker rmi $( docker images -f "dangling=true" -q )
+}
+
+function uuid4 {
+    uuidgen | tr -d '-'  | tr '[:upper:]' '[:lower:]'
+}
+
+function ts {
+    gdate -u +'%s'
+}
+
+function k8s_detach {
+    kubectl config unset clusters.$( kubectl config current-context )
+}
+
+function urldecode {
+    python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.argv[1]))" "$1"
+}
+
+function urlencode {
+    python3 -c "import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))" "$1"
+}

@@ -248,7 +248,13 @@ current_directory="$( pwd )"
 ln -fs "${current_directory}/git/gitconfig"         "${GITCONFIG}"
 ## terminal
 ln -fs "${current_directory}/terminal/agignore"     "${HOME}/.agignore"
-ln -fs "${current_directory}/terminal/bash_profile" "${BASH_PROFILE}"
+if [ -n "IS_ZSH" ]
+then
+    ln -fs "${current_directory}/terminal/zshrc"        "${HOME}/.zshrc"
+    ln -fs "${current_directory}/terminal/theme.zsh"    "${HOME}/.zsh/theme.zsh"
+else
+    ln -fs "${current_directory}/terminal/bash_profile" "${BASH_PROFILE}"
+fi
 ln -fs "${current_directory}/terminal/gdbinit"      "${HOME}/.gdbinit"
 ln -fs "${current_directory}/terminal/inputrc"      "${HOME}/.inputrc"
 ln -fs "${current_directory}/terminal/screenrc"     "${HOME}/.screenrc"
