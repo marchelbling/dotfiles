@@ -11,7 +11,13 @@ NEOVIM_DIR="${HOME}/.config/nvim"
 NEOVIMRC="${NEOVIM_DIR}/init.vim"
 GITCONFIG="${HOME}/.gitconfig"
 
-if [ "${IS_MACOS}" == "true" ];
+if [[ $( basename "${SHELL}" ) == "zsh" ]]
+then
+    IS_ZSH=true
+    mkdir -p "${HOME}/.zsh/completion"
+fi
+
+if [ -n "${IS_MACOS}" ];
 then
     FONTS_DIR="${HOME}/Library/Fonts"
     BASH_PROFILE="${HOME}/.bash_profile"
@@ -129,7 +135,11 @@ function homebrew_install
 
     homebrew_packages_install packages[@]
 
-    local binaries=( tunnelblick basictex )
+    # note gcloud requires some extra steps:
+    # gcloud init
+    # gcloud components update
+    # gcloud components install cbt
+    local binaries=( docker tunnelblick basictex google-cloud-sdk )
     homebrew_cask_install binaries[@]
 }
 
@@ -158,16 +168,18 @@ function fonts_install {
 
 function terminal_completion
 {
-    curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > "${HOME}/.git-completion.bash"
-    curl https://raw.githubusercontent.com/docker/docker/master/contrib/completion/bash/docker > "${HOME}/.docker-completion.bash"
-
-
-    # FIXME: freeze and host assets locally for security
-    curl https://raw.githubusercontent.com/modosc/rake-autocomplete/master/rake > "${HOME}/.rake-completion.bash"
-    curl https://raw.githubusercontent.com/Bash-it/bash-it/master/completion/available/makefile.completion.bash > "${HOME}/.make-completion.bash"
-
-    # generate kubernetes autocompletion
-    kubectl completion bash > "${HOME}/.kubectl-completion.bash"
+    if [ -n "${IS_ZSH}" ]
+    then
+        mkdir -p "${HOME}/.zsh/completion"
+        curl -sSL https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh > "${HOME}/.zsh/completion/_git"
+    else
+        curl -sSL https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > "${HOME}/.git-completion.bash"
+        curl -sSL https://raw.githubusercontent.com/docker/docker/master/contrib/completion/bash/docker > "${HOME}/.docker-completion.bash"
+        kubectl completion bash > "${HOME}/.kubectl-completion.bash"
+        # FIXME: freeze and host assets locally for security
+        curl -sSL https://raw.githubusercontent.com/modosc/rake-autocomplete/master/rake > "${HOME}/.rake-completion.bash"
+        curl -sSL https://raw.githubusercontent.com/Bash-it/bash-it/master/completion/available/makefile.completion.bash > "${HOME}/.make-completion.bash"
+    fi
 }
 
 
