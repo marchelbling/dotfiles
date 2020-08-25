@@ -14,7 +14,6 @@ GITCONFIG="${HOME}/.gitconfig"
 if [[ $( basename "${SHELL}" ) == "zsh" ]]
 then
     IS_ZSH=true
-    mkdir -p "${HOME}/.zsh/completion"
 fi
 
 if [ -n "${IS_MACOS}" ];
