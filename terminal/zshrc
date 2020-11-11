@@ -76,6 +76,10 @@ function k8s_detach {
     kubectl config unset current-context
 }
 
+if which aws>/dev/null && which aws_completer>/dev/null; then
+    complete -C "$( which aws_completer )" aws
+fi
+
 #### RUBY
 # bash completion for ssh (based on .ssh/config)
 ssh_config="${HOME}/.ssh/config"
