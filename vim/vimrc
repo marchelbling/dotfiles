@@ -172,8 +172,21 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Use U to show documentation in preview window
-nnoremap <silent> U :call <SID>show_documentation()<CR>
+" Use H to show documentation in preview window
+nnoremap <silent> H :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
@@ -191,10 +204,12 @@ if !empty(matchstr(system('which ruby'), 'rbenv'))
 endif
 
 
-" see https://github.com/neovim/neovim/issues/1822
-Plug 'bfredl/nvim-miniyank'
-map p <Plug>(miniyank-autoput)
-map P <Plug>(miniyank-autoPut)
+if has('nvim')
+    " see https://github.com/neovim/neovim/issues/1822
+    Plug 'bfredl/nvim-miniyank'
+    map p <Plug>(miniyank-autoput)
+    map P <Plug>(miniyank-autoPut)
+endif
 
 call plug#end()  " required
 
