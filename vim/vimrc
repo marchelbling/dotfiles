@@ -7,6 +7,7 @@ let mapleader = ","
 call plug#begin('~/.vim/plugged')
 
 Plug 'https://github.com/vim-scripts/wombat256.vim'
+Plug 'https://github.com/gryf/wombat256grf'
 Plug 'https://github.com/tpope/vim-fugitive'
 Plug 'https://github.com/henrik/vim-indexed-search'
 Plug 'https://github.com/Raimondi/delimitMate'
@@ -232,7 +233,7 @@ set confirm " warn for unsaved changes before exiting
 
 """"""" look'n'feel
 
-colorscheme wombat256mod
+colorscheme wombat256grf
 set guifont=Anonymous\ Pro\ for\ Powerline:h14
 
 " display side file explorer
