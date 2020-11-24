@@ -1,7 +1,7 @@
 #### PATH
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 export LC_ALL=en_US.UTF-8
-export EDITOR="$( which vim )"
+export EDITOR="$( which nvim )"
 
 #### SHORTCUTS
 alias ls='ls -F'
@@ -10,6 +10,7 @@ alias igt='git'
 alias gti='git'
 alias gigt='git'
 alias gitg='git'
+alias vim=nvim
 
 
 #### HISTORY (from https://github.com/mrzool/bash-sensible/blob/master/sensible.bash)
