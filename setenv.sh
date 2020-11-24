@@ -138,7 +138,7 @@ function homebrew_install
     # gcloud init
     # gcloud components update
     # gcloud components install cbt
-    local binaries=( docker tunnelblick basictex google-cloud-sdk )
+    local binaries=( docker tunnelblick basictex )
     homebrew_cask_install binaries[@]
 }
 

@@ -1,6 +1,6 @@
 #### PATH
 export GOPATH="${HOME}/go"
-export PATH=/usr/local/bin:/usr/local/sbin:${GOPATH}/bin:$PATH
+export PATH=/usr/local/bin:/usr/local/sbin:"${GOPATH}/bin":"${HOME}/google-cloud-sdk/bin":"${PATH}"
 export LC_ALL=en_US.UTF-8
 export EDITOR="$( which vim )"
 
@@ -64,8 +64,10 @@ fi
 autoload -Uz compinit && compinit -i
 
 if which gcloud >/dev/null 2>&1; then
-    source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
-    source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
+    # gcloud autocompletion
+    gcloud_dir="$( dirname $( dirname $( which gcloud ) ) )"
+    source "${gcloud_dir}/completion.zsh.inc"
+    source "${gcloud_dir}/path.zsh.inc"
 fi
 
 if which kubectl >/dev/null 2>&1; then
@@ -117,3 +119,4 @@ function urldecode {
 function urlencode {
     python3 -c "import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))" "$1"
 }
+
