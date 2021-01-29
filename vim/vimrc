@@ -139,7 +139,10 @@ let g:go_def_mapping_enabled = 0
 "}}}
 
 
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'} " {'do': 'yarn install --frozen-lockfile'}
+
+Plug 'hashivim/vim-terraform'
+
 " -------------------------------------------------------------------------------------------------
 " coc.nvim default settings
 " -------------------------------------------------------------------------------------------------
