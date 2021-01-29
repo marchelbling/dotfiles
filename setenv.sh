@@ -128,8 +128,9 @@ function homebrew_install
         p7zip coreutils htop-osx ag jq num-utils \
         bash-completion \
         vault postgresql redis \
-        vim nvim codemod \
+        nvim codemod \
         fontconfig freetype \
+        bat \
     )
 
     homebrew_packages_install packages[@]
