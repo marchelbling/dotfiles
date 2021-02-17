@@ -1,5 +1,15 @@
 {
   "languageserver": {
+	"terraform": {
+        "command": "terraform-ls",
+        "args": ["serve"],
+        "filetypes": [
+            "terraform",
+            "tf"
+        ],
+        "initializationOptions": {},
+        "settings": {}
+	},
 	"bash": {
       "command": "bash-language-server",
       "args": ["start"],

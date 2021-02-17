@@ -95,21 +95,6 @@ function homebrew_packages_install
 }
 
 
-function homebrew_cask_install
-{
-    declare -a packages=("${!1}")
-    for package in "${packages[@]}"
-    do
-        if ! brew cask list "${package}" 1>/dev/null
-        then
-            brew cask install "${package}"
-        else
-            brew cask upgrade "${package}"
-        fi
-    done
-}
-
-
 function homebrew_install
 {
     # install homebrew and some utils
@@ -119,28 +104,28 @@ function homebrew_install
     fi
 
     local packages=( \
-        golang \
-        make \
-        rbenv \
+        go fzf \
+        git hub openssl gnupg \
+        nvim codemod \
+        make cmake \
+        ruby-build rbenv \
         python3 \
         yarn npm \
         yamllint \
-        p7zip coreutils htop-osx ag jq num-utils \
+        coreutils htop tree ag jq num-utils \
         bash-completion \
-        vault postgresql redis \
-        nvim codemod \
-        fontconfig freetype \
-        bat \
+        vault terraform terraform-ls \
+        postgresql sqlite redis \
+        docker container-structure-test \
+        basictex \
     )
 
-    homebrew_packages_install packages[@]
+    homebrew_install packages[@]
 
     # note gcloud requires some extra steps:
     # gcloud init
     # gcloud components update
     # gcloud components install cbt
-    local binaries=( docker tunnelblick basictex )
-    homebrew_cask_install binaries[@]
 }
 
 
@@ -150,12 +135,7 @@ function vim_install
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     vim +PlugClean +PlugInstall +qall  # install all plugins from vimrc
 
-    curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    nvim +PlugClean +PlugInstall +qall  # install all plugins from vimrc
-
-    # setup extensions (see https://github.com/neoclide/coc.nvim/issues/118)
-    ( mkdir -p ~/.config/coc/extensions && cd ~/.config/coc/extensions && yarn add coc-json coc-python coc-solargraph coc-yaml )
+    brew install bat
 }
 
 
@@ -190,18 +170,24 @@ function lsp_completion {
         go get -u golang.org/x/tools/cmd/gopls
     fi
 
-    # bash: bash-language-server
-    npm i -g bash-language-server
+    if which npm 2>&1 >dev/null
+    then
+        # bash: bash-language-server
+        npm i -g bash-language-server
 
-    # json: jsonlint
-    npm install -g jsonlint
-    npm install -g prettier
+        # json: jsonlint
+        npm install -g jsonlint
+        npm install -g prettier
+    fi
 
     # ruby: solargraph
     gem install solargraph
 
     # c++: ccls
     brew install ccls
+
+    # terraform
+    brew install hashicorp/tap/terraform-ls
 }
 
 
