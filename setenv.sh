@@ -264,5 +264,8 @@ ln -fs "${current_directory}/vim/coc-settings.json" "${VIM_DIR}"
 mkdir -p $( dirname ${NEOVIMRC} )
 ln -fs "${current_directory}/vim/vimrc"             "${NEOVIMRC}"
 ln -fs "${current_directory}/vim/coc-settings.json" "${NEOVIM_DIR}"
+## finicky
+ln -fs "${current_directory}/terminal/finicky.js" "${HOME}/.finicky.js"
+
 
 source "${BASH_PROFILE}"
