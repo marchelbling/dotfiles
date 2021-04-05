@@ -80,21 +80,6 @@ function git_clone
 }
 
 
-function homebrew_packages_install
-{
-    declare -a packages=("${!1}")
-    for package in "${packages[@]}"
-    do
-        if ! brew list "${package}" 1>/dev/null
-        then
-            brew install "${package}"
-        else
-            brew upgrade "${package}"
-        fi
-    done
-}
-
-
 function homebrew_install
 {
     # install homebrew and some utils
@@ -164,12 +149,6 @@ function terminal_completion
 
 
 function lsp_completion {
-    # golang: gopls
-    if which go 2>&1 >/dev/null
-    then
-        go get -u golang.org/x/tools/cmd/gopls
-    fi
-
     if which npm 2>&1 >dev/null
     then
         # bash: bash-language-server
@@ -233,12 +212,6 @@ done
 ###############
 # 2. distribute configuration files
 ###############
-# sets medium font anti-aliasing
-## see: http://osxdaily.com/2012/06/09/mac-screen-blurry-optimize-troubleshoot-font-smoothing-os-x/
-if [ "${IS_MACOS}" == "true" ];
-then
-    defaults -currentHost write -globalDomain AppleFontSmoothing -int 2
-fi
 
 # create soft links for all config files
 current_directory="$( pwd )"
@@ -266,6 +239,5 @@ ln -fs "${current_directory}/vim/vimrc"             "${NEOVIMRC}"
 ln -fs "${current_directory}/vim/coc-settings.json" "${NEOVIM_DIR}"
 ## finicky
 ln -fs "${current_directory}/terminal/finicky.js" "${HOME}/.finicky.js"
-
 
 source "${BASH_PROFILE}"
