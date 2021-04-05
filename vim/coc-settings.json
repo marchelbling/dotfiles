@@ -1,5 +1,15 @@
 {
   "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".git/", ".hg/"],
+      "filetypes": ["go"],
+      "formatting.gofumpt": true,
+      "initializationOptions":{
+          // "diagnosticsEnabled": true,
+          // "lintTool": "golint"
+      }
+    },
 	"terraform": {
         "command": "terraform-ls",
         "args": ["serve"],
@@ -15,11 +25,6 @@
       "args": ["start"],
       "filetypes": ["sh"],
       "ignoredRootPaths": ["~"]
-    },
-    "golang": {
-      "command": "gopls",
-      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
-      "filetypes": ["go"]
     },
     "ccls": {
       "command": "ccls",
