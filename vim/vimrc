@@ -207,14 +207,7 @@ nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 " Find symbol of current document
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 
-let g:coc_global_extensions = [
-   \ 'coc-solargraph',
-   \ 'coc-python',
-   \ 'coc-yaml',
-   \ 'coc-json',
-   \ 'coc-fzf-preview',
-   \ 'coc-sh',
-   \ ]
+let g:coc_global_extensions = [ 'coc-solargraph', 'coc-python', 'coc-yaml', 'coc-json', 'coc-fzf-preview', 'coc-sh', 'coc-yaml', 'coc-vimlsp' ]
 " }} CoC setup
 
 Plug 'https://github.com/sheerun/vim-polyglot' " {'do': './build' }
