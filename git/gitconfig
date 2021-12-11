@@ -1,7 +1,7 @@
 [user]
     name = Marc Helbling
     email = marc.d.helbling@gmail.com
-    signingkey = 833D46F97913BC7E
+    signingkey = 46B6E219143AE2FC
 [commit]
 	gpgsign = true
 [gpg]
@@ -26,10 +26,10 @@
     # see git objects:
     object = cat-file -p
     type = cat-file -t
-    # concisely display batch of recent commits (default: 10 last commits):
-    head = !git log --oneline --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' -${1:-10}
     # show full history with graph & branches:
     hist = log --graph --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    # concisely display last 10 recent commits: 10 last commits):
+    head = hist -10
     # list commits that modified a given file:
     history = whatchanged --follow --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
     # list filetree at given revision:
