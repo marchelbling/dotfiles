@@ -146,9 +146,9 @@ function parse_diff
 
 function parse_k8s
 {
-    if which kubectl >/dev/null 2>&1 && kubectl version --request-timeout=1 >/dev/null 2>&1;
+    if kubectl config view --minify -o jsonpath='{.clusters[].name}' >/dev/null 2>&1;
     then
-        echo -e "${bold}${gray}(k8s=$( kubectl config current-context | rev | cut -d'_' -f1 | rev ))${none}"
+        echo -e "${bold}${gray}(k8s=$( kubectl config view --minify -o jsonpath='{.clusters[].name}' | rev | cut -d'_' -f1 | rev ))${none}"
     fi
 }
 
@@ -284,7 +284,7 @@ fi
 
 
 function k8s_detach {
-    kubectl config unset clusters.$( kubectl config current-context )
+    kubectl config unset current-context
 }
 
 function urldecode {
