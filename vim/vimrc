@@ -1,4 +1,4 @@
-set encoding=utf-8
+set encoding=utf8
 set nocompatible  " break vi compatibility
 
 let mapleader = ","
@@ -34,9 +34,6 @@ function! s:align()
     endif
 endfunction
 "}}}
-
-Plug 'https://github.com/plasticboy/vim-markdown'
-let g:vim_markdown_folding_disabled = 1
 
 Plug 'https://github.com/tomtom/tcomment_vim'
 "{{{
@@ -116,10 +113,6 @@ let g:go_gopls_gofumpt=1
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " {'do': 'yarn install --frozen-lockfile'}
 
-Plug 'hashivim/vim-terraform'
-let g:terraform_align=1
-let g:terraform_fmt_on_save=1
-
 " -------------------------------------------------------------------------------------------------
 " coc.nvim default settings
 " -------------------------------------------------------------------------------------------------
@@ -186,6 +179,10 @@ nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 
 let g:coc_global_extensions = [ 'coc-solargraph', 'coc-python', 'coc-yaml', 'coc-json', 'coc-fzf-preview', 'coc-sh', 'coc-yaml', 'coc-vimlsp' ]
 " }} CoC setup
+
+Plug 'hashivim/vim-terraform'
+let g:terraform_align=1
+let g:terraform_fmt_on_save=1
 
 Plug 'https://github.com/sheerun/vim-polyglot' " {'do': './build' }
 let g:polyglot_disabled = ['go']
