@@ -169,12 +169,9 @@ Plug 'hashivim/vim-terraform'
 let g:terraform_align=1
 let g:terraform_fmt_on_save=1
 
-Plug 'https://github.com/sheerun/vim-polyglot' " {'do': './build' }
-let g:polyglot_disabled = ['go']
-if !empty(matchstr(system('which ruby'), 'rbenv'))
-    let g:ruby_path = system('echo $HOME/.rbenv/shims')
+if has('nvim')
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 endif
-
 
 if has('nvim')
     " see https://github.com/neovim/neovim/issues/1822
@@ -201,6 +198,21 @@ set history=1000
 set undolevels=1000
 set confirm " warn for unsaved changes before exiting
 
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  -- One of "all", "maintained" (parsers with maintainers), or a list of languages
+  ensure_installed = {"bash", "python", "ruby", "go", "lua", "vim", "html", "css", "javascript"},
+  sync_install = false,
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false,
+  },
+  indent = {
+    enable = true
+  }
+}
+EOF
 
 """"""" look'n'feel
 colorscheme iceberg
