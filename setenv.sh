@@ -18,10 +18,8 @@ fi
 
 if [ -n "${IS_MACOS}" ];
 then
-    FONTS_DIR="${HOME}/Library/Fonts"
     BASH_PROFILE="${HOME}/.bash_profile"
 else
-    FONTS_DIR="${HOME}/.fonts"
     BASH_PROFILE="${HOME}/.bashrc"
 fi
 
@@ -125,9 +123,9 @@ function vim_install
 
 
 function fonts_install {
-    mkdir -p "${FONTS_DIR}"
-    sudo cp "fonts/Anonymice Powerline.ttf" "${FONTS_DIR}"
-    fc-cache -f -v
+    brew tap homebrew/cask-fonts
+    brew install --cask font-anonymice-nerd-font
+    brew install --cask font-fira-code-nerd-font
 }
 
 
