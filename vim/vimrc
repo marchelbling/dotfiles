@@ -75,21 +75,6 @@ let g:gitgutter_eager = 0
 "}}}
 
 
-Plug 'https://github.com/fatih/vim-go',  { 'do': ':GoUpdateBinaries' }
-"{{{
-let g:go_metalinter_command = "golangci-lint"
-let g:go_addtags_transform = "snakecase"
-let g:go_fmt_command = "goimports"
-let g:go_test_show_name=1
-" autocompletion left to CoC
-let g:go_def_mapping_enabled = 0
-let g:go_gopls_enabled = 1
-let g:go_fmt_command = "gopls"
-let g:go_rename_command = "gopls"
-let g:go_gopls_gofumpt=1
-"}}}
-
-
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " {'do': 'yarn install --frozen-lockfile'}
 
 " -------------------------------------------------------------------------------------------------
@@ -156,7 +141,8 @@ nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 " Find symbol of current document
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 
-let g:coc_global_extensions = [ 'coc-solargraph', 'coc-python', 'coc-yaml', 'coc-json', 'coc-fzf-preview', 'coc-sh', 'coc-yaml', 'coc-vimlsp' ]
+let g:coc_global_extensions = [ 'coc-solargraph', 'coc-python', 'coc-yaml', 'coc-json', 'coc-fzf-preview', 'coc-sh', 'coc-yaml', 'coc-vimlsp', 'coc-go' ]
+autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
 " }} CoC setup
 
 Plug 'hashivim/vim-terraform'
