@@ -1,4 +1,4 @@
-set encoding=utf-8
+set encoding=utf8
 set nocompatible  " break vi compatibility
 
 let mapleader = ","
@@ -13,30 +13,6 @@ Plug 'https://github.com/ryanoasis/vim-devicons'
 Plug 'https://github.com/tpope/vim-fugitive'
 Plug 'https://github.com/henrik/vim-indexed-search'
 Plug 'https://github.com/Raimondi/delimitMate'
-Plug 'https://github.com/godlygeek/tabular'
-
-"{{{
-" see http://vimcasts.org/episodes/aligning-text-with-tabular-vim/ for details
-nmap <Leader>a= :Tabularize /=<CR>
-vmap <Leader>a= :Tabularize /=<CR>
-nmap <Leader>a: :Tabularize /:\zs<CR>
-vmap <Leader>a: :Tabularize /:\zs<CR>
-
-inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
-function! s:align()
-    let p = '^\s*|\s.*\s|\s*$'
-    if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
-        let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
-        let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
-        Tabularize/|/l1
-        normal! 0
-        call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
-    endif
-endfunction
-"}}}
-
-Plug 'https://github.com/plasticboy/vim-markdown'
-let g:vim_markdown_folding_disabled = 1
 
 Plug 'https://github.com/tomtom/tcomment_vim'
 "{{{
@@ -116,10 +92,6 @@ let g:go_gopls_gofumpt=1
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " {'do': 'yarn install --frozen-lockfile'}
 
-Plug 'hashivim/vim-terraform'
-let g:terraform_align=1
-let g:terraform_fmt_on_save=1
-
 " -------------------------------------------------------------------------------------------------
 " coc.nvim default settings
 " -------------------------------------------------------------------------------------------------
@@ -186,6 +158,10 @@ nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 
 let g:coc_global_extensions = [ 'coc-solargraph', 'coc-python', 'coc-yaml', 'coc-json', 'coc-fzf-preview', 'coc-sh', 'coc-yaml', 'coc-vimlsp' ]
 " }} CoC setup
+
+Plug 'hashivim/vim-terraform'
+let g:terraform_align=1
+let g:terraform_fmt_on_save=1
 
 Plug 'https://github.com/sheerun/vim-polyglot' " {'do': './build' }
 let g:polyglot_disabled = ['go']
