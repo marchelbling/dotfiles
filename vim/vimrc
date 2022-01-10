@@ -6,8 +6,7 @@ let mapleader = ","
 " Plugins install
 call plug#begin('~/.vim/plugged')
 
-Plug 'https://github.com/vim-scripts/wombat256.vim'
-Plug 'https://github.com/gryf/wombat256grf'
+Plug 'https://github.com/cocopon/iceberg.vim'
 Plug 'https://github.com/ryanoasis/vim-devicons'
 
 Plug 'https://github.com/tpope/vim-fugitive'
@@ -24,7 +23,7 @@ Plug 'https://github.com/bling/vim-airline'
 Plug 'https://github.com/vim-airline/vim-airline-themes'
 "{{{
 " vim-airline (status bar)
-let g:airline_theme='wombat'
+let g:airline_theme='iceberg'
 let g:airline_powerline_fonts=1
 set laststatus=2
 set t_Co=256
@@ -183,7 +182,7 @@ set confirm " warn for unsaved changes before exiting
 
 
 """"""" look'n'feel
-colorscheme wombat256grf
+colorscheme iceberg
 set guifont=Anonymous\ Pro\ for\ Powerline:h14
 
 " automatically reload vim configuration when a change is detected (http://superuser.com/a/417997)
