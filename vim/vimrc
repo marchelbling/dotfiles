@@ -145,10 +145,10 @@ function! s:show_documentation()
   endif
 endfunction
 
-autocmd ColorScheme * highlight CocErrorFloat guifg=#ffffff
-autocmd ColorScheme * highlight CocInfoFloat guifg=#ffffff
-autocmd ColorScheme * highlight CocWarningFloat guifg=#ffffff
-autocmd ColorScheme * highlight SignColumn guibg=#adadad
+" autocmd ColorScheme * highlight CocErrorFloat guifg=#ffffff
+" autocmd ColorScheme * highlight CocInfoFloat guifg=#ffffff
+" autocmd ColorScheme * highlight CocWarningFloat guifg=#ffffff
+" autocmd ColorScheme * highlight SignColumn guibg=#adadad
 
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -161,7 +161,7 @@ nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 " Find symbol of current document
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 
-let g:coc_global_extensions = [ 'coc-solargraph', 'coc-python', 'coc-yaml', 'coc-json', 'coc-fzf-preview', 'coc-sh', 'coc-yaml', 'coc-vimlsp', 'coc-go' ]
+let g:coc_global_extensions = [ 'coc-solargraph', 'coc-python', 'coc-yaml', 'coc-json', 'coc-sh', 'coc-yaml', 'coc-vimlsp', 'coc-go' ]
 autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
 " }} CoC setup
 
@@ -226,15 +226,14 @@ nmap <leader>t :Lex<CR> " This will toggle the file explorer on/off
 
 
 """"""" code layout
-
-au BufRead,BufNewFile *.json set filetype=javascript               " json
+" au BufRead,BufNewFile *.json set filetype=javascript               " json
 au BufRead * if search('\M-*-c++-*-', 'n', 1) | setlocal ft=cpp | endif
 au BufRead,BufNewFile *.tex setlocal ts=2 sw=2
 
-au FileType go set noexpandtab
-au FileType go set shiftwidth=4
-au FileType go set softtabstop=4
-au FileType go set tabstop=4
+" au FileType go set noexpandtab
+" au FileType go set shiftwidth=4
+" au FileType go set softtabstop=4
+" au FileType go set tabstop=4
 
 " automatically reload vim configuration when a change is detected (http://superuser.com/a/417997)
 augroup myvimrc
