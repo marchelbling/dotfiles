@@ -7,7 +7,7 @@
       "formatting.gofumpt": true,
       "initializationOptions":{
           // "diagnosticsEnabled": true,
-          // "lintTool": "golint"
+          // "lintTool": "golangci-lint"
       }
     },
 	"terraform": {
@@ -36,5 +36,10 @@
          }
        }
     }
-  }
+  },
+  "go.goplsOptions": {
+    "gofumpt": true,
+    "local": "github.com/algolia/go"
+  },
+  "coc.preferences.formatOnSaveFiletypes": [ "go" ],
 }
