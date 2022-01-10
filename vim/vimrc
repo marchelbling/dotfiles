@@ -6,8 +6,7 @@ let mapleader = ","
 " Plugins install
 call plug#begin('~/.vim/plugged')
 
-Plug 'https://github.com/vim-scripts/wombat256.vim'
-Plug 'https://github.com/gryf/wombat256grf'
+Plug 'https://github.com/cocopon/iceberg.vim'
 Plug 'https://github.com/ryanoasis/vim-devicons'
 
 Plug 'https://github.com/tpope/vim-fugitive'
@@ -45,7 +44,7 @@ Plug 'https://github.com/bling/vim-airline'
 Plug 'https://github.com/vim-airline/vim-airline-themes'
 "{{{
 " vim-airline (status bar)
-let g:airline_theme='wombat'
+let g:airline_theme='iceberg'
 let g:airline_powerline_fonts=1
 set laststatus=2
 set t_Co=256
@@ -204,7 +203,7 @@ set confirm " warn for unsaved changes before exiting
 
 
 """"""" look'n'feel
-colorscheme wombat256grf
+colorscheme iceberg
 set guifont=Anonymous\ Pro\ for\ Powerline:h14
 
 " display side file explorer
@@ -224,7 +223,6 @@ au FileType go set noexpandtab
 au FileType go set shiftwidth=4
 au FileType go set softtabstop=4
 au FileType go set tabstop=4
-
 
 " automatically reload vim configuration when a change is detected (http://superuser.com/a/417997)
 augroup myvimrc
@@ -348,24 +346,3 @@ endfunction
 command! PrettyXML call DoPrettyXML()
 
 :tnoremap <Esc> <C-\><C-n>
-
-" function! RunTests(filename)
-"   " Write the file and run tests for the given filename
-"   :w
-"   :silent !clear
-"   if match(a:filename, '\.feature$') != -1
-"     exec ":!bundle exec cucumber " . a:filename
-"   elseif match(a:filename, '_test\.rb$') != -1
-"     if filereadable("script/testrb")
-"       exec ":!script/testrb " . a:filename
-"     else
-"       exec ":!ruby -Itest " . a:filename
-"     end
-"   else
-"     if filereadable("Gemfile")
-"       exec ":!bundle exec rspec --color " . a:filename
-"     else
-"       exec ":!rspec --color " . a:filename
-"     end
-"   end
-" endfunction
