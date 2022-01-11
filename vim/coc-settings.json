@@ -3,11 +3,13 @@
     "golang": {
       "command": "gopls",
       "rootPatterns": ["go.mod", ".git/", ".hg/"],
+      "filetypes": ["go"]
+    },
+    "golangci-lint-languageserver": {
+      "command": "golangci-lint-langserver",
       "filetypes": ["go"],
-      "formatting.gofumpt": true,
-      "initializationOptions":{
-          // "diagnosticsEnabled": true,
-          // "lintTool": "golangci-lint"
+      "initializationOptions": {
+        "command": ["golangci-lint", "run", "--out-format", "json"]
       }
     },
 	"terraform": {
@@ -38,8 +40,12 @@
     }
   },
   "go.goplsOptions": {
+    "completeUnimported": true,
     "gofumpt": true,
     "local": "github.com/algolia/go"
   },
-  "coc.preferences.formatOnSaveFiletypes": [ "go" ],
+  "go.disable": {
+    "diagnostics": true
+  },
+  "coc.preferences.formatOnSaveFiletypes": ["go"]
 }
