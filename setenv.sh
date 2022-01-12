@@ -119,6 +119,7 @@ function vim_install
     vim +PlugClean +PlugInstall +qall  # install all plugins from vimrc
 
     brew install bat
+    pip install pynvim
 }
 
 
@@ -234,7 +235,7 @@ ln -fs "${current_directory}/vim/coc-settings.json" "${VIM_DIR}"
 ## neovim
 mkdir -p $( dirname ${NEOVIMRC} )
 ln -fs "${current_directory}/vim/vimrc"             "${NEOVIMRC}"
-ln -fs "${current_directory}/vim/coc-settings.json" "${NEOVIM_DIR}"
+ln -fs "${current_directory}/vim/lua"               "${NEOVIM_DIR}"
 ## finicky
 ln -fs "${current_directory}/terminal/finicky.js" "${HOME}/.finicky.js"
 

@@ -73,16 +73,9 @@ let g:gitgutter_realtime = 0
 let g:gitgutter_eager = 0
 "}}}
 
-Plug 'neovim/nvim-lspconfig'
-
-
 Plug 'hashivim/vim-terraform'
 let g:terraform_align=1
 let g:terraform_fmt_on_save=1
-
-if has('nvim')
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-endif
 
 if has('nvim')
     " see https://github.com/neovim/neovim/issues/1822
@@ -91,8 +84,23 @@ if has('nvim')
     map P <Plug>(miniyank-autoPut)
 endif
 
-call plug#end()  " required
+" highlighting
+if has('nvim')
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+endif
 
+" LSP / autocomplete
+if has('nvim')
+  Plug 'hrsh7th/nvim-cmp'
+  Plug 'hrsh7th/cmp-nvim-lsp'
+  Plug 'hrsh7th/cmp-nvim-lua'
+  Plug 'L3MON4D3/LuaSnip'
+
+  Plug 'neovim/nvim-lspconfig' " collection of configurations for built-in LSP client
+  Plug 'williamboman/nvim-lsp-installer'
+endif
+
+call plug#end()  " required
 
 set modelines=0   " prevent file exploit
 set title         " change terminal/window title to buffer name
@@ -109,127 +117,12 @@ set history=1000
 set undolevels=1000
 set confirm " warn for unsaved changes before exiting
 
-
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  -- One of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = {"bash", "python", "ruby", "go", "lua", "vim", "html", "css", "javascript"},
-  sync_install = false,
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false,
-  },
-  indent = {
-    enable = true
-  }
-}
-EOF
-
-
-lua <<EOF
-local lspconfig = require('lspconfig')
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  local opts = { noremap=true, silent=true }
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'ga', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-
-  -- Set some keybinds conditional on server capabilities
-  if client.resolved_capabilities.document_formatting then
-    buf_set_keymap("n", "ff", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  elseif client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("n", "ff", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-  end
-
-  -- Set autocommands conditional on server_capabilities
-  if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec([[
-      hi LspReferenceRead cterm=bold ctermbg=DarkMagenta guibg=LightYellow
-      hi LspReferenceText cterm=bold ctermbg=DarkMagenta guibg=LightYellow
-      hi LspReferenceWrite cterm=bold ctermbg=DarkMagenta guibg=LightYellow
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-    ]], false)
-  end
-end
-
-require'lspconfig'.gopls.setup{
-    cmd = {"gopls", "serve"},
-    settings = {
-        gopls = {
-        analyses = {
-            unusedparams = true,
-        },
-        staticcheck = true,
-        },
-    },
-}
-
-require'lspconfig'.golangci_lint_ls.setup{
-    init_options = {
-      command = { "golangci-lint", "run", "--out-format", "json" }
-    }
-}
-
-function goimports(timeout_ms)
-    local context = { only = { "source.organizeImports" } }
-    vim.validate { context = { context, "t", true } }
-
-    local params = vim.lsp.util.make_range_params()
-    params.context = context
-
-    -- See the implementation of the textDocument/codeAction callback
-    -- (lua/vim/lsp/handler.lua) for how to do this properly.
-    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout_ms)
-    if not result or next(result) == nil then return end
-    local actions = result[1].result
-    if not actions then return end
-        local action = actions[1]
-
-        -- textDocument/codeAction can return either Command[] or CodeAction[]. If it
-        -- is a CodeAction, it can have either an edit, a command or both. Edits
-        -- should be executed first.
-        if action.edit or type(action.command) == "table" then
-            if action.edit then
-                vim.lsp.util.apply_workspace_edit(action.edit)
-            end
-            if type(action.command) == "table" then
-                vim.lsp.buf.execute_command(action.command)
-            end
-        else
-            vim.lsp.buf.execute_command(action)
-        end
-    end
-EOF
-autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.go lua goimports(1000)
-
-
-""""""" look'n'feel
 colorscheme iceberg
 set guifont=Anonymous\ Pro\ for\ Powerline:h14
+
+lua require "_treesitter"
+lua require "_cmp"
+lua require "_lsp"
 
 " automatically reload vim configuration when a change is detected (http://superuser.com/a/417997)
 augroup myvimrc
@@ -315,21 +208,5 @@ function! DoPrettyJSON()
     exe "set ft=" . l:origft
 endfunction
 command! PrettyJSON call DoPrettyJSON()
-
-" prettify xml
-function! DoPrettyXML()
-    let l:origft = &ft
-    set ft=
-    1s/<?xml .*?>//e
-    0put ='<PrettyXML>'
-    $put ='</PrettyXML>'
-    silent %!xmllint --format -
-    2d
-    $d
-    silent %<
-    1
-    exe "set ft=" . l:origft
-endfunction
-command! PrettyXML call DoPrettyXML()
 
 :tnoremap <Esc> <C-\><C-n>
