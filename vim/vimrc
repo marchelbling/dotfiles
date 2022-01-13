@@ -200,13 +200,6 @@ set confirm " warn for unsaved changes before exiting
 colorscheme wombat256grf
 set guifont=Anonymous\ Pro\ for\ Powerline:h14
 
-" display side file explorer
-let g:netrw_liststyle = 3
-let g:netrw_winsize   = 15
-let g:netrw_banner    = 0
-nmap <leader>t :Lex<CR> " This will toggle the file explorer on/off
-
-
 " automatically reload vim configuration when a change is detected (http://superuser.com/a/417997)
 augroup myvimrc
     au!
@@ -214,27 +207,14 @@ augroup myvimrc
 augroup END
 
 " indentation
-set autoindent
-set expandtab
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-set textwidth=0
 set colorcolumn=100
 set scrolloff=5 " always show at least 5 lines below
-set formatoptions+=qrn1
-if v:version > 703 || v:version == 703 && has("patch541")
-    set formatoptions+=j " Delete comment character when joining commented lines
-endif
+set formatoptions+=qrn1j
 set shiftround        " round indent to multiple of shiftwidth
-set showcmd           " display current command (nice for <leader>)
 set showmatch         " show matching brackets
-set showmode
-set wrap
 set linebreak         " change long lines display
 set visualbell        " enable visual bell instead of audio bell
 set cursorline        " highlight current line
-set ruler             " show line/column in footer
 set gdefault          " set g by default for substitute commands (%s///g)
 set clipboard=unnamed " use the system clipboard
 
@@ -243,7 +223,6 @@ highlight TrailingSpaces ctermbg=red guibg=red
 match TrailingSpaces /\s\+$/
 
 " editing
-set hidden                     " allow unsaved changes in buffer
 set backspace=indent,eol,start " low backspacing over an indent, line break (end of line) or start of an insert
 
 " searching
@@ -256,13 +235,14 @@ if v:version >= 700
 endif
 set wildmenu       " bash-like tab completion
 set wildmode=list:longest,full
-
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
 
 """ within buffer
 set ignorecase
 set smartcase
-set incsearch
-set hlsearch
 
 "clear highlight on 'return'
 nnoremap <silent> <CR> :noh<CR>
@@ -277,7 +257,6 @@ vnoremap <silent> * :<C-U>
 
 
 """"""" navigation
-
 " navigate through buffers using ctrl-h & ctrl-l in normal/insert modes
 nnoremap <C-h> :bprevious<CR>
 nnoremap <C-l> :bnext<CR>
@@ -293,14 +272,10 @@ nmap <silent> <S-Right> :wincmd l<CR>
 
 
 """""" utilities
-
 " git commit messages with spelling and automatic insert mode
 if has("spell")
     au BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
 endif
-
-" replace current line by the result of executing the command in a shell
-nnoremap <Leader>x !!sh<cr>
 
 " prettify json
 function! DoPrettyJSON()
@@ -327,24 +302,3 @@ endfunction
 command! PrettyXML call DoPrettyXML()
 
 :tnoremap <Esc> <C-\><C-n>
-
-" function! RunTests(filename)
-"   " Write the file and run tests for the given filename
-"   :w
-"   :silent !clear
-"   if match(a:filename, '\.feature$') != -1
-"     exec ":!bundle exec cucumber " . a:filename
-"   elseif match(a:filename, '_test\.rb$') != -1
-"     if filereadable("script/testrb")
-"       exec ":!script/testrb " . a:filename
-"     else
-"       exec ":!ruby -Itest " . a:filename
-"     end
-"   else
-"     if filereadable("Gemfile")
-"       exec ":!bundle exec rspec --color " . a:filename
-"     else
-"       exec ":!rspec --color " . a:filename
-"     end
-"   end
-" endfunction
