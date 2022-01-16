@@ -1,11 +1,11 @@
-local cmp = require("cmp")
-local win = require("lspconfig.ui.windows")
-local _default_opts = win.default_opts
+local has_cmp, cmp = pcall(require, "cmp")
+if not has_cmp then
+    return
+end
 
-win.default_opts = function(options)
-    local opts = _default_opts(options)
-    opts.border = "rounded"
-    return opts
+local has_lspconfig, lspconfig = pcall(require, "lspconfig")
+if not has_lspconfig then
+    return
 end
 
 -- helper function for mappings
@@ -18,9 +18,6 @@ end
 
 -- function to attach completion when setting up lsp
 local on_attach = function(client)
-    lsp_status.register_progress()
-    lsp_status.on_attach(client)
-
     -- Mappings.
     m("n", "ga", "lua vim.lsp.buf.code_action()")
     m("n", "gD", "lua vim.lsp.buf.declaration()")
@@ -35,31 +32,43 @@ local on_attach = function(client)
     -- m("n", "<space>f", "lua vim.lsp.buf.formatting()")
 end
 
--- setup lsp installer
-local lsp_installer = require("nvim-lsp-installer")
--- Provide settings first!
-lsp_installer.settings({
-    ui = {
-        icons = {
-            server_installed = "✓",
-            server_pending = "➜",
-            server_uninstalled = "✗",
+-- diagnostics
+vim.diagnostic.config({
+    virtual_text = false,
+    underline = true,
+    float = { source = "always" },
+    severity_sort = true,
+    signs = true,
+    update_in_insert = false,
+})
+
+-- Enable some language servers with the additional completion capabilities offered by nvim-cmp
+local servers = {
+    pyright = {},
+    gopls = {
+        cmd = { "gopls", "serve" },
+        settings = {
+            gopls = {
+                codelenses = {
+                    test = true, -- Runs go test for a specific set of test or benchmark functions
+                    tidy = true, -- Runs go mod tidy for a module
+                    vendor = true, -- Runs go mod vendor for a module
+                },
+                gofumpt = true, -- A stricter gofmt
+                usePlaceholders = true, -- enables placeholders for function parameters or struct fields in completion responses
+            },
         },
     },
-})
-lsp_installer.on_server_ready(function(server)
-    local opts = {
-        on_attach = on_attach,
-        capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
-        flags = {
-            debounce_text_changes = 150,
-        },
-    }
-    server:setup(opts)
-end)
-
--- lsp settings
-require("nlspsettings").setup()
+    solargraph = {},
+    terraformls = {},
+}
+for server, config in pairs(servers) do
+  lspconfig[server].setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = config.settings or {}
+  }
+end
 
 -- diagnostics
 vim.diagnostic.config({
