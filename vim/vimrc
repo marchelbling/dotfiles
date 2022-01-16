@@ -97,6 +97,7 @@ if has('nvim')
   Plug 'L3MON4D3/LuaSnip'
 
   Plug 'neovim/nvim-lspconfig'
+  Plug 'ray-x/lsp_signature.nvim'
 endif
 
 call plug#end()  " required

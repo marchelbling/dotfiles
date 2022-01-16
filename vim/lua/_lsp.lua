@@ -8,6 +8,19 @@ if not has_lspconfig then
     return
 end
 
+local has_lsp_signature, lsp_signature = pcall(require, "lsp_signature")
+if not has_lsp_signature then
+    return
+end
+
+-- show function signature
+lsp_signature.setup({
+    bind = true,
+    hint_enable = false,
+    max_width = 120,
+    handler_opts = { border = "none" },
+})
+
 -- helper function for mappings
 local m = function(mode, key, result)
     vim.api.nvim_buf_set_keymap(0, mode, key, "<cmd> " .. result .. "<cr>", {
