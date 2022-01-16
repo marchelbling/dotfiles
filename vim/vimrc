@@ -117,8 +117,7 @@ if has('nvim')
   Plug 'hrsh7th/cmp-nvim-lua'
   Plug 'L3MON4D3/LuaSnip'
 
-  Plug 'neovim/nvim-lspconfig' " collection of configurations for built-in LSP client
-  Plug 'williamboman/nvim-lsp-installer'
+  Plug 'neovim/nvim-lspconfig'
 endif
 
 call plug#end()  " required
