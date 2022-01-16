@@ -180,7 +180,7 @@ while [ $# -ge 1 ] ; do
             then
                 homebrew_install
                 # terminal theme needs to be 'default'ed manually
-                open "${current_directory}/terminal/iceberg.terminal"
+                open "${current_directory}/terminal/nord.terminal"
             fi
 
             lsp_completion

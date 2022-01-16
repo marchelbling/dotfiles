@@ -6,7 +6,7 @@ let mapleader = ","
 " Plugins install
 call plug#begin('~/.vim/plugged')
 
-Plug 'https://github.com/cocopon/iceberg.vim'
+Plug 'https://github.com/arcticicestudio/nord-vim'
 Plug 'https://github.com/ryanoasis/vim-devicons'
 
 Plug 'https://github.com/tpope/vim-fugitive'
@@ -23,7 +23,7 @@ Plug 'https://github.com/bling/vim-airline'
 Plug 'https://github.com/vim-airline/vim-airline-themes'
 "{{{
 " vim-airline (status bar)
-let g:airline_theme='iceberg'
+let g:airline_theme='base16'
 let g:airline_powerline_fonts=1
 set laststatus=2
 set t_Co=256
@@ -118,7 +118,12 @@ set history=1000
 set undolevels=1000
 set confirm " warn for unsaved changes before exiting
 
-colorscheme iceberg
+colorscheme nord
+let g:nord_bold_vertical_split_line = 1
+let g:nord_uniform_diff_background = 1
+let g:nord_italic = 1
+let g:nord_italic_comments = 1
+
 set guifont=Anonymous\ Pro\ for\ Powerline:h14
 
 lua require "_treesitter"
