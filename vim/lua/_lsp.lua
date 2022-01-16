@@ -43,6 +43,11 @@ local on_attach = function(client)
     -- m("n", "<space>rn", "lua vim.lsp.buf.rename()")
     m("n", "gl", "lua vim.lsp.diagnostic.show_line_diagnostics()")
     -- m("n", "<space>f", "lua vim.lsp.buf.formatting()")
+
+    local has_illuminate, illuminate = pcall(require, "illuminate")
+    if  has_illuminate then
+        illuminate.on_attach(client)
+    end
 end
 
 -- diagnostics

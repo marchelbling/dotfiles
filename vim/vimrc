@@ -119,6 +119,7 @@ if has('nvim')
 
   Plug 'neovim/nvim-lspconfig'
   Plug 'ray-x/lsp_signature.nvim'
+  Plug 'RRethy/vim-illuminate'
 endif
 
 call plug#end()  " required
