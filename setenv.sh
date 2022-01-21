@@ -127,6 +127,7 @@ function fonts_install {
     brew tap homebrew/cask-fonts
     brew install --cask font-anonymice-nerd-font
     brew install --cask font-fira-code-nerd-font
+    brew install --cask font-jetbrains-mono
 }
 
 
