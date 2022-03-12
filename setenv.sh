@@ -88,6 +88,7 @@ function homebrew_install
 
     local packages=( \
         go fzf \
+        rustup rust-analyzer \
         git hub openssl gnupg \
         nvim codemod \
         make cmake \
@@ -109,6 +110,8 @@ function homebrew_install
     # gcloud init
     # gcloud components update
     # gcloud components install cbt
+
+    # rust: rustup-init
 }
 
 
