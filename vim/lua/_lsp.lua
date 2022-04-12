@@ -90,21 +90,18 @@ local servers = {
     terraformls = {},
     rust_analyzer = {
         assist = {
-        importMergeBehavior = "last",
-        importPrefix = "by_self",
-      },
-      diagnostics = {
-        disabled = { "unresolved-import" }
-      },
-      cargo = {
-          loadOutDirsFromCheck = true
-      },
-      procMacro = {
-          enable = true
-      },
-      checkOnSave = {
-          command = "clippy"
-      },
+            importGranularity = "module",
+            importPrefix = "by_self",
+        },
+        cargo = {
+            loadOutDirsFromCheck = true
+        },
+        procMacro = {
+            enable = true
+        },
+        checkOnSave = {
+            command = "clippy"
+        },
     }
 }
 for server, config in pairs(servers) do
