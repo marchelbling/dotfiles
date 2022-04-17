@@ -218,4 +218,9 @@ function! DoPrettyJSON()
 endfunction
 command! PrettyJSON call DoPrettyJSON()
 
-:tnoremap <Esc> <C-\><C-n>
+if has("nvim")
+    " fix escape mapping for neovim and make mapping compatible with fzf
+    " preview window; see https://github.com/junegunn/fzf.vim/issues/544#issuecomment-457456166.
+    tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
+endif
+
