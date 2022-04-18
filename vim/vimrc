@@ -99,8 +99,15 @@ if has('nvim')
   Plug 'RRethy/vim-illuminate'
 endif
 
-" formatting / diagnostics
+" formatting / linters
 Plug 'jose-elias-alvarez/null-ls.nvim'
+
+" Display diagnostics
+Plug 'folke/trouble.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'folke/lsp-colors.nvim'
+" toggle comment on current line/visual selection
+map <leader>d :TroubleToggle<CR>
 
 call plug#end()  " required
 
@@ -122,6 +129,7 @@ lua require "_treesitter"
 lua require "_cmp"
 lua require "_lsp"
 lua require "_null-ls"
+lua require "_trouble"
 
 " automatically reload vim configuration when a change is detected (http://superuser.com/a/417997)
 augroup myvimrc
