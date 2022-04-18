@@ -128,7 +128,7 @@ let g:nord_italic_comments = 1
 let g:nord_underline = 1
 
 let g:indent_blankline_enabled = v:false
-set guifont=Anonymous\ Pro\ for\ Powerline:h14
+set guifont=Anonymice\ Nerd\ Font\ Complete:h14
 
 lua require "_treesitter"
 lua require "_cmp"
