@@ -131,6 +131,7 @@ function fonts_install {
     brew install --cask font-anonymice-nerd-font
     brew install --cask font-fira-code-nerd-font
     brew install --cask font-jetbrains-mono
+    brew install svn && brew install --cask font-source-code-pro
 }
 
 
