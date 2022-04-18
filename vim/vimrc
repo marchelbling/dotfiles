@@ -102,6 +102,9 @@ if has('nvim')
   Plug 'RRethy/vim-illuminate'
 endif
 
+" formatting / diagnostics
+Plug 'jose-elias-alvarez/null-ls.nvim'
+
 call plug#end()  " required
 
 set modelines=0   " prevent file exploit
@@ -133,6 +136,7 @@ set guifont=Anonymice\ Nerd\ Font\ Complete:h14
 lua require "_treesitter"
 lua require "_cmp"
 lua require "_lsp"
+lua require "_null-ls"
 
 " automatically reload vim configuration when a change is detected (http://superuser.com/a/417997)
 augroup myvimrc
