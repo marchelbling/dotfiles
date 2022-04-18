@@ -1,6 +1,3 @@
-set encoding=utf8
-set nocompatible  " break vi compatibility
-
 let mapleader = ","
 
 " Plugins install
@@ -107,20 +104,8 @@ Plug 'jose-elias-alvarez/null-ls.nvim'
 
 call plug#end()  " required
 
-set modelines=0   " prevent file exploit
-set title         " change terminal/window title to buffer name
 filetype plugin indent on                " detect file type
 runtime macros/matchit.vim " activate matchit (extended '%' behavior)
-
-:silent !mkdir -p ~/.vim/udata/undo >/dev/null 2>&1
-:silent !mkdir -p ~/.vim/udata/back >/dev/null 2>&1
-set noswapfile
-set backupdir=~/.vim/udata/back
-set undodir=~/.vim/udata/undo
-set undofile
-set history=1000
-set undolevels=1000
-set confirm " warn for unsaved changes before exiting
 
 colorscheme nord
 let g:nord_bold_vertical_split_line = 1
@@ -131,8 +116,8 @@ let g:nord_italic_comments = 1
 let g:nord_underline = 1
 
 let g:indent_blankline_enabled = v:false
-set guifont=Anonymice\ Nerd\ Font\ Complete:h14
 
+lua require "_configuration"
 lua require "_treesitter"
 lua require "_cmp"
 lua require "_lsp"
@@ -144,44 +129,9 @@ augroup myvimrc
     au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 augroup END
 
-" indentation
-set colorcolumn=100
-set scrolloff=5 " always show at least 5 lines below
-set formatoptions+=qrn1j
-set shiftround        " round indent to multiple of shiftwidth
-set showmatch         " show matching brackets
-set linebreak         " change long lines display
-set visualbell        " enable visual bell instead of audio bell
-set cursorline        " highlight current line
-set gdefault          " set g by default for substitute commands (%s///g)
-set clipboard=unnamed " use the system clipboard
-
 " trailing spaces (no automatic killing of them though)
 highlight TrailingSpaces ctermbg=red guibg=red
 match TrailingSpaces /\s\+$/
-
-" editing
-set backspace=indent,eol,start " low backspacing over an indent, line break (end of line) or start of an insert
-
-" searching
-""" files
-if v:version >= 700
-    try
-        set wildignorecase " case insensitive file completion
-    catch
-    endtry
-endif
-set wildmenu       " bash-like tab completion
-set wildmode=list:longest,full
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set expandtab
-" set list listchars=tab:▸\ ,eol:¬,trail:· " display tab and br nicely
-
-""" within buffer
-set ignorecase
-set smartcase
 
 "clear highlight on 'return'
 nnoremap <silent> <CR> :noh<CR>
@@ -192,8 +142,6 @@ vnoremap <silent> * :<C-U>
             \gvy/<C-R><C-R>=substitute(
             \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
             \gV:call setreg('"', old_reg, old_regtype)<CR>
-
-
 
 """"""" navigation
 " navigate through buffers using ctrl-h & ctrl-l in normal/insert modes
@@ -229,4 +177,3 @@ if has("nvim")
     " preview window; see https://github.com/junegunn/fzf.vim/issues/544#issuecomment-457456166.
     tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
 endif
-
