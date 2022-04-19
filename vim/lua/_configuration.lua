@@ -34,7 +34,7 @@ set.clipboard = "unnamed" -- use the system clipboard
 set.listchars = { eol = "↲", tab = "▸ ", trail = "·" } -- display tab and br nicely
 
 -- editing
-set.backspace = indent, eol, start -- low backspacing over an indent, line break (end of line) or start of an insert
+set.backspace = { "indent", "eol", "start" } -- low backspacing over an indent, line break (end of line) or start of an insert
 
 -- searching
 set.ignorecase = true
