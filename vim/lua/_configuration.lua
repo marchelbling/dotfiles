@@ -2,9 +2,10 @@
 local set = vim.opt
 
 vim.cmd([[
-    :silent !mkdir -p ~/.vim/udata/undo >/dev/null 2>&1
-    :silent !mkdir -p ~/.vim/udata/back >/dev/null 2>&1
+    :silent !mkdir -p $HOME/.vim/udata/undo >/dev/null 2>&1
+    :silent !mkdir -p $HOME/.vim/udata/back >/dev/null 2>&1
 ]])
+HOME = os.getenv("HOME")
 
 -- general
 set.encoding = "utf8"
@@ -13,8 +14,8 @@ set.compatible = false -- break vi compatibility
 set.modelines = 0 -- prevent file exploit
 set.title = true -- change terminal/window title to buffer name
 set.swapfile = false
-set.backupdir = "~/.vim/udata/back"
-set.undodir = "~/.vim/udata/undo"
+set.backupdir = HOME .. "/.vim/udata/back"
+set.undodir = HOME .. "/.vim/udata/undo"
 set.undofile = true
 set.history = 1000
 set.undolevels = 1000
