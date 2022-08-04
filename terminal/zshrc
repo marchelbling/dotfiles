@@ -14,10 +14,8 @@ alias gitg='git'
 alias vim=nvim
 alias gorun='go run $( find . -type f -name "*.go" -not -name "*test.go" -not -name "testing.go" )'
 
-
 # prompt
 source "${HOME}/.zsh/theme.zsh"
-
 if [ -f "${HOME}/.specific_profile" ]
 then
     . "${HOME}/.specific_profile"

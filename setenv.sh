@@ -14,6 +14,7 @@ GITCONFIG="${HOME}/.gitconfig"
 if [[ $( basename "${SHELL}" ) == "zsh" ]]
 then
     IS_ZSH=true
+    mkdir -p ~/.zsh/
 fi
 
 if [ -n "${IS_MACOS}" ];
@@ -241,4 +242,7 @@ ln -fs "${current_directory}/vim/lua"               "${NEOVIM_DIR}"
 ## finicky
 ln -fs "${current_directory}/terminal/finicky.js" "${HOME}/.finicky.js"
 
-source "${BASH_PROFILE}"
+if [ -f ${BASH_PROFILE} ]
+then
+    source "${BASH_PROFILE}"
+fi
