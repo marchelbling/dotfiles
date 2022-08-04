@@ -3,28 +3,31 @@ if not has_null_ls then
 	return
 end
 
+local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 local formatting = null_ls.builtins.formatting
 local diagnostics = null_ls.builtins.diagnostics
 
-local sources = {
-	formatting.gofumpt,
-	formatting.goimports,
-	diagnostics.golangci_lint,
-	formatting.stylua,
-}
 
 null_ls.setup({
 	-- configuration:
-	sources = sources,
+	sources = {
+        formatting.stylua,
+        formatting.gofumpt,
+        formatting.goimports,
+        diagnostics.golangci_lint,
+    },
 	-- format on save
-	on_attach = function(client)
-		if client.resolved_capabilities.document_formatting then
-			vim.cmd([[
-            augroup LspFormatting
-                autocmd! * <buffer>
-                autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
-            augroup END
-            ]])
-		end
-	end,
+    on_attach = function(client, bufnr)
+        if client.supports_method("textDocument/formatting") then
+            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                group = augroup,
+                buffer = bufnr,
+                callback = function()
+                    -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+                    vim.lsp.buf.formatting_sync()
+                end,
+            })
+        end
+    end,
 })

@@ -100,6 +100,7 @@ if has('nvim')
 endif
 
 " formatting / linters
+Plug 'nvim-lua/plenary.nvim'
 Plug 'jose-elias-alvarez/null-ls.nvim'
 
 " Display diagnostics
