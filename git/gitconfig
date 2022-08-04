@@ -1,7 +1,7 @@
 [user]
     name = Marc Helbling
     email = marc.d.helbling@gmail.com
-    signingkey = 46B6E219143AE2FC
+    signingkey = 970A7203A6D1892C
 [commit]
 	gpgsign = true
 [gpg]
@@ -34,8 +34,6 @@
     history = whatchanged --follow --pretty=format:'%Cred%h%Creset -%C(magenta)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
     # list filetree at given revision:
     ls = ls-tree -r --name-only --full-tree
-    # search in full commit messages
-    ack = !git log --notes --format=full | ack
     # show commit messages for a particular loc: $1 => file, $2 => line
     line = !sh -c 'git log --topo-order --graph -u -L$2,$2:$1' -
     fixup = "!sh -c 'revision="$( git rev-parse $1 )" && git commit --fixup="${revision}" && git rebase -i --autosquash "${revision}"^' -"
