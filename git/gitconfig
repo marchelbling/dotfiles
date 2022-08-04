@@ -1,11 +1,9 @@
 [user]
     name = Marc Helbling
     email = marc.d.helbling@gmail.com
-    signingkey = 970A7203A6D1892C
+    signingkey = 12BDDD4A1EE32208
 [commit]
 	gpgsign = true
-[gpg]
-	program = /usr/local/bin/gpg-with-key
 [color]
     ui = auto
 [help]

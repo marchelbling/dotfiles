@@ -14,8 +14,12 @@ alias gitg='git'
 alias vim=nvim
 alias gorun='go run $( find . -type f -name "*.go" -not -name "*test.go" -not -name "testing.go" )'
 
+GPG_TTY=$(tty)
+export GPG_TTY
+
 # prompt
 source "${HOME}/.zsh/theme.zsh"
+
 if [ -f "${HOME}/.specific_profile" ]
 then
     . "${HOME}/.specific_profile"
