@@ -126,8 +126,18 @@ function vim_install
     pip install pynvim
 }
 
+function golang_install
+{
+    # requires go to be installed.
+    go install golang.org/x/tools/gopls@latest
+    go install golang.org/x/tools/cmd/goimports@latest
+    go install mvdan.cc/gofumpt@latest
+    go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.47.3
+}
 
-function fonts_install {
+
+function fonts_install
+{
     brew tap homebrew/cask-fonts
     brew install --cask font-anonymice-nerd-font
 }
@@ -169,6 +179,9 @@ function lsp_completion {
 
     # terraform
     brew install hashicorp/tap/terraform-ls
+
+    # golang dependencies
+    golang_install
 }
 
 
