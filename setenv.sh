@@ -180,6 +180,9 @@ function lsp_completion {
     # terraform
     brew install hashicorp/tap/terraform-ls
 
+    # lua
+    brew install stylua
+
     # golang dependencies
     golang_install
 }
