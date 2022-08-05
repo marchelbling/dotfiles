@@ -160,8 +160,9 @@ function terminal_completion
 }
 
 
-function lsp_completion {
-    if which npm 2>&1 >dev/null
+function lsp_completion
+{
+    if which npm 2>&1 >/dev/null
     then
         # bash: bash-language-server
         npm i -g bash-language-server
@@ -169,6 +170,7 @@ function lsp_completion {
         # json: jsonlint
         npm install -g jsonlint
         npm install -g prettier
+        npm install -g eslint
     fi
 
     # ruby: solargraph
