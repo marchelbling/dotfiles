@@ -58,6 +58,7 @@ bindkey \^u backward-kill-line
 fpath=("~/.zsh/completion" $fpath)
 
 if which docker >/dev/null 2>&1; then
+    mkdir -p  ~/.zsh/completion
     ln -fs /Applications/Docker.app/Contents/Resources/etc/docker.zsh-completion ~/.zsh/completion/_docker
     ln -fs /Applications/Docker.app/Contents/Resources/etc/docker-machine.zsh-completion ~/.zsh/completion/_docker-machine
     ln -fs /Applications/Docker.app/Contents/Resources/etc/docker-compose.zsh-completion ~/.zsh/completion/_docker-compose
@@ -82,10 +83,6 @@ fi
 function k8s_detach {
     kubectl config unset current-context
 }
-
-if which aws>/dev/null && which aws_completer>/dev/null; then
-    complete -C "$( which aws_completer )" aws
-fi
 
 #### RUBY
 # bash completion for ssh (based on .ssh/config)
