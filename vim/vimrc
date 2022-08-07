@@ -125,7 +125,11 @@ let g:nord_underline = 1
 
 let g:indent_blankline_enabled = v:false
 
-highlight Comment ctermfg=245 " override default color for comments (if terminal lack suppor for true color)"
+highlight Comment cterm=italic ctermfg=245 " override default color for comments (if terminal lack suppor for true color)"
+" workaround italic support for OSX terminal (see: https://stackoverflow.com/a/53625973)
+let &t_ZH="\e[3m"
+let &t_ZR="\e[23m"
+
 
 lua require "_configuration"
 lua require "_treesitter"
@@ -188,4 +192,3 @@ if has("nvim")
     " preview window; see https://github.com/junegunn/fzf.vim/issues/544#issuecomment-457456166.
     tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
 endif
-

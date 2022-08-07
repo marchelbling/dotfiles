@@ -139,7 +139,10 @@ function golang_install
 function fonts_install
 {
     brew tap homebrew/cask-fonts
-    brew install --cask font-anonymice-nerd-font
+    # brew install --cask font-anonymice-nerd-font \
+    #                     font-inconsolata-nerd-font \
+    #                     font-roboto-mono-nerd-font
+    open fonts/Anonymice Nerd Font/*
 }
 
 
