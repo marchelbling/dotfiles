@@ -125,6 +125,8 @@ let g:nord_underline = 1
 
 let g:indent_blankline_enabled = v:false
 
+highlight Comment ctermfg=245 " override default color for comments (if terminal lack suppor for true color)"
+
 lua require "_configuration"
 lua require "_treesitter"
 lua require "_cmp"
@@ -186,3 +188,4 @@ if has("nvim")
     " preview window; see https://github.com/junegunn/fzf.vim/issues/544#issuecomment-457456166.
     tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
 endif
+
