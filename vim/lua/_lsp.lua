@@ -83,22 +83,8 @@ local servers = {
 	},
 	solargraph = {},
 	terraformls = {},
-	rust_analyzer = {
-		assist = {
-			importGranularity = "module",
-			importPrefix = "by_self",
-		},
-		cargo = {
-			loadOutDirsFromCheck = true,
-		},
-		procMacro = {
-			enable = true,
-		},
-		checkOnSave = {
-			command = "clippy",
-		},
-	},
 }
+
 for server, config in pairs(servers) do
 	lspconfig[server].setup({
 		on_attach = on_attach,
