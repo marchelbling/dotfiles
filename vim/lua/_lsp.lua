@@ -83,6 +83,16 @@ local servers = {
 	},
 	solargraph = {},
 	terraformls = {},
+	html = {
+		cmd = { "vscode-html-language-server", "--stdio" },
+		filetypes = { "html" },
+		configurationSection = { "html", "css", "javascript" },
+		embeddedLanguages = {
+			css = true,
+			javascript = true,
+		},
+		provideFormatter = true,
+	},
 }
 
 for server, config in pairs(servers) do

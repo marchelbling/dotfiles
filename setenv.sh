@@ -167,10 +167,13 @@ function lsp_completion
         # bash: bash-language-server
         npm i -g bash-language-server
 
-        # json: jsonlint
+        # json
         npm install -g jsonlint
+
+        # js/html/css
         npm install -g prettier
         npm install -g eslint
+        npm install -g vscode-langservers-extracted
     fi
 
     # ruby: solargraph
