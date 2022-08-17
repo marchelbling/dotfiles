@@ -261,7 +261,6 @@ ln -fs "${current_directory}/terminal/screenrc"     "${HOME}/.screenrc"
 ln -fs "${current_directory}/terminal/curlrc"       "${HOME}/.curlrc"
 ## vim
 ln -fs "${current_directory}/vim/vimrc"             "${VIMRC}"
-ln -fs "${current_directory}/vim/coc-settings.json" "${VIM_DIR}"
 ## neovim
 mkdir -p $( dirname ${NEOVIMRC} )
 ln -fs "${current_directory}/vim/vimrc"             "${NEOVIMRC}"
