@@ -296,3 +296,5 @@ function urldecode {
 function urlencode {
     python3 -c "import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))" "$1"
 }
+
+eval "$(/opt/homebrew/bin/brew shellenv)"

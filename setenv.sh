@@ -84,7 +84,13 @@ function homebrew_install
     # install homebrew and some utils
     if ! brew --version 2>/dev/null
     then
-        ruby -e "$( curl -fsSkL raw.github.com/mxcl/homebrew/go )"
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+
+    if ! brew --version 2>/dev/null
+    then
+        echo "failed to install homebrew"
+        exit 1
     fi
 
     local packages=( \
