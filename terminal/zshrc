@@ -80,6 +80,11 @@ if which kubectl >/dev/null 2>&1; then
     source <(kubectl completion zsh)
 fi
 
+if which scalingo >/dev/null 2>&1;
+then
+    source ~/.zsh/completion/scalingo_complete.zsh
+fi
+
 function k8s_detach {
     kubectl config unset current-context
 }
