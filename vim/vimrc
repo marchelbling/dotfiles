@@ -182,7 +182,7 @@ endif
 " prettify json
 function! DoPrettyJSON()
     let l:origft = &ft
-    silent %!python -m json.tool
+    silent %!python3 -m json.tool
     exe "set ft=" . l:origft
 endfunction
 command! PrettyJSON call DoPrettyJSON()
