@@ -89,14 +89,10 @@ function k8s_detach {
     kubectl config unset current-context
 }
 
-#### RUBY
-# bash completion for ssh (based on .ssh/config)
-ssh_config="${HOME}/.ssh/config"
-if [ -f ${ssh_config} ] && which ruby >/dev/null 2>&1;
-then
-    complete -o default -o nospace -W "$( env ruby -ne 'puts $_.split(/[,\s]+/)[1..-1].reject{|host| host.match(/\*|\?/)} if $_.match(/^\s*Host\s+/);' < ${ssh_config} )" scp sftp ssh
-fi
+# use 1password ssh agent
+export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
 
+#### RUBY
 if which rbenv >/dev/null;
 then
     eval "$(rbenv init -)"
