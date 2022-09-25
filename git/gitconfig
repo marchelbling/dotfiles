@@ -1,7 +1,11 @@
 [user]
     name = Marc Helbling
     email = marc.d.helbling@gmail.com
-    signingkey = 12BDDD4A1EE32208
+    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvJUVCmashdocf9ORVJ61kjjGwSG/dVA97c3gggjZdn
+[gpg]
+    format = ssh
+[gpg "ssh"]
+    program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 [commit]
 	gpgsign = true
 [color]
