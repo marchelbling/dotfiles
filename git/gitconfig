@@ -16,11 +16,21 @@
     conflictstyle = diff3
 [diff]
     wordRegex = .
+    tool = difftastic
+[difftool]
+    prompt = false
+[difftool "difftastic"]
+    cmd = difft "$LOCAL" "$REMOTE"
+[pager]
+    # Use a pager for large output, just like other git commands.
+    difftool = true
 [rebase]
     autoSquash = true
     autoStash = true
     missingCommitsCheck = "warn"
 [alias]
+    showt = show --ext-diff
+    difft = difftool
     br = branch -avv
     st = status
     co = checkout
