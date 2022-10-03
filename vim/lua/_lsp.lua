@@ -50,8 +50,8 @@ local on_attach = function(client)
 	end
 
 	-- delegate forumatting to null-ls
-	client.resolved_capabilities.document_formatting = false
-	client.resolved_capabilities.document_range_formatting = false
+	client.server_capabilities.document_formatting = false
+	client.server_capabilities.document_range_formatting = false
 end
 
 -- diagnostics
