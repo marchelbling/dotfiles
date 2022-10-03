@@ -1,6 +1,5 @@
 #### PATH
-export GOPATH="${HOME}/go"
-export PATH=/usr/local/bin:/usr/local/sbin:"${GOPATH}/bin":"${HOME}/google-cloud-sdk/bin":"${HOME}/.local/bin":"${PATH}"
+export PATH=/usr/local/bin:/usr/local/sbin:"$(go env GOPATH)/bin":"${HOME}/google-cloud-sdk/bin":"${HOME}/.local/bin":"${PATH}"
 export LC_ALL=en_US.UTF-8
 export EDITOR="$( which nvim )"
 
