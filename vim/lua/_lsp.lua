@@ -76,8 +76,9 @@ local servers = {
 					tidy = true, -- Runs go mod tidy for a module
 					vendor = true, -- Runs go mod vendor for a module
 				},
-				gofumpt = false, -- A stricter gofmt
+				gofumpt = true, -- A stricter gofmt
 				usePlaceholders = true, -- enables placeholders for function parameters or struct fields in completion responses
+				buildFlags = { "-tags=integration,mage" },
 			},
 		},
 	},
