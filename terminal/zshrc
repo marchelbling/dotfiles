@@ -41,6 +41,14 @@ setopt share_history
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# see https://docs.brew.sh/Shell-Completion#configuring-completions-in-zsh
+if type brew &>/dev/null
+then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+  autoload -Uz compinit
+  compinit
+fi
+
 # navigation
 ## history (https://unix.stackexchange.com/questions/97843/how-can-i-search-history-with-text-already-entered-at-the-prompt-in-zsh)
 bindkey "^[[A" history-beginning-search-backward
@@ -52,37 +60,6 @@ select-word-style bash
 # * https://gist.github.com/acamino/2bc8df5e2ed0f99ddbe7a6fddb7773a6)
 bindkey -e
 bindkey \^u backward-kill-line
-
-# autocompletion
-fpath=("~/.zsh/completion" $fpath)
-
-if which docker >/dev/null 2>&1; then
-    mkdir -p  ~/.zsh/completion
-    ln -fs /Applications/Docker.app/Contents/Resources/etc/docker.zsh-completion ~/.zsh/completion/_docker
-    ln -fs /Applications/Docker.app/Contents/Resources/etc/docker-machine.zsh-completion ~/.zsh/completion/_docker-machine
-    ln -fs /Applications/Docker.app/Contents/Resources/etc/docker-compose.zsh-completion ~/.zsh/completion/_docker-compose
-fi
-
-if which brew >/dev/null 2>&1; then
-    fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
-fi
-autoload -Uz compinit && compinit -i
-
-if which gcloud >/dev/null 2>&1; then
-    # gcloud autocompletion
-    gcloud_dir="$( dirname $( dirname $( which gcloud ) ) )"
-    source "${gcloud_dir}/completion.zsh.inc"
-    source "${gcloud_dir}/path.zsh.inc"
-fi
-
-if which kubectl >/dev/null 2>&1; then
-    source <(kubectl completion zsh)
-fi
-
-if which scalingo >/dev/null 2>&1;
-then
-    source ~/.zsh/completion/scalingo_complete.zsh
-fi
 
 function k8s_detach {
     kubectl config unset current-context
@@ -118,6 +95,24 @@ function urlencode {
     python3 -c "import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))" "$1"
 }
 
+# docker autocompletion
+if which docker >/dev/null 2>&1; then
+    mkdir -p  ~/.zsh/completion
+    ln -fs /Applications/Docker.app/Contents/Resources/etc/docker.zsh-completion ~/.zsh/completion/_docker
+    ln -fs /Applications/Docker.app/Contents/Resources/etc/docker-machine.zsh-completion ~/.zsh/completion/_docker-machine
+    ln -fs /Applications/Docker.app/Contents/Resources/etc/docker-compose.zsh-completion ~/.zsh/completion/_docker-compose
+fi
 
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/bin/terraform terraform
+if which kubectl >/dev/null 2>&1; then
+    source <(kubectl completion zsh)
+fi
+
+if which scalingo >/dev/null 2>&1;
+then
+    source ~/.zsh/completion/scalingo_complete.zsh
+fi
+
+if which gcloud >/dev/null 2>&1;
+then
+    source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
+fi
