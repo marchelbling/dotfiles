@@ -99,9 +99,11 @@ if has('nvim')
   Plug 'RRethy/vim-illuminate'
 endif
 
-" formatting / linters
+" formatting
 Plug 'nvim-lua/plenary.nvim'
-Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'mhartington/formatter.nvim'
+" linting
+Plug 'mfussenegger/nvim-lint'
 
 " Display diagnostics
 Plug 'folke/trouble.nvim'
@@ -135,7 +137,8 @@ lua require "_configuration"
 lua require "_treesitter"
 lua require "_cmp"
 lua require "_lsp"
-lua require "_null-ls"
+lua require "_formatter"
+lua require "_nvim-lint"
 lua require "_trouble"
 
 " automatically reload vim configuration when a change is detected (http://superuser.com/a/417997)
