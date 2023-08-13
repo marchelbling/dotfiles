@@ -1,0 +1,6 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+open {{joinPath .chezmoi.sourceDir "install" "nord.terminal"}}
+
+{{ end -}}
