@@ -25,12 +25,19 @@ MacOS tools are managed via [Homebrew](https://brew.sh/). We rely on the bundle 
 
 ### Secrets
 
-Passwords and secrets are managed with [1password](https://1password.com/).
+Passwords, secrets, SSH keys are managed with [1password](https://1password.com/).
 For example, git signing is done using [SSH key signing](https://blog.1password.com/git-commit-signing/).
+
 
 ## Cheatsheet
 
-1. install `chezmoi` (via brew)
-2. `chezmoi init marchelbling` (`marchelbling` will be expanded to `github.com/marchelbling/dotfiles.git`)
-3. `chezmoi cd` changes current directory to this repository
-4. `chezmoi apply` copies `chezmoi` current definitions to their home destinations
+1. `chezmoi init marchelbling` (`marchelbling` will be expanded to `github.com/marchelbling/dotfiles.git`)
+2. `chezmoi cd`: changes current directory to this repository
+3. `chezmoi apply`: copies `chezmoi` current definitions to their home destinations
+
+
+## New machine setup
+
+1. install [`brew`](https://brew.sh/)
+2. install `brew` formulas, casks and apps: `brew bundle`
+3. deploy configuration: `chezmoi cd && chezmoi apply`
