@@ -25,6 +25,8 @@ mas "WhatsApp", id: 1147396723
 mas "Xcode", id: 497799835
 
 brew "bash-completion"
+brew "bat"
+brew "black"
 brew "chezmoi"
 brew "cmake"
 brew "coreutils"
@@ -41,6 +43,9 @@ brew "node"
 brew "num-utils"
 brew "postgresql@14"
 brew "redis"
+brew "ripgrep"
+brew "stylua"
 brew "the_silver_searcher"
 brew "tree"
 brew "yamllint"
+brew "wezterm"
