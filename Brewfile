@@ -15,6 +15,7 @@ cask "numi", args: { appdir: "/Applications" }
 cask "docker", args: { appdir: "/Applications" }
 
 mas "Bear", id: 1091189122
+mas "Dato", id: 1470584107
 mas "Slack", id: 803453959
 mas "WhatsApp", id: 1147396723
 mas "Xcode", id: 497799835
