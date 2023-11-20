@@ -11,7 +11,7 @@ return {
 	color_scheme = "nord",
 
 	-- font configuration
-	font = wezterm.font("Anonymice Nerd Font", { weight = "Regular", stretch = "Expanded", style = "Normal" }),
+	-- font = wezterm.font("AnonymicePro Nerd Font", { weight = "Regular", stretch = "Expanded", style = "Normal" }),
 	font_size = 14,
 	use_ime = true,
 	audible_bell = "Disabled",

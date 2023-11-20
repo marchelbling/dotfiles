@@ -1,5 +1,5 @@
 #### PATH
-export PATH=/usr/local/bin:/usr/local/sbin:"$(go env GOPATH)/bin":"${HOME}/.local/bin":"${PATH}"
+export PATH=/usr/local/bin:/usr/local/sbin:"$(go env GOPATH)/bin":"${HOME}/.local/bin":/opt/homebrew/bin:/opt/homebrew/sbin:"${PATH}"
 export LC_ALL=en_US.UTF-8
 export EDITOR="$( which nvim )"
 
@@ -10,8 +10,6 @@ alias igt='git'
 alias gti='git'
 alias gigt='git'
 alias gitg='git'
-alias vim=nvim
-alias gorun='go run $( find . -type f -name "*.go" -not -name "*test.go" -not -name "testing.go" )'
 
 GPG_TTY=$(tty)
 export GPG_TTY
