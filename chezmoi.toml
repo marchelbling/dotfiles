@@ -1,2 +1,5 @@
 [data]
-    email = "marc.d.helbling@gmail.com"
+    company = "Aqemia"
+    email_pro = "marc.helbling@aqemia.com"
+    signing_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMDAjV1N7tBPdsLIX5GmNJLc+zmh+K47wK5B5ILuiLaH"
+    vm_ip = "18.207.44.223"

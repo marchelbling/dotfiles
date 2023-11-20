@@ -1,5 +1,6 @@
 #### PATH
-export PATH=/usr/local/bin:/usr/local/sbin:"$(go env GOPATH)/bin":"${HOME}/.local/bin":/opt/homebrew/bin:/opt/homebrew/sbin:"${PATH}"
+export PATH=/usr/local/bin:/usr/local/sbin:"${HOME}/.local/bin":/opt/homebrew/bin:/opt/homebrew/sbin:"${PATH}"
+export PATH="$(go env GOPATH)/bin":"${PATH}"
 export LC_ALL=en_US.UTF-8
 export EDITOR="$( which nvim )"
 
@@ -83,9 +84,6 @@ function k8s_detach {
 # change bat theme
 export BAT_THEME="Nord"
 
-# use 1password ssh agent
-export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
-
 #### RUBY
 if which rbenv >/dev/null;
 then
@@ -112,3 +110,5 @@ function urldecode {
 function urlencode {
     python3 -c "import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))" "$1"
 }
+
+eval "$(rtx activate zsh)"

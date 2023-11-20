@@ -1,7 +1,11 @@
 [user]
     name = Marc Helbling
-    email = "{{ .email }}"
+    email = "marc.d.helbling@gmail.com"
     signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvJUVCmashdocf9ORVJ61kjjGwSG/dVA97c3gggjZdn
+
+[includeIf "gitdir:~/Developer/{{ .company }}/"]
+    path = ~/.gitconfig.work
+
 [gpg]
     format = ssh
 [gpg "ssh"]

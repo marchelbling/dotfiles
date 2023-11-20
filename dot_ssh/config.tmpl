@@ -1,0 +1,19 @@
+# 1password setup for git commit signature
+Host *
+  IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+# SSH setup for personal github account
+Host personal
+  HostName github.com
+  IdentityFile ~/.ssh/github_perso
+
+Host github.com
+  AddKeysToAgent yes
+  IgnoreUnknown UseKeychain
+  UseKeychain yes
+  IdentityFile ~/.ssh/aqemia-dev-marc.helbling
+
+Host {{ .vm_ip }}
+  HostName {{ .vm_ip }}
+  User ubuntu
+  IdentityFile ~/.ssh/aqemia-dev-marc.helbling
