@@ -6,10 +6,11 @@
 [includeIf "gitdir:~/Developer/{{ .company }}/"]
     path = ~/.gitconfig.work
 
+[includeIf "gitdir/i:/Users/"]
+  path = ~/.gitconfig.1password.osx
+
 [gpg]
     format = ssh
-[gpg "ssh"]
-    program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 [commit]
 	gpgsign = true
 [color]

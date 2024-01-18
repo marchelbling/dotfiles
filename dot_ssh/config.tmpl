@@ -1,19 +1,27 @@
-# 1password setup for git commit signature
+# 1password ssh agent setup:
+{{ if eq .chezmoi.os "darwin" -}}
 Host *
   IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-
-# SSH setup for personal github account
-Host personal
-  HostName github.com
-  IdentityFile ~/.ssh/github_perso
-
-Host github.com
-  AddKeysToAgent yes
-  IgnoreUnknown UseKeychain
-  UseKeychain yes
-  IdentityFile ~/.ssh/aqemia-dev-marc.helbling
 
 Host {{ .vm_ip }}
   HostName {{ .vm_ip }}
   User ubuntu
-  IdentityFile ~/.ssh/aqemia-dev-marc.helbling
+  ForwardAgent yes
+  IdentityFile ~/.ssh/aws_vm.pub
+
+{{ else if eq .chezmoi.os "linux" -}}
+Match host * exec "test -z $SSH_CONNECTION"
+  IdentityAgent "~/.1password/agent.sock"
+
+{{ end -}}
+
+# SSH setup for personal github account
+Host personal
+  HostName github.com
+  IdentityFile ~/.ssh/github_perso.pub
+  IdentitiesOnly yes
+
+Host github.com
+  HostName github.com
+  IdentityFile ~/.ssh/github_aqemia.pub
+  IdentitiesOnly yes
