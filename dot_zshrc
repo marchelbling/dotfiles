@@ -1,8 +1,6 @@
 #### PATH
 export PATH=/usr/local/bin:/usr/local/sbin:"${HOME}/.local/bin":/opt/homebrew/bin:/opt/homebrew/sbin:"${PATH}"
-export PATH="$(go env GOPATH)/bin":"${PATH}"
 export LC_ALL=en_US.UTF-8
-export EDITOR="$( which nvim )"
 
 #### SHORTCUTS
 alias ls='ls -F'
@@ -111,4 +109,6 @@ function urlencode {
     python3 -c "import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))" "$1"
 }
 
-eval "$(rtx activate zsh)"
+eval "$(~/.local/bin/mise activate zsh)"
+export PATH="$(go env GOPATH)/bin":"${PATH}"
+export EDITOR="$( which nvim )"
