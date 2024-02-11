@@ -22,19 +22,23 @@ then
 fi
 
 #### HISTORY (from https://github.com/mrzool/bash-sensible/blob/master/sensible.bash)
+# revision: https://registerspill.thorstenball.com/p/which-command-did-you-run-1731-days
 # Huge history. Doesn't appear to slow things down, so why not?
-HISTSIZE=500000
+HISTSIZE=100000
+SAVEHIST=100000
 HISTFILESIZE=100000
 HISTFILE=~/.zsh_history
-# Avoid duplicate entries
-HISTCONTROL="erasedups:ignoreboth"
-setopt hist_expire_dups_first
-setopt hist_save_no_dups
+setopt inc_append_history # immediately append to history file
+setopt extended_history # record timestamp
+setopt hist_expire_dups_first # expire dup entries first upon trimming history
+setopt hist_ignore_dups
 setopt hist_ignore_all_dups
-setopt hist_no_store
+setopt hist_find_no_dups
+setopt hist_ignore_space # don't record entry starting with a space
 setopt hist_reduce_blanks
-setopt hist_verify
+setopt hist_save_no_dups
 setopt share_history
+unsetopt hist_verify
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
