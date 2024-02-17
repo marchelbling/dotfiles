@@ -11,6 +11,7 @@ return {
             augroup END
         ]])
 
+		local util = require("formatter.util")
 		require("formatter").setup({
 			logging = true,
 			log_level = vim.log.levels.WARN,
@@ -22,7 +23,19 @@ return {
 					require("formatter.filetypes.javascript").prettier,
 				},
 				python = {
-					require("formatter.filetypes.python").black,
+					function()
+						return {
+							exe = "ruff",
+							stdin = true,
+							args = {
+								"format",
+								"--line-length",
+								100,
+								"--stdin-filename",
+								util.escape_path(util.get_current_buffer_file_path()),
+							},
+						}
+					end,
 				},
 				go = {
 					-- goimports:
