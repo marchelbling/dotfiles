@@ -3,7 +3,7 @@ return {
 	dependencies = {
 		"https://github.com/hrsh7th/cmp-nvim-lsp",
 		"https://github.com/hrsh7th/cmp-nvim-lua",
-		"https://github.com/L3MON4D3/LuaSnip",
+		{ "https://github.com/L3MON4D3/LuaSnip", build = "make install_jsregexp" },
 		"https://github.com/saadparwaiz1/cmp_luasnip",
 	},
 	config = function()
