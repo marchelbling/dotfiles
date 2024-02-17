@@ -8,6 +8,8 @@ return {
 	end,
 	config = {
 		animation = false,
-		clickable = false,
+		clickable = true,
+		focus_on_close = "previous",
+		insert_at_end = true,
 	},
 }
