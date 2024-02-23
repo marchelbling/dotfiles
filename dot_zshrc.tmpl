@@ -10,9 +10,6 @@ alias gti='git'
 alias gigt='git'
 alias gitg='git'
 
-GPG_TTY=$(tty)
-export GPG_TTY
-
 # prompt
 source "${HOME}/.zsh/theme.zsh"
 
@@ -59,13 +56,6 @@ if which kubectl >/dev/null 2>&1; then
     source <(kubectl completion zsh)
 fi
 
-if which gcloud >/dev/null 2>&1;
-then
-    source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
-    source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
-fi
-##
-
 
 # navigation
 ## history (https://unix.stackexchange.com/questions/97843/how-can-i-search-history-with-text-already-entered-at-the-prompt-in-zsh)
@@ -91,12 +81,6 @@ function k8s_detach {
 
 # change bat theme
 export BAT_THEME="Nord"
-
-#### RUBY
-if which rbenv >/dev/null;
-then
-    eval "$(rbenv init -)"
-fi
 
 function docker_clean {
     docker rm $( docker ps -q -f status=exited )
