@@ -13,10 +13,11 @@ module.exports = {
       browser: "Safari"
     },
     {
-      // Open GCP and Datadog urls in Google Chrome
+      // Open urls in Google Chrome
       match: [
         "https://console.cloud.google.com/*", // match GCP
         "https://*.datadoghq.com/*", // match Datadog
+        "https://*notion.so/*", // match notion
       ],
       browser: "Google Chrome"
     }
