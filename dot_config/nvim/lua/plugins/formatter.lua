@@ -30,7 +30,7 @@ return {
 							args = {
 								"format",
 								"--line-length",
-								100,
+								120,
 								"--stdin-filename",
 								util.escape_path(util.get_current_buffer_file_path()),
 							},
@@ -54,22 +54,6 @@ return {
 						return {
 							exe = "gofumpt",
 							stdin = true,
-						}
-					end,
-				},
-				markdown = {
-					function()
-						return {
-							exe = "prettier",
-							stdin = true,
-							args = {
-								"--print-width",
-								90,
-								"--prose-wrap",
-								"always",
-								"--stdin-filepath",
-								util.escape_path(util.get_current_buffer_file_path()),
-							},
 						}
 					end,
 				},
