@@ -18,8 +18,8 @@ return {
             " search word under cursor or visual selection (if currently in visual mode)
             " if invoked with no visual selection or no word under the cursor, this will search in the
             " full project as expected
-            nnoremap <silent> <leader>k :call SearchWordWithAg()<CR>
-            vnoremap <silent> <leader>k :call SearchVisualSelectionWithAg()<CR>
+            nnoremap <silent> <leader>k :call SearchWordWithRg()<CR>
+            vnoremap <silent> <leader>k :call SearchVisualSelectionWithRg()<CR>
 
             " from: https://github.com/junegunn/fzf.vim/issues/47#issuecomment-160237795
             function! s:find_git_root()
@@ -27,11 +27,11 @@ return {
             endfunction
             command! ProjectFiles execute 'Files' s:find_git_root()
 
-            function! SearchWordWithAg()
-                execute 'Ag' expand('<cword>')
+            function! SearchWordWithRg()
+                execute 'Rg' expand('<cword>')
             endfunction
 
-            function! SearchVisualSelectionWithAg() range
+            function! SearchVisualSelectionWithRg() range
                 let old_reg = getreg('"')
                 let old_regtype = getregtype('"')
                 let old_clipboard = &clipboard
@@ -40,7 +40,7 @@ return {
                 let selection = getreg('"')
                 call setreg('"', old_reg, old_regtype)
                 let &clipboard = old_clipboard
-                execute 'Ag' selection
+                execute 'Rg' selection
             endfunction
         ]])
 	end,

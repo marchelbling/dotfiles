@@ -49,7 +49,17 @@ return {
 
 		-- Enable some language servers with the additional completion capabilities offered by nvim-cmp
 		local servers = {
-			pyright = {},
+			pyright = {
+				settings = {
+					python = {
+						analysis = {
+							autoImportCompletions = true,
+							diagnosticMode = "openFilesOnly", -- "workspace" would diagnose all files
+							useLibraryCodeForTypes = true,
+						},
+					},
+				},
+			},
 			clangd = {},
 			gopls = {
 				cmd = { "gopls", "serve" },

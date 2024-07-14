@@ -1,6 +1,9 @@
 return {
 	"https://github.com/rcarriga/nvim-dap-ui",
-	dependencies = { "https://github.com/mfussenegger/nvim-dap" },
+	dependencies = {
+		"https://github.com/mfussenegger/nvim-dap",
+		"https://github.com/nvim-neotest/nvim-nio",
+	},
 	config = function()
 		require("dapui").setup()
 
