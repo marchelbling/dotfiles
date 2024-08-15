@@ -6,7 +6,7 @@ return {
 	-- 		"<cmd>ToggleTerm size=40 dir=~/Desktop direction=horizontal<cr>",
 	-- 	},
 	-- },
-	config = {
+	opts = {
 		open_mapping = "<C-t>",
 	},
 }

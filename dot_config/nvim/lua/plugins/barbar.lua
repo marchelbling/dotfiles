@@ -6,7 +6,7 @@ return {
 	init = function()
 		vim.g.barbar_auto_setup = false
 	end,
-	config = {
+	opts = {
 		animation = false,
 		clickable = true,
 		focus_on_close = "previous",

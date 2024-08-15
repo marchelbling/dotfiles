@@ -18,6 +18,7 @@ return {
 			"make",
 			"markdown",
 			"python",
+			"regex",
 			"ruby",
 			"rust",
 			"typescript",
@@ -31,6 +32,16 @@ return {
 			disable = { "" }, -- list of language that will be disabled
 			additional_vim_regex_highlighting = false,
 		},
-		indent = { enable = true, disable = {} },
+		indent = {
+			enable = true,
+			disable = {},
+		},
+		textobjects = {
+			select = {
+				enable = true,
+				lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+			},
+		},
 	},
+	config = function() end,
 }
