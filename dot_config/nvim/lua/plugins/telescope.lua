@@ -42,7 +42,15 @@ return {
 			}))
 		end, { desc = "[/] Fuzzily search in current buffer]" })
 
-		vim.keymap.set("n", "<leader>p", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })
+		vim.keymap.set("n", "<leader>p", function()
+			-- https://github.com/nvim-telescope/telescope.nvim/issues/2183#issuecomment-1264492824
+			local in_git_repo = vim.fn.systemlist("git rev-parse --is-inside-work-tree")[1] == "true"
+			if in_git_repo then
+				require("telescope.builtin").git_files()
+			else
+				require("telescope.builtin").find_files()
+			end
+		end, { desc = "[S]earch [F]iles" })
 		vim.keymap.set("n", "<leader>k", require("telescope.builtin").grep_string, { desc = "[S]earch current [W]ord" })
 		vim.keymap.set("n", "K", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
 		vim.keymap.set("n", "<leader>sb", require("telescope.builtin").buffers, { desc = "[ ] Find existing buffers" })
