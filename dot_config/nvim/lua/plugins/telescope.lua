@@ -24,6 +24,8 @@ return {
 						theme = "dropdown",
 					},
 				},
+				wrap_results = true,
+				-- path_display = "truncate", -- mutually exclusive with wrap_results
 			},
 		})
 
