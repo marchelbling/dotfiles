@@ -33,11 +33,11 @@ vim.cmd([[
                 \gV:call setreg('"', old_reg, old_regtype)<CR>
 
     """"""" navigation
-    " navigate through buffers using ctrl-h & ctrl-l in normal/insert modes
-    nnoremap <C-h> :bprevious<CR>
-    nnoremap <C-l> :bnext<CR>
-    inoremap <C-h> <Esc>:bprevious<CR>i
-    inoremap <C-l> <Esc>:bnext<CR>i
+    " navigate through buffers using ctrl-h & ctrl-l in normal/insert modes (rely on barbar)
+    nnoremap <C-h> :BufferPrevious<CR>
+    nnoremap <C-l> :BufferNext<CR>
+    inoremap <C-h> <Esc>:BufferPrevious<CR>i
+    inoremap <C-l> <Esc>:BufferNext<CR>i
     nnoremap <C-x> :bd<CR>
 
     " navigate through splits using arrows

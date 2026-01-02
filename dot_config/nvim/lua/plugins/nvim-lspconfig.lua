@@ -1,31 +1,38 @@
 return {
-	"https://github.com/neovim/nvim-lspconfig",
+	"neovim/nvim-lspconfig",
 	dependencies = {
-		"https://github.com/RRethy/vim-illuminate",
+		"RRethy/vim-illuminate",
+		-- If you use nvim-cmp, keep this; otherwise remove these two lines.
+		"hrsh7th/cmp-nvim-lsp",
 	},
 	config = function()
-		-- helper function for mappings
-		local m = function(mode, key, result)
-			vim.api.nvim_buf_set_keymap(0, mode, key, "<cmd> " .. result .. "<cr>", {
-				noremap = true,
-				silent = true,
-			})
+		-- Capabilities (nvim-cmp integration if present)
+		local capabilities = vim.lsp.protocol.make_client_capabilities()
+		local ok_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+		if ok_cmp then
+			capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
+		end
+
+		-- helper function for mappings (buffer-local)
+		local m = function(bufnr, mode, key, rhs)
+			vim.keymap.set(mode, key, rhs, { buffer = bufnr, noremap = true, silent = true })
 		end
 
 		-- function to attach completion when setting up lsp
-		local on_attach = function(client)
+		local on_attach = function(client, bufnr)
 			-- Mappings.
-			m("n", "ga", "lua vim.lsp.buf.code_action()")
-			m("n", "gD", "lua vim.lsp.buf.declaration()")
-			m("n", "gd", "lua vim.lsp.buf.definition()")
-			m("n", "ge", "lua vim.lsp.diagnostic.goto_next()")
-			m("n", "gE", "lua vim.lsp.diagnostic.goto_prev()")
-			m("n", "gi", "lua vim.lsp.buf.implementation()")
-			m("n", "gr", "lua vim.lsp.buf.references()")
-			m("n", "H", "lua vim.lsp.buf.hover()")
-			-- m("n", "<space>rn", "lua vim.lsp.buf.rename()")
-			m("n", "gl", "lua vim.lsp.diagnostic.show_line_diagnostics()")
-			-- m("n", "<space>f", "lua vim.lsp.buf.formatting()")
+			m(bufnr, "n", "ga", vim.lsp.buf.code_action)
+			m(bufnr, "n", "gD", vim.lsp.buf.declaration)
+			m(bufnr, "n", "gd", vim.lsp.buf.definition)
+
+			-- These used to be vim.lsp.diagnostic.* (deprecated). Use vim.diagnostic.*
+			m(bufnr, "n", "ge", vim.diagnostic.goto_next)
+			m(bufnr, "n", "gE", vim.diagnostic.goto_prev)
+			m(bufnr, "n", "gl", vim.diagnostic.open_float)
+
+			m(bufnr, "n", "gi", vim.lsp.buf.implementation)
+			m(bufnr, "n", "gr", vim.lsp.buf.references)
+			m(bufnr, "n", "H", vim.lsp.buf.hover)
 
 			local has_illuminate, illuminate = pcall(require, "illuminate")
 			if has_illuminate then
@@ -33,11 +40,10 @@ return {
 			end
 
 			-- delegate formatting to dedicated plugins
-			client.server_capabilities.document_formatting = false
-			client.server_capabilities.document_range_formatting = false
+			client.server_capabilities.documentFormattingProvider = false
+			client.server_capabilities.documentRangeFormattingProvider = false
 		end
 
-		-- diagnostics
 		vim.diagnostic.config({
 			virtual_text = false,
 			underline = true,
@@ -47,7 +53,6 @@ return {
 			update_in_insert = false,
 		})
 
-		-- Enable some language servers with the additional completion capabilities offered by nvim-cmp
 		local servers = {
 			pyright = {
 				settings = {
@@ -62,17 +67,18 @@ return {
 			},
 			clangd = {},
 			gopls = {
+				root_dir = vim.fs.root(0, { "go.work", "go.mod", ".git" }),
 				cmd = { "gopls", "serve" },
 				settings = {
 					gopls = {
 						codelenses = {
-							test = true, -- Runs go test for a specific set of test or benchmark functions
-							tidy = true, -- Runs go mod tidy for a module
-							vendor = true, -- Runs go mod vendor for a module
+							test = true,
+							tidy = true,
+							vendor = true,
 						},
-						gofumpt = true, -- A stricter gofmt
-						usePlaceholders = true, -- enables placeholders for function parameters or struct fields in completion responses
-						buildFlags = { "-tags=integration,mage" },
+						gofumpt = true,
+						usePlaceholders = true,
+						buildFlags = { "-tags=integration" },
 					},
 				},
 			},
@@ -90,28 +96,19 @@ return {
 			},
 		}
 
-		for server, config in pairs(servers) do
-			require("lspconfig")[server].setup({
-				on_attach = on_attach,
-				capabilities = capabilities,
-				settings = config.settings or {},
-			})
+		local enabled = {}
+		for server, cfg in pairs(servers) do
+			vim.lsp.config(
+				server,
+				vim.tbl_deep_extend("force", cfg, {
+					on_attach = on_attach,
+					capabilities = capabilities,
+				})
+			)
+			table.insert(enabled, server)
 		end
 
-		-- diagnostics
-		vim.diagnostic.config({
-			virtual_text = false,
-			underline = true,
-			float = {
-				source = "always",
-			},
-			severity_sort = true,
-			--[[ virtual_text = {
-				prefix = "»",
-				spacing = 4,
-			}, ]]
-			signs = true,
-			update_in_insert = false,
-		})
+		-- Enable them
+		vim.lsp.enable(enabled)
 	end,
 }
