@@ -112,3 +112,6 @@ set.expandtab = true
 
 -- load plugin configuration automatically from the lua/plugins folder
 require("lazy").setup("plugins")
+
+-- activate native autocompletion
+require("config.completion")

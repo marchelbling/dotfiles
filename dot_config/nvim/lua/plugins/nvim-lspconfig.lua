@@ -2,17 +2,8 @@ return {
 	"neovim/nvim-lspconfig",
 	dependencies = {
 		"RRethy/vim-illuminate",
-		-- If you use nvim-cmp, keep this; otherwise remove these two lines.
-		"hrsh7th/cmp-nvim-lsp",
 	},
 	config = function()
-		-- Capabilities (nvim-cmp integration if present)
-		local capabilities = vim.lsp.protocol.make_client_capabilities()
-		local ok_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-		if ok_cmp then
-			capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
-		end
-
 		-- helper function for mappings (buffer-local)
 		local m = function(bufnr, mode, key, rhs)
 			vim.keymap.set(mode, key, rhs, { buffer = bufnr, noremap = true, silent = true })
@@ -102,7 +93,6 @@ return {
 				server,
 				vim.tbl_deep_extend("force", cfg, {
 					on_attach = on_attach,
-					capabilities = capabilities,
 				})
 			)
 			table.insert(enabled, server)
