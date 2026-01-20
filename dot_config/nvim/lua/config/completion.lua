@@ -12,7 +12,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end
 
 		vim.lsp.completion.enable(true, client_id, ev.buf, {
-			autotrigger = false, -- set true if you want auto popup
+			autotrigger = true,
 		})
 	end,
 })

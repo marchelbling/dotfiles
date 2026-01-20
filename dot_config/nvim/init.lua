@@ -22,8 +22,8 @@ vim.cmd([[
     highlight TrailingSpaces ctermbg=red guibg=red
     match TrailingSpaces /\s\+$/
 
-    "clear highlight on 'return'
-    nnoremap <silent> <CR> :noh<CR>
+    "clear highlight on 'return' (except in quickfix/loclist)
+    nnoremap <silent> <expr> <CR> &buftype ==# 'quickfix' ? "\<CR>" : ":noh\<CR>"
 
     " use visual selection as (forward) search
     vnoremap <silent> * :<C-U>
