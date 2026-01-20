@@ -28,6 +28,8 @@ MacOS tools are managed via [Homebrew](https://brew.sh/). We rely on the bundle 
 Passwords, secrets, SSH keys are managed with [1password](https://1password.com/).
 For example, git signing is done using [SSH key signing](https://blog.1password.com/git-commit-signing/).
 
+1password CLI needs to be installed before initializing chezmoi.
+
 
 ## Cheatsheet
 

@@ -1,7 +1,7 @@
 [user]
     name = Marc Helbling
     email = "marc.d.helbling@gmail.com"
-    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvJUVCmashdocf9ORVJ61kjjGwSG/dVA97c3gggjZdn
+    signingkey = {{ onepasswordRead "op://bv2opaaxbhpe7ztv6ym5mix4um/oigwwx6xsoxvirazkkqu73fmse/public key" }} # see 'op://Private/Github perso (signing key)/public key'
 
 [includeIf "gitdir:~/Developer/{{ .company }}/"]
     path = ~/.gitconfig.work

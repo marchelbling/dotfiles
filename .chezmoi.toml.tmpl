@@ -1,7 +1,5 @@
 {{- $company := promptString "company name" -}}
 {{- $email_pro := promptString "email pro" -}}
-{{- $signing_key := promptString "git signing key (pub)" -}}
 [data]
     company = "{{ $company }}"
     email_pro = "{{ $email_pro }}"
-    signing_key = "{{ $signing_key }}"
