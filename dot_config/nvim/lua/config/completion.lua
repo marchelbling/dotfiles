@@ -1,23 +1,29 @@
--- Native LSP completion (Neovim 0.11+)
+-- Native LSP completion settings (Neovim 0.11+)
+-- Completion enabling is done in nvim-lspconfig on_attach
 
 vim.opt.completeopt = { "menuone", "noselect", "popup" }
 vim.opt.shortmess:append("c")
 
-vim.api.nvim_create_autocmd("LspAttach", {
-	desc = "Enable native LSP completion",
-	callback = function(ev)
-		local client_id = ev.data and ev.data.client_id
-		if not client_id then
-			return
-		end
+-- Manual trigger (cmp-style)
+vim.keymap.set("i", "<C-Space>", function()
+	vim.lsp.completion.trigger()
+end, { desc = "LSP completion" })
 
-		vim.lsp.completion.enable(true, client_id, ev.buf, {
-			autotrigger = true,
+-- Auto-trigger signature help when typing function arguments
+vim.api.nvim_create_autocmd("LspAttach", {
+	desc = "Setup signature help triggers",
+	callback = function(ev)
+		local bufnr = ev.buf
+		vim.api.nvim_create_autocmd("InsertCharPre", {
+			buffer = bufnr,
+			callback = function()
+				local char = vim.v.char
+				if char == "(" or char == "," then
+					vim.defer_fn(function()
+						vim.lsp.buf.signature_help()
+					end, 0)
+				end
+			end,
 		})
 	end,
 })
-
--- Manual trigger (cmp-style)
-vim.keymap.set("i", "<C-Space>", function()
-	vim.lsp.completion.get()
-end, { desc = "LSP completion" })

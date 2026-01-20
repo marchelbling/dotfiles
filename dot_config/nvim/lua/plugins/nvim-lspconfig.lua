@@ -24,6 +24,7 @@ return {
 			m(bufnr, "n", "gi", vim.lsp.buf.implementation)
 			m(bufnr, "n", "gr", vim.lsp.buf.references)
 			m(bufnr, "n", "H", vim.lsp.buf.hover)
+			m(bufnr, "i", "<C-k>", vim.lsp.buf.signature_help)
 
 			local has_illuminate, illuminate = pcall(require, "illuminate")
 			if has_illuminate then
@@ -33,17 +34,42 @@ return {
 			-- delegate formatting to dedicated plugins
 			client.server_capabilities.documentFormattingProvider = false
 			client.server_capabilities.documentRangeFormattingProvider = false
+
+			-- Enable native LSP completion (Neovim 0.11+)
+			vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
 		end
 
+		-- diagnostics
 		vim.diagnostic.config({
-			virtual_text = false,
-			underline = true,
-			float = { source = "always" },
+			virtual_text = {
+				prefix = "●",
+				source = "if_many",
+				spacing = 4,
+			},
+			underline = { severity = { min = vim.diagnostic.severity.WARN } },
+			float = {
+				source = "if_many",
+				border = "rounded",
+				header = "",
+				prefix = function(diag)
+					local icons = { "E", "W", "H", "I" }
+					return icons[diag.severity] .. " ", "Diagnostic" .. ({ "Error", "Warn", "Hint", "Info" })[diag.severity]
+				end,
+			},
 			severity_sort = true,
-			signs = true,
+			signs = {
+				text = {
+					[vim.diagnostic.severity.ERROR] = " ",
+					[vim.diagnostic.severity.WARN] = " ",
+					[vim.diagnostic.severity.HINT] = " ",
+					[vim.diagnostic.severity.INFO] = " ",
+				},
+				priority = 20,
+			},
 			update_in_insert = false,
 		})
 
+		-- Your server configs (kept as-is, but we’ll feed them into vim.lsp.config)
 		local servers = {
 			pyright = {
 				settings = {
@@ -87,6 +113,7 @@ return {
 			},
 		}
 
+		-- Register configs using the new Neovim 0.11+ API
 		local enabled = {}
 		for server, cfg in pairs(servers) do
 			vim.lsp.config(

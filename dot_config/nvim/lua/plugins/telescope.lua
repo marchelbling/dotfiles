@@ -53,8 +53,43 @@ return {
 				require("telescope.builtin").find_files()
 			end
 		end, { desc = "[S]earch [F]iles" })
-		vim.keymap.set("n", "<leader>k", require("telescope.builtin").grep_string, { desc = "[S]earch current [W]ord" })
+		-- Helper to get visual selection
+		local function get_visual_selection()
+			local _, ls, cs = unpack(vim.fn.getpos("v"))
+			local _, le, ce = unpack(vim.fn.getpos("."))
+			-- Ensure correct order
+			if ls > le or (ls == le and cs > ce) then
+				ls, le = le, ls
+				cs, ce = ce, cs
+			end
+			local lines = vim.api.nvim_buf_get_text(0, ls - 1, cs - 1, le - 1, ce, {})
+			return table.concat(lines, "\n")
+		end
+
+		-- live_grep with word under cursor (normal) or visual selection
+		vim.keymap.set("n", "<leader>k", function()
+			local word = vim.fn.expand("<cword>")
+			require("telescope.builtin").live_grep({ default_text = word })
+		end, { desc = "[S]earch live grep with current [W]ord" })
+
+		vim.keymap.set("v", "<leader>k", function()
+			local text = get_visual_selection()
+			-- Escape special regex characters for ripgrep
+			text = vim.fn.escape(text, "\\^$.*+?()[]{}|")
+			require("telescope.builtin").live_grep({ default_text = text })
+		end, { desc = "[S]earch live grep with selection" })
+
 		vim.keymap.set("n", "K", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
+
+		-- Fuzzy grep: rg returns all matches, telescope does fuzzy filtering
+		vim.keymap.set("n", "<leader>K", function()
+			require("telescope.builtin").grep_string({
+				search = "^",
+				only_sort_text = true,
+				prompt_title = "Fuzzy Grep",
+				use_regex = true,
+			})
+		end, { desc = "[S]earch by fuzzy [G]rep" })
 		vim.keymap.set("n", "<leader>sb", require("telescope.builtin").buffers, { desc = "[ ] Find existing buffers" })
 		vim.keymap.set("n", "<Leader>sn", "<CMD>lua require('telescope').extensions.notify.notify()<CR>", silent)
 	end,
