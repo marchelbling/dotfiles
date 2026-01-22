@@ -13,9 +13,9 @@ alias gitg='git'
 # prompt
 source "${HOME}/.zsh/theme.zsh"
 
-if [ -f "${HOME}/.specific_profile" ]
+if [ -f "${HOME}/.work_profile" ]
 then
-    . "${HOME}/.specific_profile"
+    . "${HOME}/.work_profile"
 fi
 
 #### HISTORY (from https://github.com/mrzool/bash-sensible/blob/master/sensible.bash)
@@ -97,7 +97,9 @@ function urlencode {
 if [ -x ~/.local/bin/mise ]; then
     eval "$(~/.local/bin/mise activate zsh)"
 fi
+
 if which atuin >/dev/null 2>&1; then
+    # source "$HOME/.atuin/bin/env"
     eval "$(atuin init zsh)"
 
     bindkey '^r' atuin-search
@@ -107,3 +109,7 @@ if which atuin >/dev/null 2>&1; then
 fi
 export PATH="$(go env GOPATH)/bin":"${PATH}"
 export EDITOR="$( which nvim )"
+
+if [ -x ~/lmstudio/bin/lms ]; then
+    export PATH="$PATH:/Users/marchelbling/.lmstudio/bin"
+fi
