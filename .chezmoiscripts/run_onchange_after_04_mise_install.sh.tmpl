@@ -1,0 +1,7 @@
+#!/bin/bash
+# mise config hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+
+if [ -x ~/.local/bin/mise ]; then
+    ~/.local/bin/mise self-update
+    ~/.local/bin/mise install
+fi
