@@ -1,0 +1,8 @@
+[tools]
+python = "3.11"
+fd = "latest"
+go = "1.25"
+golangci-lint = "v2.6.0"
+uv = "0.5.8"
+gopls = "latest"
+duckdb = "latest"

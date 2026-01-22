@@ -1,0 +1,19 @@
+# Atuin configuration
+# https://docs.atuin.sh/cli/configuration/config/
+
+# Disable sync - local only mode
+auto_sync = false
+
+search_mode = "fulltext" # one_of(fulltext, fuzzy, prefix, skim)
+
+# Use prefix search for up/down arrow keys
+search_mode_shell_up_key_binding = "prefix"
+
+keymap_mode = "auto"
+
+# do not immediately execute the selected command but allow to edit it:
+enter_accept = false
+
+# Style settings
+style = "compact"
+inline_height = 15

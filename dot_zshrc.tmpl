@@ -58,15 +58,6 @@ fi
 
 
 # navigation
-## history (https://unix.stackexchange.com/questions/97843/how-can-i-search-history-with-text-already-entered-at-the-prompt-in-zsh)
-
-{{ if eq .chezmoi.os "darwin" -}}
-bindkey "^[[A" history-beginning-search-backward
-bindkey "^[[B" history-beginning-search-forward
-{{ else if eq .chezmoi.os "linux" -}}
-bindkey "${terminfo[kcuu1]}" history-beginning-search-backward
-bindkey "${terminfo[kcud1]}" history-beginning-search-forward
-{{ end -}}
 ## line
 # * https://stackoverflow.com/a/1438523/626278
 autoload -U select-word-style
@@ -103,6 +94,16 @@ function urlencode {
     python3 -c "import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))" "$1"
 }
 
-eval "$(~/.local/bin/mise activate zsh)"
+if [ -x ~/.local/bin/mise ]; then
+    eval "$(~/.local/bin/mise activate zsh)"
+fi
+if which atuin >/dev/null 2>&1; then
+    eval "$(atuin init zsh)"
+
+    bindkey '^r' atuin-search
+    # bind to the up key, which depends on terminal mode:
+    bindkey '^[[A' atuin-up-search
+    bindkey '^[OA' atuin-up-search
+fi
 export PATH="$(go env GOPATH)/bin":"${PATH}"
 export EDITOR="$( which nvim )"
