@@ -1,0 +1,7 @@
+\set QUIET 1
+
+\pset linestyle
+\timing
+\set PROMPT1 '%m@%/ %`date "+%Y-%m-%d %H:%M:%S"` '
+
+\set QUIET 0
