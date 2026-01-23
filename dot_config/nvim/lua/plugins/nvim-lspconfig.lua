@@ -69,9 +69,48 @@ return {
 			update_in_insert = false,
 		})
 
-		-- Your server configs (kept as-is, but we’ll feed them into vim.lsp.config)
+		-- Find Python path by walking up directories to find .venv
+		local function find_python_path(start_dir)
+			local dir = start_dir
+			while dir and dir ~= "/" do
+				-- Check for .venv or venv
+				for _, venv_name in ipairs({ ".venv", "venv" }) do
+					local python_path = dir .. "/" .. venv_name .. "/bin/python"
+					if vim.fn.executable(python_path) == 1 then
+						return python_path
+					end
+				end
+				dir = vim.fn.fnamemodify(dir, ":h")
+			end
+			-- Check VIRTUAL_ENV (set by venv-selector)
+			local venv = os.getenv("VIRTUAL_ENV")
+			if venv then
+				local python_path = venv .. "/bin/python"
+				if vim.fn.executable(python_path) == 1 then
+					return python_path
+				end
+			end
+			-- Fallback to system Python
+			return vim.fn.exepath("python3") or vim.fn.exepath("python") or "python"
+		end
+
+		-- Your server configs (kept as-is, but we'll feed them into vim.lsp.config)
 		local servers = {
 			pyright = {
+				-- Find project root by looking for pyproject.toml, .venv, or .git
+				root_dir = function(bufnr, on_dir)
+					local fname = vim.api.nvim_buf_get_name(bufnr)
+					local root = vim.fs.root(bufnr, { "pyproject.toml", ".venv", "venv", ".git" })
+					on_dir(root or vim.fn.fnamemodify(fname, ":h"))
+				end,
+				on_init = function(client)
+					-- Set Python path based on project venv
+					local root = client.config.root_dir or vim.fn.getcwd()
+					local python_path = find_python_path(root)
+					client.config.settings = client.config.settings or {}
+					client.config.settings.python = client.config.settings.python or {}
+					client.config.settings.python.pythonPath = python_path
+				end,
 				settings = {
 					python = {
 						analysis = {
