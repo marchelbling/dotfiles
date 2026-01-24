@@ -40,6 +40,24 @@ For example, git signing is done using [SSH key signing](https://blog.1password.
 
 ## New machine setup
 
-1. install [`brew`](https://brew.sh/)
-2. install `brew` formulas, casks and apps: `brew bundle`
-3. deploy configuration: `chezmoi cd && chezmoi apply`
+1. Install [mise](https://mise.jdx.dev/):
+   ```bash
+   curl https://mise.run | sh
+   ```
+    If an on Mac, install Homebrew:
+    ```
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    ```
+2. Add mise to your shell (temporary, will be configured properly by chezmoi):
+   ```bash
+   export PATH="$HOME/.local/bin:$PATH"
+   eval "$(mise activate bash)"  # or zsh
+   ```
+3. Install chezmoi via mise:
+   ```bash
+   mise use -g chezmoi
+   ```
+4. Initialize and apply dotfiles:
+   ```bash
+   chezmoi init --apply marchelbling
+   ```

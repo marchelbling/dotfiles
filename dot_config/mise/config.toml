@@ -1,4 +1,5 @@
 [tools]
+chezmoi = "latest"
 atuin = "latest"
 duckdb = "latest"
 fd = "latest"
