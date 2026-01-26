@@ -15,9 +15,7 @@ module.exports = {
     {
       // Open urls in Google Chrome
       match: [
-        "https://console.cloud.google.com/*", // match GCP
-        "https://*.datadoghq.com/*", // match Datadog
-        "https://*notion.so/*", // match notion
+          "meet.google.com/*"
       ],
       browser: "Google Chrome"
     }
