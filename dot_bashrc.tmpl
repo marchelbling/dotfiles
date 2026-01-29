@@ -1,0 +1,50 @@
+#### Common shell configuration
+source "${HOME}/.shell_common"
+
+#### Prompt
+source "${HOME}/.bash/theme.bash"
+
+#### HISTORY (bash-specific options)
+HISTFILE=~/.bash_history
+HISTCONTROL=ignoredups:erasedups:ignorespace
+shopt -s histappend
+# Append to history after each command
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND; }history -a"
+
+#### fzf
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+#### Autocompletion
+# Bash completion (macOS with Homebrew)
+if type brew &>/dev/null; then
+    HOMEBREW_PREFIX="$(brew --prefix)"
+    if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
+        source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+    else
+        for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
+            [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
+        done
+    fi
+fi
+
+# kubectl completion
+if which kubectl >/dev/null 2>&1; then
+    source <(kubectl completion bash)
+fi
+
+#### Navigation
+# Emacs-style line editing
+set -o emacs
+# Ctrl+U: kill line backward (like zsh)
+bind '"\C-u": backward-kill-line'
+
+#### Tool activations
+if [ -x ~/.local/bin/mise ]; then
+    eval "$(~/.local/bin/mise activate bash)"
+fi
+
+if which atuin >/dev/null 2>&1; then
+    eval "$(atuin init bash)"
+    # Ctrl+R for atuin search
+    bind '"\C-r": "\C-a hstr -- $READLINE_LINE\C-m"' 2>/dev/null || true
+fi
