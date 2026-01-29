@@ -1,45 +1,27 @@
-#### PATH
-export PATH=/usr/local/bin:/usr/local/sbin:"${HOME}/.local/bin":/opt/homebrew/bin:/opt/homebrew/sbin:"${PATH}"
-export LC_ALL=en_US.UTF-8
+#### Common shell configuration
+source "${HOME}/.shell_common"
 
-#### SHORTCUTS
-alias ls='ls -F'
-alias depends='otool -L'
-alias igt='git'
-alias gti='git'
-alias gigt='git'
-alias gitg='git'
-
-# prompt
+#### Prompt
 source "${HOME}/.zsh/theme.zsh"
 
-if [ -f "${HOME}/.work_profile" ]
-then
-    . "${HOME}/.work_profile"
-fi
-
-#### HISTORY (from https://github.com/mrzool/bash-sensible/blob/master/sensible.bash)
-# revision: https://registerspill.thorstenball.com/p/which-command-did-you-run-1731-days
-# Huge history. Doesn't appear to slow things down, so why not?
-HISTSIZE=100000
-SAVEHIST=100000
-HISTFILESIZE=100000
+#### HISTORY (zsh-specific options)
 HISTFILE=~/.zsh_history
-setopt inc_append_history # immediately append to history file
-setopt extended_history # record timestamp
-setopt hist_expire_dups_first # expire dup entries first upon trimming history
+setopt inc_append_history       # immediately append to history file
+setopt extended_history         # record timestamp
+setopt hist_expire_dups_first   # expire dup entries first upon trimming history
 setopt hist_ignore_dups
 setopt hist_ignore_all_dups
 setopt hist_find_no_dups
-setopt hist_ignore_space # don't record entry starting with a space
+setopt hist_ignore_space        # don't record entry starting with a space
 setopt hist_reduce_blanks
 setopt hist_save_no_dups
 setopt share_history
 unsetopt hist_verify
 
+#### fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-## Autocompletion
+#### Autocompletion
 # see https://docs.brew.sh/Shell-Completion#configuring-completions-in-zsh
 if type brew &>/dev/null
 then
@@ -52,12 +34,12 @@ fi
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
+# kubectl completion
 if which kubectl >/dev/null 2>&1; then
     source <(kubectl completion zsh)
 fi
 
-
-# navigation
+#### Navigation
 ## line
 # * https://stackoverflow.com/a/1438523/626278
 autoload -U select-word-style
@@ -66,50 +48,16 @@ select-word-style bash
 bindkey -e
 bindkey \^u backward-kill-line
 
-function k8s_detach {
-    kubectl config unset current-context
-}
-
-# change bat theme
-export BAT_THEME="Nord"
-
-function docker_clean {
-    docker rm $( docker ps -q -f status=exited )
-    docker rmi $( docker images -f "dangling=true" -q )
-}
-
-function uuid4 {
-    uuidgen | tr -d '-'  | tr '[:upper:]' '[:lower:]'
-}
-
-function ts {
-    gdate -u +'%s'
-}
-
-function urldecode {
-    python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.argv[1]))" "$1"
-}
-
-function urlencode {
-    python3 -c "import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))" "$1"
-}
-
+#### Tool activations
 if [ -x ~/.local/bin/mise ]; then
     eval "$(~/.local/bin/mise activate zsh)"
 fi
 
 if which atuin >/dev/null 2>&1; then
-    # source "$HOME/.atuin/bin/env"
     eval "$(atuin init zsh)"
 
     bindkey '^r' atuin-search
     # bind to the up key, which depends on terminal mode:
     bindkey '^[[A' atuin-up-search
     bindkey '^[OA' atuin-up-search
-fi
-export PATH="$(go env GOPATH)/bin":"${PATH}"
-export EDITOR="$( which nvim )"
-
-if [ -x ~/lmstudio/bin/lms ]; then
-    export PATH="$PATH:/Users/marchelbling/.lmstudio/bin"
 fi

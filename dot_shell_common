@@ -1,0 +1,60 @@
+#### PATH
+export PATH=/usr/local/bin:/usr/local/sbin:"${HOME}/.local/bin":/opt/homebrew/bin:/opt/homebrew/sbin:"${PATH}"
+export LC_ALL=en_US.UTF-8
+
+#### SHORTCUTS
+alias ls='ls -F'
+alias depends='otool -L'
+alias igt='git'
+alias gti='git'
+alias gigt='git'
+alias gitg='git'
+
+if [ -f "${HOME}/.work_profile" ]
+then
+    . "${HOME}/.work_profile"
+fi
+
+#### HISTORY
+# Huge history. Doesn't appear to slow things down, so why not?
+HISTSIZE=100000
+SAVEHIST=100000
+HISTFILESIZE=100000
+
+#### FUNCTIONS
+
+function k8s_detach {
+    kubectl config unset current-context
+}
+
+# change bat theme
+export BAT_THEME="Nord"
+
+function docker_clean {
+    docker rm $( docker ps -q -f status=exited )
+    docker rmi $( docker images -f "dangling=true" -q )
+}
+
+function uuid4 {
+    uuidgen | tr -d '-'  | tr '[:upper:]' '[:lower:]'
+}
+
+function ts {
+    gdate -u +'%s'
+}
+
+function urldecode {
+    python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.argv[1]))" "$1"
+}
+
+function urlencode {
+    python3 -c "import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))" "$1"
+}
+
+#### GO & EDITOR
+export PATH="$(go env GOPATH 2>/dev/null)/bin":"${PATH}"
+export EDITOR="$( which nvim 2>/dev/null || which vim 2>/dev/null )"
+
+if [ -x ~/lmstudio/bin/lms ]; then
+    export PATH="$PATH:${HOME}/.lmstudio/bin"
+fi
