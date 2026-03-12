@@ -19,8 +19,17 @@ return {
 				lua = {
 					require("formatter.filetypes.lua").stylua,
 				},
-				js = {
+				javascript = {
 					require("formatter.filetypes.javascript").prettier,
+				},
+				javascriptreact = {
+					require("formatter.filetypes.javascript").prettier,
+				},
+				typescript = {
+					require("formatter.filetypes.typescript").prettier,
+				},
+				typescriptreact = {
+					require("formatter.filetypes.typescript").prettier,
 				},
 				python = {
 					function()

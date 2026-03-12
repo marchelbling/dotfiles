@@ -4,40 +4,7 @@ return {
 		"RRethy/vim-illuminate",
 	},
 	config = function()
-		-- helper function for mappings (buffer-local)
-		local m = function(bufnr, mode, key, rhs)
-			vim.keymap.set(mode, key, rhs, { buffer = bufnr, noremap = true, silent = true })
-		end
-
-		-- function to attach completion when setting up lsp
-		local on_attach = function(client, bufnr)
-			-- Mappings.
-			m(bufnr, "n", "ga", vim.lsp.buf.code_action)
-			m(bufnr, "n", "gD", vim.lsp.buf.declaration)
-			m(bufnr, "n", "gd", vim.lsp.buf.definition)
-
-			-- These used to be vim.lsp.diagnostic.* (deprecated). Use vim.diagnostic.*
-			m(bufnr, "n", "ge", vim.diagnostic.goto_next)
-			m(bufnr, "n", "gE", vim.diagnostic.goto_prev)
-			m(bufnr, "n", "gl", vim.diagnostic.open_float)
-
-			m(bufnr, "n", "gi", vim.lsp.buf.implementation)
-			m(bufnr, "n", "gr", vim.lsp.buf.references)
-			m(bufnr, "n", "H", vim.lsp.buf.hover)
-			m(bufnr, "i", "<C-k>", vim.lsp.buf.signature_help)
-
-			local has_illuminate, illuminate = pcall(require, "illuminate")
-			if has_illuminate then
-				illuminate.on_attach(client)
-			end
-
-			-- delegate formatting to dedicated plugins
-			client.server_capabilities.documentFormattingProvider = false
-			client.server_capabilities.documentRangeFormattingProvider = false
-
-			-- Enable native LSP completion (Neovim 0.11+)
-			vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
-		end
+		local on_attach = require("config.lsp").on_attach
 
 		-- diagnostics
 		vim.diagnostic.config({
@@ -73,7 +40,6 @@ return {
 		local function find_python_path(start_dir)
 			local dir = start_dir
 			while dir and dir ~= "/" do
-				-- Check for .venv or venv
 				for _, venv_name in ipairs({ ".venv", "venv" }) do
 					local python_path = dir .. "/" .. venv_name .. "/bin/python"
 					if vim.fn.executable(python_path) == 1 then
@@ -94,17 +60,14 @@ return {
 			return vim.fn.exepath("python3") or vim.fn.exepath("python") or "python"
 		end
 
-		-- Your server configs (kept as-is, but we'll feed them into vim.lsp.config)
 		local servers = {
 			pyright = {
-				-- Find project root by looking for pyproject.toml, .venv, or .git
 				root_dir = function(bufnr, on_dir)
 					local fname = vim.api.nvim_buf_get_name(bufnr)
 					local root = vim.fs.root(bufnr, { "pyproject.toml", ".venv", "venv", ".git" })
 					on_dir(root or vim.fn.fnamemodify(fname, ":h"))
 				end,
 				on_init = function(client)
-					-- Set Python path based on project venv
 					local root = client.config.root_dir or vim.fn.getcwd()
 					local python_path = find_python_path(root)
 					client.config.settings = client.config.settings or {}
@@ -115,7 +78,7 @@ return {
 					python = {
 						analysis = {
 							autoImportCompletions = true,
-							diagnosticMode = "openFilesOnly", -- "workspace" would diagnose all files
+							diagnosticMode = "openFilesOnly",
 							useLibraryCodeForTypes = true,
 						},
 					},
@@ -135,6 +98,25 @@ return {
 						gofumpt = true,
 						usePlaceholders = true,
 						buildFlags = { "-tags=integration" },
+					},
+				},
+			},
+			vtsls = {
+				settings = {
+					vtsls = { autoUseWorkspaceTsdk = true },
+					typescript = {
+						updateImportsOnFileMove = { enabled = "always" },
+						inlayHints = {
+							parameterNames = { enabled = "literals" },
+							parameterTypes = { enabled = true },
+							variableTypes = { enabled = true },
+							propertyDeclarationTypes = { enabled = true },
+							functionLikeReturnTypes = { enabled = true },
+							enumMemberValues = { enabled = true },
+						},
+					},
+					javascript = {
+						updateImportsOnFileMove = { enabled = "always" },
 					},
 				},
 			},
@@ -164,7 +146,6 @@ return {
 			table.insert(enabled, server)
 		end
 
-		-- Enable them
 		vim.lsp.enable(enabled)
 	end,
 }
