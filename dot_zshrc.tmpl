@@ -61,3 +61,8 @@ if which atuin >/dev/null 2>&1; then
     bindkey '^[[A' atuin-up-search
     bindkey '^[OA' atuin-up-search
 fi
+
+
+if [ -f ~/.work_profile ]; then
+    source ~/.work_profile
+fi
