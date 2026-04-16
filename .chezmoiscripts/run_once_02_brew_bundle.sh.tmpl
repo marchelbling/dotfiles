@@ -1,0 +1,15 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+set -eo pipefail
+
+# Ensure brew is in PATH (Homebrew installer doesn't export it for child processes)
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -x /usr/local/bin/brew ]]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+echo "===> Installing Homebrew packages from Brewfile"
+brew bundle --file="{{ .chezmoi.sourceDir }}/Brewfile"
+{{ end -}}

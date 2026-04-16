@@ -17,7 +17,7 @@ if ! [ -f "/Library/Developer/CommandLineTools/usr/bin/git" ]; then
 fi
 
 # Accept T&Cs
-if /usr/bin/xcrun clang 2>&1 | grep $Q license; then
-  sudo xcodebuild -license
+if /usr/bin/xcrun clang 2>&1 | grep -q license; then
+  sudo xcodebuild -license accept
 fi
 {{ end -}}

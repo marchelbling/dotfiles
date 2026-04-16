@@ -23,5 +23,5 @@ Host personal
 
 Host github.com
   HostName github.com
-  IdentityFile ~/.ssh/github_pro.pub
+  IdentityFile ~/.ssh/{{ if .company }}github_pro{{ else }}github_perso{{ end }}.pub
   IdentitiesOnly yes

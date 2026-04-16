@@ -1,1 +1,1 @@
-{{ onepasswordRead "op://engineering/work_profile/.work_profile" }}
+{{ if lookPath "op" }}{{ onepasswordRead "op://engineering/work_profile/.work_profile" }}{{ end }}

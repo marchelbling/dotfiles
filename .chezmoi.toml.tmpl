@@ -1,5 +1,8 @@
-{{- $company := promptString "company name" -}}
-{{- $email_pro := promptString "email pro" -}}
+{{- $company := promptString "company name (leave empty for personal machine)" -}}
+{{- $email_pro := "" -}}
+{{- if $company -}}
+{{-   $email_pro = promptString "email pro" -}}
+{{- end -}}
 [data]
     company = "{{ $company }}"
     email_pro = "{{ $email_pro }}"

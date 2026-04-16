@@ -1,3 +1,7 @@
 README.md
 chezmoi.toml
 install
+{{ if not .company }}
+.gitconfig.work
+.work_profile
+{{ end }}
