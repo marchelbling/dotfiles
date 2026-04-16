@@ -28,7 +28,11 @@ MacOS tools are managed via [Homebrew](https://brew.sh/). We rely on the bundle 
 Passwords, secrets, SSH keys are managed with [1password](https://1password.com/).
 For example, git signing is done using [SSH key signing](https://blog.1password.com/git-commit-signing/).
 
-1password CLI needs to be installed before initializing chezmoi.
+1password CLI is installed automatically via the Brewfile during `chezmoi init --apply`. Run `eval $(op signin)` before the final `chezmoi apply` to allow secrets to be read.
+
+After installing the 1Password app, two settings must be enabled manually in **Settings → Developer**:
+* **CLI integration**: allows `op` to authenticate via the desktop app (no need for `eval $(op signin)` on subsequent runs)
+* **SSH agent**: allows 1Password to serve SSH keys to the system
 
 
 ## Cheatsheet
@@ -44,20 +48,25 @@ For example, git signing is done using [SSH key signing](https://blog.1password.
    ```bash
    curl https://mise.run | sh
    ```
-    If an on Mac, install Homebrew:
-    ```
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    ```
 2. Add mise to your shell (temporary, will be configured properly by chezmoi):
    ```bash
    export PATH="$HOME/.local/bin:$PATH"
-   eval "$(mise activate bash)"  # or zsh
+   eval "$(mise activate zsh)"  # or bash
    ```
 3. Install chezmoi via mise:
    ```bash
    mise use -g chezmoi
    ```
-4. Initialize and apply dotfiles:
+4. Initialize and apply dotfiles (note that part of the setup will not be final in this stage as we need to install 1password cli):
    ```bash
    chezmoi init --apply marchelbling
    ```
+5. Sign into 1Password CLI (installed in the previous step via Brewfile):
+   ```bash
+   eval $(op signin)
+   ```
+6. Finalize configuration:
+   ```bash
+   chezmoi apply
+   ```
+

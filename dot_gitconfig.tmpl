@@ -1,10 +1,12 @@
 [user]
     name = Marc Helbling
     email = "marc.d.helbling@gmail.com"
-    signingkey = {{ onepasswordRead "op://bv2opaaxbhpe7ztv6ym5mix4um/oigwwx6xsoxvirazkkqu73fmse/public key" }} # see 'op://Private/Github perso (signing key)/public key'
+{{ if lookPath "op" }}    signingkey = {{ onepasswordRead "op://bv2opaaxbhpe7ztv6ym5mix4um/oigwwx6xsoxvirazkkqu73fmse/public key" }} # see 'op://Private/Github perso (signing key)/public key'
+{{ end -}}
 
-[includeIf "gitdir:~/Developer/{{ .company }}/"]
+{{ if .company }}[includeIf "gitdir:~/Developer/{{ .company }}/"]
     path = ~/.gitconfig.work
+{{ end -}}
 
 [includeIf "gitdir/i:/Users/"]
   path = ~/.gitconfig.1password.osx
@@ -12,7 +14,7 @@
 [gpg]
     format = ssh
 [commit]
-	gpgsign = true
+	gpgsign = {{ if lookPath "op" }}true{{ else }}false{{ end }}
 [color]
     ui = auto
 [help]
