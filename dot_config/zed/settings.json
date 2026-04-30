@@ -1,0 +1,133 @@
+{
+  "theme": "Nord",
+  "buffer_font_family": "AnonymicePro Nerd Font",
+  "buffer_font_fallbacks": ["Anonymice Nerd Font", "Anonymous Pro"],
+  "buffer_font_size": 14,
+  "ui_font_family": "AnonymicePro Nerd Font",
+  "ui_font_fallbacks": ["Anonymice Nerd Font"],
+  "terminal": {
+    "font_family": "AnonymicePro Nerd Font"
+  },
+
+  "vim_mode": true,
+  "relative_line_numbers": false,
+  "cursor_blink": false,
+  "scrollbar": { "show": "auto" },
+  "scroll_beyond_last_line": "one_page",
+  "vertical_scroll_margin": 5,
+
+  "preferred_line_length": 100,
+  "show_wrap_guides": true,
+  "wrap_guides": [100],
+  "soft_wrap": "none",
+  "tab_size": 4,
+  "hard_tabs": false,
+  "ensure_final_newline_on_save": true,
+  "remove_trailing_whitespace_on_save": false,
+  "selection_highlight": true,
+  "use_autoclose": true,
+  "use_system_path_prompts": true,
+
+  "current_line_highlight": "line",
+  "cursor_shape": "block",
+
+  "format_on_save": "on",
+  "formatter": "language_server",
+
+  "git": {
+    "git_gutter": "tracked_files",
+    "inline_blame": { "enabled": true }
+  },
+
+  "project_panel": {
+    "dock": "left",
+    "default_width": 280,
+    "auto_reveal_entries": true,
+    "folder_icons": true
+  },
+
+  "tabs": {
+    "close_position": "right",
+    "file_icons": true,
+    "git_status": true
+  },
+
+  "inlay_hints": { "enabled": true },
+
+  "languages": {
+    "Python": {
+      "tab_size": 4,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "ruff",
+          "arguments": ["format", "--line-length", "120", "--stdin-filename", "{buffer_path}", "-"]
+        }
+      }
+    },
+    "Go": {
+      "tab_size": 4,
+      "hard_tabs": true,
+      "format_on_save": "on",
+      "formatter": [
+        { "external": { "command": "goimports", "arguments": [] } },
+        { "external": { "command": "gofumpt", "arguments": [] } }
+      ]
+    },
+    "JavaScript": { "formatter": "prettier", "format_on_save": "on" },
+    "TypeScript": { "formatter": "prettier", "format_on_save": "on" },
+    "TSX": { "formatter": "prettier", "format_on_save": "on" },
+    "JSX": { "formatter": "prettier", "format_on_save": "on" },
+    "Lua": {
+      "format_on_save": "on",
+      "formatter": { "external": { "command": "stylua", "arguments": ["-"] } }
+    }
+  },
+
+  "lsp": {
+    "pyright": {
+      "settings": {
+        "python": {
+          "analysis": {
+            "autoImportCompletions": true,
+            "diagnosticMode": "openFilesOnly",
+            "useLibraryCodeForTypes": true
+          }
+        }
+      }
+    },
+    "gopls": {
+      "initialization_options": {
+        "codelenses": { "test": true, "tidy": true, "vendor": true },
+        "gofumpt": true,
+        "usePlaceholders": true,
+        "buildFlags": ["-tags=integration"]
+      }
+    },
+    "vtsls": {
+      "settings": {
+        "vtsls": { "autoUseWorkspaceTsdk": true },
+        "typescript": {
+          "updateImportsOnFileMove": { "enabled": "always" },
+          "inlayHints": {
+            "parameterNames": { "enabled": "literals" },
+            "parameterTypes": { "enabled": true },
+            "variableTypes": { "enabled": true },
+            "propertyDeclarationTypes": { "enabled": true },
+            "functionLikeReturnTypes": { "enabled": true },
+            "enumMemberValues": { "enabled": true }
+          }
+        },
+        "javascript": {
+          "updateImportsOnFileMove": { "enabled": "always" }
+        }
+      }
+    }
+  },
+
+  "agent": {
+    "default_model": { "provider": "anthropic", "model": "claude-opus-4-7" },
+    "dock": "right",
+    "default_width": 480
+  }
+}

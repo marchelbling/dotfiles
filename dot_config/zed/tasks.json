@@ -1,0 +1,27 @@
+[
+  {
+    "label": "golangci-lint",
+    "command": "golangci-lint run ./...",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always"
+  },
+  {
+    "label": "actionlint",
+    "command": "actionlint",
+    "use_new_terminal": false,
+    "reveal": "always"
+  },
+  {
+    "label": "uv sync",
+    "command": "uv sync",
+    "use_new_terminal": false,
+    "reveal": "always"
+  },
+  {
+    "label": "poetry install",
+    "command": "poetry install",
+    "use_new_terminal": false,
+    "reveal": "always"
+  }
+]
