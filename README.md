@@ -53,19 +53,20 @@ After installing the 1Password app, two settings must be enabled manually in **S
    export PATH="$HOME/.local/bin:$PATH"
    eval "$(mise activate zsh)"  # or bash
    ```
-3. Install chezmoi via mise:
+3. Install the 1password application; ⚠️ **ensure to activate the CLI and setup the SSH agent** as without it, `chezmoi init` will fail
+4. Install chezmoi via mise:
    ```bash
    mise use -g chezmoi
    ```
-4. Initialize and apply dotfiles (note that part of the setup will not be final in this stage as we need to install 1password cli):
+5. Initialize and apply dotfiles (note that part of the setup will not be final in this stage as we need to install 1password cli):
    ```bash
    chezmoi init --apply marchelbling
    ```
-5. Sign into 1Password CLI (installed in the previous step via Brewfile):
+6. Sign into 1Password CLI (installed in the previous step via Brewfile):
    ```bash
    eval $(op signin)
    ```
-6. Finalize configuration:
+7. Finalize configuration:
    ```bash
    chezmoi apply
    ```
