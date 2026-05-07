@@ -62,7 +62,10 @@ if which atuin >/dev/null 2>&1; then
     bindkey '^[OA' atuin-up-search
 fi
 
-
-if [ -f ~/.work_profile ]; then
-    source ~/.work_profile
+if which docker >/dev/null 2>&1; then
+    fpath=(/Users/marc/.docker/completions $fpath)
+    autoload -Uz compinit
+    compinit
 fi
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
