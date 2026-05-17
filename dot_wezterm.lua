@@ -29,16 +29,21 @@ return {
 		{ key = "Enter", mods = "ALT", action = wezterm.action.ToggleFullScreen },
 
 		-- pane navigation (bind on cltr+shift to avoid conflicts with common editing actions
-		{ key = "t", mods = "CTRL|SHIFT", action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
-		{ key = "x", mods = "CTRL|SHIFT", action = wezterm.action.CloseCurrentPane({ confirm = true }) },
-		{ key = "w", mods = "CTRL|SHIFT", action = wezterm.action.ActivatePaneDirection("Next") },
+		{ mods = "CTRL|SHIFT", key = "h", action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }) },
+		{ mods = "CTRL|SHIFT", key = "v", action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+		{ mods = "CTRL|SHIFT", key = "x", action = wezterm.action.CloseCurrentPane({ confirm = true }) },
+		{ mods = "CTRL|SHIFT", key = "w", action = wezterm.action.ActivatePaneDirection("Next") },
+		{ mods = "CTRL|SHIFT", key = "LeftArrow", action = wezterm.action.AdjustPaneSize({ "Left", 5 }) },
+		{ mods = "CTRL|SHIFT", key = "RightArrow", action = wezterm.action.AdjustPaneSize({ "Right", 5 }) },
+		{ mods = "CTRL|SHIFT", key = "UpArrow", action = wezterm.action.AdjustPaneSize({ "Up", 3 }) },
+		{ mods = "CTRL|SHIFT", key = "DownArrow", action = wezterm.action.AdjustPaneSize({ "Down", 3 }) },
 
 		-- "standard" app shortcuts based on cmd key
-		{ key = "-", mods = "SUPER", action = wezterm.action.DecreaseFontSize },
-		{ key = "+", mods = "SUPER", action = wezterm.action.IncreaseFontSize },
-		{ key = "q", mods = "SUPER", action = wezterm.action.QuitApplication },
-		{ key = "c", mods = "SUPER", action = wezterm.action.CopyTo("Clipboard") },
-		{ key = "v", mods = "SUPER", action = wezterm.action.PasteFrom("Clipboard") },
+		{ mods = "SUPER", key = "-", action = wezterm.action.DecreaseFontSize },
+		{ mods = "SUPER", key = "+", action = wezterm.action.IncreaseFontSize },
+		{ mods = "SUPER", key = "q", action = wezterm.action.QuitApplication },
+		{ mods = "SUPER", key = "c", action = wezterm.action.CopyTo("Clipboard") },
+		{ mods = "SUPER", key = "v", action = wezterm.action.PasteFrom("Clipboard") },
 
 		{ key = "L", mods = "SHIFT|CTRL", action = wezterm.action.ShowDebugOverlay },
 		{ key = "f", mods = "SUPER", action = wezterm.action.Search("CurrentSelectionOrEmptyString") },
