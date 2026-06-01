@@ -69,3 +69,4 @@ if which docker >/dev/null 2>&1; then
 fi
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+alias duckdb="duckdb -cmd \"SET allow_asterisks_in_http_paths=true;\""
