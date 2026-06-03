@@ -46,6 +46,35 @@ function urlencode {
     python3 -c "import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))" "$1"
 }
 
+function show_frontier {
+	local SIZE=${SIZE:-10}
+    local FROM=${FROM:-0}
+	OPENSEARCH_HOST=${OPENSEARCH_HOST:-http://localhost:9200};
+	FILTERS="";
+	if [ "${ERRORS}" = "true" ]; then
+		FILTERS="$FILTERS,{\"term\":{\"status\":\"FETCH_ERROR\"}}";
+	fi;
+	if [ "${RENDERJS}" = "true" ]; then
+		FILTERS="$FILTERS,{\"term\":{\"metadata.renderJS\":\"true\"}}";
+	fi;
+	FILTERS=${FILTERS#,};
+	if [ -n "$FILTERS" ]; then \
+		QUERY="{\"bool\":{\"filter\":[$FILTERS]}}";
+	else
+		QUERY="{\"match_all\":{}}";
+	fi;
+	BODY="{ \
+		\"size\": $SIZE, \
+		\"from\": $FROM, \
+		\"sort\": [{ \"nextFetchDate\": \"desc\" }], \
+		\"_source\": [\"url\", \"status\", \"nextFetchDate\", \"metadata.renderJS\", \"metadata.enableSitemap\", \"metadata.fetch%2EstatusCode\"], \
+		\"query\": $QUERY \
+	}"; \
+	curl -s "$OPENSEARCH_HOST/status/_search?pretty" \
+		-H 'Content-Type: application/json' \
+		-d "$BODY"
+}
+
 function http_code {
     local verbose=0 code
     while [[ $# -gt 0 ]]; do
