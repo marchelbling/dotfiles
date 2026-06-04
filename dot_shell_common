@@ -120,6 +120,11 @@ function http_code {
     fi
 }
 
+function unicode_normalization {
+    local filepath="$1"
+    python3 -c 'import sys,unicodedata as u; s=open(sys.argv[1],encoding="utf-8").read(); print("NFC" if u.is_normalized("NFC",s) else "NFD" if u.is_normalized("NFD",s) else "neither")' "${filepath}"
+}
+
 #### GO & EDITOR
 export PATH="$(go env GOPATH 2>/dev/null)/bin":"${PATH}"
 export EDITOR="$( which nvim 2>/dev/null || which vim 2>/dev/null )"
