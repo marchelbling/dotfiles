@@ -12,6 +12,24 @@ return {
         ]])
 
 		local util = require("formatter.util")
+
+		local warned = {}
+		local function if_exe(exe, spec)
+			if vim.fn.executable(exe) == 1 then
+				return spec
+			end
+			if not warned[exe] then
+				warned[exe] = true
+				vim.schedule(function()
+					vim.notify(
+						("formatter: `%s` not found in $PATH — skipping. Run `mise install`."):format(exe),
+						vim.log.levels.WARN,
+						{ title = "formatter.nvim" }
+					)
+				end)
+			end
+			return nil
+		end
 		require("formatter").setup({
 			logging = true,
 			log_level = vim.log.levels.WARN,
@@ -47,23 +65,11 @@ return {
 					end,
 				},
 				go = {
-					-- goimports:
 					function()
-						return {
-							exe = "goimports",
-							stdin = true,
-							-- , args = {
-							--     "-local",
-							--     "github.com/la-tournee/refill"
-							-- }
-						}
+						return if_exe("goimports", { exe = "goimports", stdin = true })
 					end,
-					-- gofumpt:
 					function()
-						return {
-							exe = "gofumpt",
-							stdin = true,
-						}
+						return if_exe("gofumpt", { exe = "gofumpt", stdin = true })
 					end,
 				},
 			},
