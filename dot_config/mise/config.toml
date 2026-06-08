@@ -11,6 +11,7 @@ go = "1.25"
 "go:golang.org/x/tools/cmd/goimports" = "latest"
 "go:mvdan.cc/gofumpt" = "latest"
 golangci-lint = "latest"
+java = "21"          # runtime for the jdtls language server (needs >=21); projects pin their own java in .mise.toml
 jq = "latest"
 k9s = "latest"
 kubectl = "latest"
