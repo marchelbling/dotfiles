@@ -115,3 +115,7 @@ require("lazy").setup("plugins")
 
 -- activate native autocompletion
 require("config.completion")
+
+-- toggle comment on current line / visual selection via builtin commenting (Neovim 0.10+)
+vim.keymap.set("n", "<leader>c", "gcc", { remap = true, silent = true })
+vim.keymap.set("x", "<leader>c", "gc", { remap = true, silent = true })
