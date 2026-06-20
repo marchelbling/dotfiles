@@ -1,8 +1,5 @@
 return {
 	"neovim/nvim-lspconfig",
-	dependencies = {
-		"RRethy/vim-illuminate",
-	},
 	config = function()
 		local on_attach = require("config.lsp").on_attach
 
