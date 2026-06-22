@@ -71,3 +71,21 @@ After installing the 1Password app, two settings must be enabled manually in **S
    chezmoi apply
    ```
 
+
+## Neovim
+
+Keymaps are documented in [`dot_config/nvim/KEYMAPS.md`](dot_config/nvim/KEYMAPS.md).
+That file is **generated**, not hand-written: inside Neovim run
+
+```vim
+:KeymapsDoc
+```
+
+to regenerate it from the live mappings (defined in [`lua/config/keymaps_doc.lua`](dot_config/nvim/lua/config/keymaps_doc.lua)).
+Run it from a code buffer with your LSP attached so buffer-local LSP maps are captured.
+Then persist the result into this repo:
+
+```bash
+chezmoi re-add ~/.config/nvim/KEYMAPS.md
+```
+

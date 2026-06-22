@@ -82,6 +82,7 @@ set.undofile = true
 set.history = 1000
 set.undolevels = 1000
 set.confirm = true -- warn for unsaved changes before exiting
+set.timeoutlen = 500 -- wait 500ms (not 1000) to disambiguate prefix mappings, e.g. <leader>c vs <leader>cs
 
 -- indentation
 set.colorcolumn = { "100" }
@@ -116,6 +117,9 @@ require("lazy").setup("plugins")
 -- activate native autocompletion
 require("config.completion")
 
+-- :KeymapsDoc command to (re)generate KEYMAPS.md from live mappings
+require("config.keymaps_doc")
+
 -- toggle comment on current line / visual selection via builtin commenting (Neovim 0.10+)
-vim.keymap.set("n", "<leader>c", "gcc", { remap = true, silent = true })
-vim.keymap.set("x", "<leader>c", "gc", { remap = true, silent = true })
+vim.keymap.set("n", "<leader>c", "gcc", { remap = true, silent = true, desc = "Toggle comment (line)" })
+vim.keymap.set("x", "<leader>c", "gc", { remap = true, silent = true, desc = "Toggle comment (selection)" })

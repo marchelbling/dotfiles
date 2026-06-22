@@ -4,6 +4,6 @@ return {
 	config = function()
 		require("nvim-tree").setup()
 
-		vim.keymap.set("n", "t", "<cmd>NvimTreeToggle<cr>")
+		vim.keymap.set("n", "t", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle file tree" })
 	end,
 }

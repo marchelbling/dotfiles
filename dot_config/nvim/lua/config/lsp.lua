@@ -2,20 +2,20 @@
 local M = {}
 
 M.on_attach = function(client, bufnr)
-	local m = function(mode, key, rhs)
-		vim.keymap.set(mode, key, rhs, { buffer = bufnr, noremap = true, silent = true })
+	local m = function(mode, key, rhs, desc)
+		vim.keymap.set(mode, key, rhs, { buffer = bufnr, noremap = true, silent = true, desc = desc })
 	end
 
-	m("n", "ga", vim.lsp.buf.code_action)
-	m("n", "gD", vim.lsp.buf.declaration)
-	m("n", "gd", vim.lsp.buf.definition)
-	m("n", "ge", vim.diagnostic.goto_next)
-	m("n", "gE", vim.diagnostic.goto_prev)
-	m("n", "gl", vim.diagnostic.open_float)
-	m("n", "gi", vim.lsp.buf.implementation)
-	m("n", "gr", vim.lsp.buf.references)
-	m("n", "H", vim.lsp.buf.hover)
-	m("i", "<C-k>", vim.lsp.buf.signature_help)
+	m("n", "ga", vim.lsp.buf.code_action, "LSP code action")
+	m("n", "gD", vim.lsp.buf.declaration, "LSP go to declaration")
+	m("n", "gd", vim.lsp.buf.definition, "LSP go to definition")
+	m("n", "ge", vim.diagnostic.goto_next, "Next diagnostic")
+	m("n", "gE", vim.diagnostic.goto_prev, "Previous diagnostic")
+	m("n", "gl", vim.diagnostic.open_float, "Open diagnostic float")
+	m("n", "gi", vim.lsp.buf.implementation, "LSP go to implementation")
+	m("n", "gr", vim.lsp.buf.references, "LSP references")
+	m("n", "H", vim.lsp.buf.hover, "LSP hover docs")
+	m("i", "<C-k>", vim.lsp.buf.signature_help, "LSP signature help")
 
 	-- Highlight references of the symbol under the cursor (native, Neovim 0.11+).
 	-- Debounced on CursorMoved so it feels immediate (independent of 'updatetime').
