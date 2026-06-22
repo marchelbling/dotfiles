@@ -30,6 +30,38 @@ return {
 			end
 			return nil
 		end
+
+		-- find a project marker by walking up from the current buffer's file
+		local function find_upward(names)
+			local file = vim.api.nvim_buf_get_name(0)
+			local from = (file ~= "" and file) or vim.uv.cwd()
+			return vim.fs.find(names, { upward = true, path = from })[1]
+		end
+
+		-- true when the project configures ruff itself (so we must not override it)
+		local function project_has_ruff_config()
+			if find_upward({ "ruff.toml", ".ruff.toml" }) then
+				return true
+			end
+			local pyproject = find_upward({ "pyproject.toml" })
+			return pyproject ~= nil and table.concat(vim.fn.readfile(pyproject), "\n"):match("%[tool%.ruff") ~= nil
+		end
+
+		-- goimports -local prefix, derived from the nearest go.mod module path
+		local function go_local_prefix()
+			local gomod = find_upward({ "go.mod" })
+			if not gomod then
+				return nil
+			end
+			for _, line in ipairs(vim.fn.readfile(gomod)) do
+				local mod = line:match("^module%s+(%S+)")
+				if mod then
+					return mod
+				end
+			end
+			return nil
+		end
+
 		require("formatter").setup({
 			logging = true,
 			log_level = vim.log.levels.WARN,
@@ -51,22 +83,27 @@ return {
 				},
 				python = {
 					function()
-						return {
-							exe = "ruff",
-							stdin = true,
-							args = {
-								"format",
-								"--line-length",
-								120,
-								"--stdin-filename",
-								util.escape_path(util.get_current_buffer_file_path()),
-							},
+						local args = {
+							"format",
+							"--stdin-filename",
+							util.escape_path(util.get_current_buffer_file_path()),
 						}
+						-- ruff discovers the project config via --stdin-filename; only fall
+						-- back to a default line-length when the project sets none itself
+						if not project_has_ruff_config() then
+							vim.list_extend(args, { "--line-length", "120" })
+						end
+						return { exe = "ruff", stdin = true, args = args }
 					end,
 				},
 				go = {
 					function()
-						return if_exe("goimports", { exe = "goimports", stdin = true })
+						local args = {}
+						local prefix = go_local_prefix()
+						if prefix then
+							args = { "-local", prefix }
+						end
+						return if_exe("goimports", { exe = "goimports", stdin = true, args = args })
 					end,
 					function()
 						return if_exe("gofumpt", { exe = "gofumpt", stdin = true })
