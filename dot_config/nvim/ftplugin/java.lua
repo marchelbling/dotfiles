@@ -41,7 +41,17 @@ end
 local java = mise_java()
 
 jdtls.start_or_attach({
-	cmd = { "jdtls", "--java-executable", java.bin, "-data", workspace_dir },
+	-- Bump the heap: the default jdtls launcher heap is small and OOMs (exit 13)
+	-- on large multi-module projects. G1GC keeps pauses bounded at this size.
+	cmd = {
+		"jdtls",
+		"--java-executable", java.bin,
+		"--jvm-arg=-XX:+UseG1GC",
+		"--jvm-arg=-XX:+UseStringDeduplication",
+		"--jvm-arg=-Xms256m",
+		"--jvm-arg=-Xmx4g",
+		"-data", workspace_dir,
+	},
 
 	root_dir = vim.fs.root(0, { "gradlew", "mvnw", "pom.xml", "build.gradle", ".git" }),
 
