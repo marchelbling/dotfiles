@@ -1,0 +1,160 @@
+{
+  // Preserve existing
+  "window.autoDetectColorScheme": false,
+
+  // --- Theme & appearance (nord-vim + lualine) ---
+  "workbench.colorTheme": "Nord",
+  "workbench.iconTheme": "vs-seti",
+  "workbench.editor.showTabs": "multiple",
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.editor.tabCloseButton": "right",
+  "breadcrumbs.enabled": false,
+  "editor.minimap.enabled": false,
+
+  // --- Editor behavior (init.lua) ---
+  "editor.tabSize": 4,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "editor.rulers": [100],
+  "editor.cursorSurroundingLines": 5,
+  "editor.wordWrap": "on",
+  "editor.renderLineHighlight": "line",
+  "editor.renderWhitespace": "boundary",
+  "editor.renderControlCharacters": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.matchBrackets": "always",
+  "editor.occurrencesHighlight": "singleFile",
+  "editor.glyphMargin": true,
+  "editor.lineNumbers": "on",
+  "editor.smoothScrolling": false,
+  "editor.cursorBlinking": "solid",
+  "editor.find.ignoreCase": true,
+  "editor.find.smartCase": true,
+  "search.smartCase": true,
+  "files.trimTrailingWhitespace": false,
+  "files.autoSave": "off",
+  "window.confirmBeforeClose": "keyboardOnly",
+
+  // --- Completion & LSP (config/completion.lua + lsp.lua) ---
+  "editor.quickSuggestions": {
+    "other": "on",
+    "comments": "off",
+    "strings": "off"
+  },
+  "editor.suggestOnTriggerCharacters": true,
+  "editor.parameterHints.enabled": true,
+  "editor.suggest.preview": true,
+  "editor.acceptSuggestionOnEnter": "smart",
+
+  // --- Format on save (formatter.nvim) ---
+  "editor.formatOnSave": true,
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
+    }
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[go]": {
+    "editor.defaultFormatter": "golang.go",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "[lua]": {
+    "editor.defaultFormatter": "johnnymorganz.stylua"
+  },
+  "go.formatTool": "gofumpt",
+  "go.useLanguageServer": true,
+  "ruff.lineLength": 120,
+
+  // --- Git gutter (gitgutter) ---
+  "scm.diffDecorations": "all",
+  "git.decorations.enabled": true,
+
+  // --- Vim mode (leader = ",", timeoutlen = 500ms) ---
+  "vim.leader": ",",
+  "vim.timeout": 500,
+  "vim.useSystemClipboard": true,
+  "vim.hlsearch": true,
+  "vim.incsearch": true,
+  "vim.ignoreSmartcase": false,
+  "vim.smartcase": true,
+  "vim.easymotion": false,
+  "vim.sneak": false,
+  "vim.handleKeys": true,
+
+  "vim.normalModeKeyBindingsNonRecursive": [
+  // Buffer navigation (barbar)
+    { "before": ["<C-h>"], "commands": ["workbench.action.previousEditor"] },
+    { "before": ["<C-l>"], "commands": ["workbench.action.nextEditor"] },
+    { "before": ["<C-x>"], "commands": ["workbench.action.closeActiveEditor"] },
+
+  // Clear search highlight on Enter (init.lua)
+    { "before": ["<CR>"], "commands": [":nohl"] },
+
+  // File tree (nvim-tree)
+    { "before": ["t"], "commands": ["workbench.view.explorer"] },
+
+  // Telescope
+    { "before": ["<leader>", "p"], "commands": ["workbench.action.quickOpen"] },
+    { "before": ["<leader>", "?"], "commands": ["workbench.action.openRecent"] },
+    { "before": ["<leader>", "/"], "commands": ["actions.find"] },
+    { "before": ["<leader>", "s", "b"], "commands": ["workbench.action.showAllEditors"] },
+    { "before": ["K"], "commands": ["workbench.action.quickTextSearch"] },
+    { "before": ["<leader>", "K"], "commands": ["workbench.action.quickTextSearch"] },
+    {
+      "before": ["<leader>", "k"],
+      "after": ["*"],
+      "commands": ["workbench.action.findInFiles"]
+    },
+
+  // Comments (init.lua leader-c)
+    { "before": ["<leader>", "c"], "commands": ["editor.action.commentLine"] },
+
+  // Trouble → Problems / outline / references
+    { "before": ["<leader>", "x", "x"], "commands": ["workbench.actions.view.problems"] },
+    { "before": ["<leader>", "x", "X"], "commands": ["workbench.actions.view.problems"] },
+    { "before": ["<leader>", "c", "s"], "commands": ["outline.focus"] },
+    { "before": ["<leader>", "c", "l"], "commands": ["editor.action.goToReferences"] },
+    { "before": ["<leader>", "x", "L"], "commands": ["workbench.actions.view.problems"] },
+    { "before": ["<leader>", "x", "Q"], "commands": ["workbench.actions.view.problems"] },
+
+  // LSP navigation (config/lsp.lua)
+    { "before": ["g", "e"], "commands": ["editor.action.marker.nextInFiles"] },
+    { "before": ["g", "E"], "commands": ["editor.action.marker.prevInFiles"] },
+    { "before": ["g", "l"], "commands": ["editor.action.marker.this"] },
+    { "before": ["]", "d"], "commands": ["editor.action.marker.nextInFiles"] },
+    { "before": ["[", "d"], "commands": ["editor.action.marker.prevInFiles"] },
+    { "before": ["]", "D"], "commands": ["editor.action.marker.nextInFiles"] },
+    { "before": ["[", "D"], "commands": ["editor.action.marker.prevInFiles"] }
+  ],
+
+  "vim.visualModeKeyBindingsNonRecursive": [
+    { "before": ["<leader>", "c"], "commands": ["editor.action.commentLine"] },
+    {
+      "before": ["<leader>", "k"],
+      "commands": ["workbench.action.findInFiles"]
+    }
+  ],
+
+  "vim.insertModeKeyBindings": [
+    { "before": ["<C-h>"], "commands": ["workbench.action.previousEditor"] },
+    { "before": ["<C-l>"], "commands": ["workbench.action.nextEditor"] },
+    { "before": ["<C-Space>"], "commands": ["editor.action.triggerSuggest"] }
+],
+"workbench.editor.tabActionLocation": "right"
+}
