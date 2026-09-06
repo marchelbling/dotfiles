@@ -19,8 +19,6 @@
 | `,_p` | `<Plug>TComment_,_p` |
 | `,_r` | `<Plug>TComment_,_r` |
 | `,_s` | `<Plug>TComment_,_s` |
-| `,aa` | Toggle CodeCompanion chat |
-| `,ap` | CodeCompanion actions |
 | `,c` | Toggle comment (line) |
 | `,ca` | Add file to Claude context |
 | `,cc` | Toggle Claude |
@@ -56,11 +54,11 @@
 | `<S-Right>` | `:wincmd l<CR>` |
 | `<S-Up>` | `:wincmd k<CR>` |
 | `[ ` | Add empty line above cursor |
-| `[d` | Jump to the previous diagnostic in the current buffer |
 | `[D` | Jump to the first diagnostic in the current buffer |
+| `[d` | Jump to the previous diagnostic in the current buffer |
 | `] ` | Add empty line below cursor |
-| `]d` | Jump to the next diagnostic in the current buffer |
 | `]D` | Jump to the last diagnostic in the current buffer |
+| `]d` | Jump to the next diagnostic in the current buffer |
 | `go` | Append range to OpenCode |
 | `gO` | vim.lsp.buf.document_symbol() |
 | `goo` | Append line to OpenCode |
@@ -98,9 +96,6 @@
 | `,_p` | `<Plug>TComment_,_p` |
 | `,_r` | `<Plug>TComment_,_r` |
 | `,_s` | `<Plug>TComment_,_s` |
-| `,aa` | Toggle CodeCompanion chat |
-| `,ac` | Add selection to CodeCompanion chat |
-| `,ap` | CodeCompanion actions |
 | `,c` | Toggle comment (selection) |
 | `,cs` | Send selection to Claude |
 | `,hs` | `<Plug>(GitGutterStageHunk)` |
@@ -131,9 +126,6 @@
 | `,_p` | `<Plug>TComment_,_p` |
 | `,_r` | `<Plug>TComment_,_r` |
 | `,_s` | `<Plug>TComment_,_s` |
-| `,aa` | Toggle CodeCompanion chat |
-| `,ac` | Add selection to CodeCompanion chat |
-| `,ap` | CodeCompanion actions |
 | `,c` | Toggle comment (selection) |
 | `,cs` | Send selection to Claude |
 | `,hs` | `<Plug>(GitGutterStageHunk)` |

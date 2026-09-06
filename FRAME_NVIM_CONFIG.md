@@ -80,7 +80,7 @@
 - **diffview.nvim** is the standard for visual diff review and merge conflict resolution
 - **neotest** is the standard test runner integration (40+ language adapters)
 - AI tooling has split into two layers: inline ghost text (copilot.lua, supermaven) + chat/agent
-  (claudecode, avante, codecompanion); the config has the agent layer but not inline completion
+  (claudecode, avante); the config has the agent layer but not inline completion
 
 ---
 
