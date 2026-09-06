@@ -1,36 +1,60 @@
+[tool_alias]
+benchstat = "go:golang.org/x/perf/cmd/benchstat"
+goimports = "go:golang.org/x/tools/cmd/goimports"
+gofumpt = "go:mvdan.cc/gofumpt"
+lightpanda = "github:lightpanda-io/browser"
+obscura = "github:h4ckf0r0day/obscura" 
+pyright = "npm:pyright"
+vtsls = "npm:@vtsls/language-server"
+
+
 [tools]
 bat = "latest"
 chezmoi = "latest"
 claude = "latest"
 atuin = "latest"
+databricks-cli = "latest"
 duckdb = "latest"
 fd = "latest"
 fzf = "latest"
 gcloud = "latest"
 gh = "latest"
 git-lfs = "latest"
-go = "1.25"
-"go:golang.org/x/tools/cmd/goimports" = "latest"
-"go:mvdan.cc/gofumpt" = "latest"
-golangci-lint = "latest"
+helm = "latest"
 java = "21"          # runtime for the jdtls language server (needs >=21); projects pin their own java in .mise.toml
 jq = "latest"
 k9s = "latest"
 kubectl = "latest"
 kubectx = "latest"
+lightpanda = "0.3.6"
 neovim = "latest"
-node = "latest"
-npm = "latest"
-"npm:pyright" = "latest"
-"npm:@vtsls/language-server" = "latest"
+obscura = "0.1.10"
 opencode = "latest"
-python = "3.11"
 redis = "latest"
 rg = "latest"
+stylua = "latest"
+taplo = "latest"  # TOML LSP + formatter (Cargo.toml)
+terraform = "latest"
+
+### Go
+benchstat = "latest"
+go = "1.25"
+gofumpt = "latest"
+goimports = "latest"
+golangci-lint = "latest"
+
+### Javascript
+node = "latest"
+npm = "latest"
+vtsls = "latest"
+
+### Python
+pyright = "latest"
+python = "3.11"
+uv = "latest"
+
+### Rust
 # rustup under the hood; projects pinning a rust-toolchain.toml still win.
 # rust-src is required for rust-analyzer to resolve/navigate std.
 rust = { version = "1.98", components = ["rust-src", "clippy", "rustfmt"] }
 rust-analyzer = "latest"  # standalone binary: mise does not shim the rustup component
-stylua = "latest"
-taplo = "latest"  # TOML LSP + formatter (Cargo.toml)
-uv = "latest"
