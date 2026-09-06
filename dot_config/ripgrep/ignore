@@ -1,0 +1,8 @@
+# Global ignore list for ripgrep (mirrors ~/.agignore, kept in sync by hand).
+# Per-repo overrides belong in that repo's .ignore / .rgignore file.
+build/**
+build-*/**
+CMakeFiles
+node_modules
+target/**
+vendor

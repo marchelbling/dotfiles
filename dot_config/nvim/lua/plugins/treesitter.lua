@@ -21,6 +21,7 @@ return {
 			"regex",
 			"ruby",
 			"rust",
+			"toml",
 			"typescript",
 			"vim",
 			"yaml",

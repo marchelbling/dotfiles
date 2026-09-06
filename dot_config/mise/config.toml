@@ -1,12 +1,14 @@
 [tools]
 bat = "latest"
 chezmoi = "latest"
+claude = "latest"
 atuin = "latest"
 duckdb = "latest"
 fd = "latest"
 fzf = "latest"
 gcloud = "latest"
 gh = "latest"
+git-lfs = "latest"
 go = "1.25"
 "go:golang.org/x/tools/cmd/goimports" = "latest"
 "go:mvdan.cc/gofumpt" = "latest"
@@ -15,6 +17,7 @@ java = "21"          # runtime for the jdtls language server (needs >=21); proje
 jq = "latest"
 k9s = "latest"
 kubectl = "latest"
+kubectx = "latest"
 neovim = "latest"
 node = "latest"
 npm = "latest"
@@ -23,5 +26,10 @@ npm = "latest"
 python = "3.11"
 redis = "latest"
 rg = "latest"
+# rustup under the hood; projects pinning a rust-toolchain.toml still win.
+# rust-src is required for rust-analyzer to resolve/navigate std.
+rust = { version = "1.98", components = ["rust-src", "clippy", "rustfmt"] }
+rust-analyzer = "latest"  # standalone binary: mise does not shim the rustup component
 stylua = "latest"
+taplo = "latest"  # TOML LSP + formatter (Cargo.toml)
 uv = "latest"

@@ -47,6 +47,21 @@ return {
 			return pyproject ~= nil and table.concat(vim.fn.readfile(pyproject), "\n"):match("%[tool%.ruff") ~= nil
 		end
 
+		-- rustfmt defaults to edition 2015 when invoked standalone, which mangles
+		-- modern crates; read the edition from the nearest Cargo.toml instead
+		local function rust_edition()
+			local cargo = find_upward({ "Cargo.toml" })
+			if cargo then
+				for _, line in ipairs(vim.fn.readfile(cargo)) do
+					local edition = line:match('^%s*edition%s*=%s*"(%d+)"')
+					if edition then
+						return edition
+					end
+				end
+			end
+			return "2021"
+		end
+
 		-- goimports -local prefix, derived from the nearest go.mod module path
 		local function go_local_prefix()
 			local gomod = find_upward({ "go.mod" })
@@ -94,6 +109,15 @@ return {
 							vim.list_extend(args, { "--line-length", "120" })
 						end
 						return { exe = "ruff", stdin = true, args = args }
+					end,
+				},
+				rust = {
+					function()
+						return if_exe("rustfmt", {
+							exe = "rustfmt",
+							stdin = true,
+							args = { "--emit=stdout", "--edition", rust_edition() },
+						})
 					end,
 				},
 				go = {

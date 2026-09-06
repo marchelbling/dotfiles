@@ -82,6 +82,21 @@ return {
 				},
 			},
 			clangd = {},
+			rust_analyzer = {
+				settings = {
+					["rust-analyzer"] = {
+						cargo = { allFeatures = true, buildScripts = { enable = true } },
+						-- clippy diagnostics come through the LSP, so no nvim-lint entry is needed
+						check = { command = "clippy", extraArgs = { "--all-targets" } },
+						procMacro = { enable = true },
+						files = { excludeDirs = { "target", ".direnv" } },
+						inlayHints = {
+							parameterHints = { enable = true },
+							typeHints = { enable = true },
+						},
+					},
+				},
+			},
 			gopls = {
 				root_dir = vim.fs.root(0, { "go.work", "go.mod", ".git" }),
 				cmd = { "gopls", "serve" },

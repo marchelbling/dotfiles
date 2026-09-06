@@ -25,6 +25,10 @@ function k8s_detach {
 # change bat theme
 export BAT_THEME="Nord"
 
+# ripgrep only auto-reads .gitignore/.ignore/.rgignore; a global ignore list has
+# to be wired in through a config file (see ~/.config/ripgrep/config)
+export RIPGREP_CONFIG_PATH="${HOME}/.config/ripgrep/config"
+
 function docker_clean {
     docker rm $( docker ps -q -f status=exited )
     docker rmi $( docker images -f "dangling=true" -q )
@@ -125,6 +129,9 @@ function unicode_normalization {
     python3 -c 'import sys,unicodedata as u; s=open(sys.argv[1],encoding="utf-8").read(); print("NFC" if u.is_normalized("NFC",s) else "NFD" if u.is_normalized("NFD",s) else "neither")' "${filepath}"
 }
 
-#### GO & EDITOR
+#### GO, RUST & EDITOR
 export PATH="$(go env GOPATH 2>/dev/null)/bin":"${PATH}"
+# `cargo install` drops binaries here (cargo-nextest, bacon, ...); mise shims the
+# toolchain but not these.
+export PATH="${CARGO_HOME:-${HOME}/.cargo}/bin":"${PATH}"
 export EDITOR="$( which nvim 2>/dev/null || which vim 2>/dev/null )"

@@ -1,0 +1,4 @@
+# ripgrep does not expand `~`, hence the chezmoi-templated absolute path.
+--ignore-file={{ .chezmoi.homeDir }}/.config/ripgrep/ignore
+
+--smart-case
