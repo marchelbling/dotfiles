@@ -1,3 +1,16 @@
+{{/* The VPS address, kept in 1Password beside the key that opens it, because
+     this repo is public. Read it with:
+       op read "op://Private/Potasse - OVHcloud/ipv4"
+     Changing it means opening the item in the 1Password app: the CLI refuses
+     to edit SSH Key items ("not yet supported").
+     Falling back to the name matters only when op is unavailable, which is
+     also when the agent holds no key to offer. */ -}}
+{{- $potasse := "potasse.fr" -}}
+{{- if lookPath "op" -}}
+{{-   $ipv4 := onepasswordRead "op://bv2opaaxbhpe7ztv6ym5mix4um/6e5r3rusbfkdlrhx52aiot7sze/ipv4" -}}
+{{-   if $ipv4 }}{{ $potasse = $ipv4 }}{{ end -}}
+{{- end -}}
+
 # 1password ssh agent setup:
 {{ if eq .chezmoi.os "darwin" -}}
 Host *
@@ -12,4 +25,38 @@ Match host * exec "test -z $SSH_CONNECTION"
 Host github.com
   HostName github.com
   IdentityFile ~/.ssh/github_perso.pub
+  IdentitiesOnly yes
+
+# The potasse VPS, two accounts with a key each: `potasse` ships releases and
+# cannot become root, `potasse-admin` provisions and restores (deploy/RESTORE.md).
+# Both are reached at the address itself, not through DNS: ssh has no reason to
+# wait for the name to move, and one field in 1Password is the only place to
+# change when the server does.
+# The Match blocks cover the spelled-out forms `make provision` and the docs
+# use, and repeat HostName: without it those two go to whatever potasse.fr
+# resolves to, which is not this server until the record moves. They key on
+# the user, because IdentityFile accumulates rather than replaces — two blocks
+# matching one command would offer both keys — and on originalhost, because
+# `host` is compared after HostName substitution: by then the name has become
+# the address above, and `Match host potasse.fr` would never fire.
+Host potasse
+  HostName {{ $potasse }}
+  User deploy
+  IdentityFile ~/.ssh/potasse_deploy.pub
+  IdentitiesOnly yes
+
+Host potasse-admin{{ if ne $potasse "potasse.fr" }} {{ $potasse }}{{ end }}
+  HostName {{ $potasse }}
+  User ubuntu
+  IdentityFile ~/.ssh/potasse_admin.pub
+  IdentitiesOnly yes
+
+Match originalhost potasse.fr user deploy
+  HostName {{ $potasse }}
+  IdentityFile ~/.ssh/potasse_deploy.pub
+  IdentitiesOnly yes
+
+Match originalhost potasse.fr user ubuntu
+  HostName {{ $potasse }}
+  IdentityFile ~/.ssh/potasse_admin.pub
   IdentitiesOnly yes

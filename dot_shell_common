@@ -135,3 +135,16 @@ export PATH="$(go env GOPATH 2>/dev/null)/bin":"${PATH}"
 # toolchain but not these.
 export PATH="${CARGO_HOME:-${HOME}/.cargo}/bin":"${PATH}"
 export EDITOR="$( which nvim 2>/dev/null || which vim 2>/dev/null )"
+
+#### SSH
+# ssh finds the 1Password agent through IdentityAgent in ~/.ssh/config, but
+# ssh-add, git and anything else that talks to an agent read SSH_AUTH_SOCK and
+# nothing else — without this they reach the empty system agent. Skipped inside
+# an SSH session, where the forwarded agent is the one that matters.
+if [ -z "${SSH_CONNECTION:-}" ]; then
+    for _sock in "${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" \
+                 "${HOME}/.1password/agent.sock"; do
+        [ -S "${_sock}" ] && export SSH_AUTH_SOCK="${_sock}" && break
+    done
+    unset _sock
+fi

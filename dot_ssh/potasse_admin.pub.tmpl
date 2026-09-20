@@ -1,0 +1,7 @@
+{{/* Addressed by UUID, not by name, so renaming the item cannot break this.
+     Both halves of "op://<vault>/<item>/public key":
+       op item get "Potasse - OVHcloud" --format json | jq -r '"op://" + .vault.id + "/" + .id'
+     A key that does not exist yet:
+       op item create --category "SSH Key" --title "Potasse - OVHcloud" --vault Private --ssh-generate-key ed25519
+     op only answers a signed-in shell: eval $(op signin) */ -}}
+{{ if lookPath "op" }}{{ onepasswordRead "op://bv2opaaxbhpe7ztv6ym5mix4um/6e5r3rusbfkdlrhx52aiot7sze/public key" }}{{ end }} # see 'op://Private/Potasse - OVHcloud/public key'
